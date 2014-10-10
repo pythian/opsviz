@@ -1,12 +1,12 @@
 DEPENDENCIES
   elasticsearch
-    git: git@github.com:AlexanderZaytsev/elasticsearch.git
+    git: https://github.com/AlexanderZaytsev/elasticsearch.git
     revision: 7fad0c9089fdce7e993893d81bc4d64dab283d15
   kibana
-    git: git@github.com:foxycoder/chef-kibana.git
+    git: https://github.com/foxycoder/chef-kibana.git
     revision: a46f081b9a27ad1bc177274d5338f6f3bb85437d
   logstash
-    git: git@github.com:foxycoder/chef-logstash.git
+    git: https://github.com/foxycoder/chef-logstash.git
     revision: 71b3aa2cf4116d04f9fb5272b664e08cf2b1c407
   rabbitmq_cluster
     path: cookbooks/rabbitmq_cluster
