@@ -1,4 +1,5 @@
 DEPENDENCIES
+  apache2
   elasticsearch
     git: https://github.com/AlexanderZaytsev/elasticsearch.git
     revision: 7fad0c9089fdce7e993893d81bc4d64dab283d15
