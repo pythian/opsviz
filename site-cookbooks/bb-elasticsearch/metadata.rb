@@ -7,3 +7,4 @@ long_description 'Installs/Configures bb-elasticsearch'
 version          '0.1.0'
 
 depends 'elasticsearch'
+depends 'java'
