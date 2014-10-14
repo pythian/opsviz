@@ -3,9 +3,9 @@ default[:elasticsearch][:http_auth_plugin] = 'https://github.com/Asquera/elastic
 
 if node[:elasticsearch][:http_auth]
   normal[:elasticsearch][:custom_config] = {}
-  normal[:elasticsearch][:custom_config][:basic_auth] = true
-  normal[:elasticsearch][:custom_config][:user] = node[:elasticsearch][:basic_auth][:user]
-  normal[:elasticsearch][:custom_config][:password] = node[:elasticsearch][:basic_auth][:password]
+  normal[:elasticsearch][:custom_config]["http.basic.enabled"] = true
+  normal[:elasticsearch][:custom_config]["http.basic.user"] = node[:elasticsearch][:basic_auth][:user]
+  normal[:elasticsearch][:custom_config]["http.basic.password"] = node[:elasticsearch][:basic_auth][:password]
 end
 
 normal[:java][:install_flavor] = 'openjdk'
