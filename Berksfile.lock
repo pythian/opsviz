@@ -1,5 +1,6 @@
 DEPENDENCIES
   apache2
+    path: apache2
   elasticsearch
     git: https://github.com/AlexanderZaytsev/elasticsearch.git
     revision: 7fad0c9089fdce7e993893d81bc4d64dab283d15
@@ -8,7 +9,7 @@ DEPENDENCIES
     git: https://github.com/foxycoder/chef-logstash.git
     revision: 71b3aa2cf4116d04f9fb5272b664e08cf2b1c407
   rabbitmq_cluster
-    path: cookbooks/rabbitmq_cluster
+    path: site-cookbooks/rabbitmq_cluster
 
 GRAPH
   7-zip (1.0.2)

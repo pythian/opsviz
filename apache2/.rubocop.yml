@@ -1,0 +1,23 @@
+AllCops:
+  Exclude:
+    - vendor/**
+    - ruby/**
+    - test/**/*
+    - files/**/*
+
+AlignParameters:
+  Enabled: false
+Encoding:
+  Enabled: false
+UselessAssignment:
+  Enabled: false
+LineLength:
+  Max: 300
+MethodLength:
+  Max: 11
+HashSyntax:
+  EnforcedStyle: hash_rockets
+IfUnlessModifier:
+  Enabled: false
+TrivialAccessors:
+  ExactNameMatch: true
