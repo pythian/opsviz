@@ -1,9 +1,9 @@
 DEPENDENCIES
   apache2
     path: apache2
+  bb-elasticsearch
+    path: site-cookbooks/bb-elasticsearch
   elasticsearch
-    git: https://github.com/AlexanderZaytsev/elasticsearch.git
-    revision: 7fad0c9089fdce7e993893d81bc4d64dab283d15
   kibana
   logstash
     git: https://github.com/foxycoder/chef-logstash.git
@@ -22,10 +22,17 @@ GRAPH
   ark (0.9.0)
     7-zip (>= 0.0.0)
     windows (>= 0.0.0)
+  bb-elasticsearch (0.1.0)
+    elasticsearch (>= 0.0.0)
   build-essential (2.0.6)
+  chef-sugar (2.4.1)
   chef_handler (1.1.6)
-  elasticsearch (0.1.0)
+  elasticsearch (0.3.10)
+    ark (>= 0.2.4)
+    build-essential (>= 0.0.0)
     java (>= 0.0.0)
+    monit (>= 0.0.0)
+    xml (>= 0.0.0)
   erlang (1.5.6)
     apt (>= 1.7.0)
     build-essential (>= 0.0.0)
@@ -45,6 +52,7 @@ GRAPH
     logrotate (>= 0.0.0)
     python (>= 0.0.0)
     yum (>= 0.0.0)
+  monit (0.7.5)
   pacman (1.1.1)
   python (1.4.6)
     build-essential (>= 0.0.0)
@@ -56,6 +64,9 @@ GRAPH
     rabbitmq (>= 0.0.0)
   windows (1.34.6)
     chef_handler (>= 0.0.0)
+  xml (1.2.6)
+    build-essential (>= 0.0.0)
+    chef-sugar (>= 0.0.0)
   yum (3.3.2)
   yum-epel (0.5.1)
     yum (~> 3.0)
