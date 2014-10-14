@@ -1,3 +1,5 @@
+normal[:elasticsearch][:version] = '1.3.4'
+
 default[:elasticsearch][:http_auth] = false
 default[:elasticsearch][:http_auth_plugin] = 'https://github.com/Asquera/elasticsearch-http-basic/releases/download/1.3.2/elasticsearch-http-basic-1.3.2.jar'
 
