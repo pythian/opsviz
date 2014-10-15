@@ -1,0 +1,16 @@
+server {
+  listen 80;
+  server_name _;
+
+  location /kibana {
+    alias /opt/kibana/current;
+    auth_basic            "Restricted";
+    auth_basic_user_file  graphite.htpasswd;
+  }
+
+  location /elasticsearch {
+    proxy_pass            http://23.22.60.195:9200;
+    auth_basic            "Restricted";
+    auth_basic_user_file  graphite.htpasswd;
+  }
+}

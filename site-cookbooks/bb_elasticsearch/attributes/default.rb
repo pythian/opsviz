@@ -10,6 +10,9 @@ if node[:elasticsearch][:http_auth]
   normal[:elasticsearch][:custom_config]["http.basic.enabled"] = true
   normal[:elasticsearch][:custom_config]["http.basic.user"] = node[:elasticsearch][:basic_auth][:user]
   normal[:elasticsearch][:custom_config]["http.basic.password"] = node[:elasticsearch][:basic_auth][:password]
+
+  # TODO we need to add all ips from our opsworks stack, or better when we move to vpc the subnet
+  normal[:elasticsearch][:custom_config]["http.basic.ipwhitelist"] = ["localhost", "127.0.0.1"]
 end
 
 normal[:java][:install_flavor] = 'openjdk'
