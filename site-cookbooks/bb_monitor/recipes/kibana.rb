@@ -18,7 +18,7 @@ end
 ].each do |site|
 
   template "/etc/nginx/sites-available/#{site}" do
-    source "#{site}.erb"
+    source "nginx/#{site}.erb"
     owner "root"
     group "root"
     mode "0644"
