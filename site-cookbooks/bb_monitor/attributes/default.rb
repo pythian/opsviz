@@ -1,4 +1,4 @@
 default[:kibana][:user] = 'admin'
-default[:kibana][:pass] = 'changeme'
+default[:kibana][:password] = 'changeme'
 
 normal[:kibana][:config][:cookbook] = 'bb_monitor'
