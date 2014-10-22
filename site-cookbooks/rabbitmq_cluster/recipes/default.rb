@@ -19,6 +19,13 @@ rabbitmq_user "guest" do
   action :delete
 end
 
+rabbitmq_policy "ha-all" do
+  pattern "^(?!amq\\.).*"
+  params ({"ha-mode"=>"all"})
+  priority 1
+  action :set
+end
+
 rabbitmq_user node['rabbitmq_cluster']['user'] do
   password node['rabbitmq_cluster']['password']
   action :add
