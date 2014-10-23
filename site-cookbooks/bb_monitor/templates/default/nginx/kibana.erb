@@ -2,6 +2,12 @@ server {
   listen 80;
   server_name _;
 
+  location / {
+    proxy_pass            http://127.0.0.1:8081/;
+    auth_basic            "Restricted";
+    auth_basic_user_file  graphite.htpasswd;
+  }
+
   location /kibana {
     alias /opt/kibana/current;
     auth_basic            "Restricted";
