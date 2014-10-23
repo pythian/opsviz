@@ -1,13 +1,15 @@
-# encoding: UTF-8
+# Fix for encoding bug
+Encoding.default_external = "utf-8"
+
 source "https://supermarket.getchef.com"
 
 # Community Cookbooks
 cookbook 'elasticsearch'
-#cookbook 'grafana'
+cookbook 'grafana'
 cookbook 'graphite'
 cookbook 'kibana'
 cookbook 'logstash', git: 'https://github.com/foxycoder/chef-logstash.git'
-#cookbook 'sensu'
+cookbook 'sensu'
 
 # Our Cookbooks
 cookbook 'rabbitmq_cluster', path: './site-cookbooks/rabbitmq_cluster'
