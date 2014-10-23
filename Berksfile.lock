@@ -31,6 +31,7 @@ GRAPH
     elasticsearch (>= 0.0.0)
     java (>= 0.0.0)
   bb_monitor (0.1.0)
+    graphite (>= 0.0.0)
     htpasswd (>= 0.0.0)
     kibana (>= 0.0.0)
   bluepill (2.3.1)
