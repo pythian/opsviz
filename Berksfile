@@ -2,11 +2,11 @@ source "https://supermarket.getchef.com"
 
 # Community Cookbooks
 cookbook 'elasticsearch'
-cookbook 'grafana'
+#cookbook 'grafana'
 cookbook 'graphite'
 cookbook 'kibana'
 cookbook 'logstash', git: 'https://github.com/foxycoder/chef-logstash.git'
-cookbook 'sensu'
+#cookbook 'sensu'
 
 # Our Cookbooks
 cookbook 'rabbitmq_cluster', path: './site-cookbooks/rabbitmq_cluster'
