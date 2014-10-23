@@ -21,7 +21,7 @@ server {
   }
 
   location /grafana {
-    alias <%= node['grafana']['install_dir'] %>
+    alias <%= node['grafana']['install_dir'] %>;
     auth_basic            "Restricted";
     auth_basic_user_file  graphite.htpasswd;
   }
