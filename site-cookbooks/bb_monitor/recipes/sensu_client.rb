@@ -2,14 +2,14 @@ include_recipe "sensu::default"
 
 sensu_client "#{node[:opsworks][:instance][:hostname]}.#{node[:opsworks][:instance][:layers][0]}.#{node[:opsworks][:stack][:name].downcase}" do
   address "#{node['opsworks']['instance']['private_ip']}"
-  subscriptions node[:data_commons][:sensu][:subscriptions]
+  subscriptions node[:bb_monitor][:sensu][:subscriptions]
   additional ({
     :stack => node[:opsworks][:stack][:name],
     :layer => node[:opsworks][:instance][:layers][0],
     :availability_zone => node[:opsworks][:instance][:availability_zone],
     :aws_instance_id => node[:opsworks][:instance][:aws_instance_id],
     :region => node[:opsworks][:instance][:region],
-    :keepalive => {:handlers => node[:data_commons][:sensu][:default_check_handlers]}
+    :keepalive => {:handlers => node[:bb_monitor][:sensu][:default_check_handlers]}
   })
 end
 
