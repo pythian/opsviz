@@ -5,6 +5,7 @@ normal[:kibana][:config][:cookbook] = 'bb_monitor'
 
 
 ##Sensu
+normal[:sensu][:use_ssl] = false
 normal[:sensu][:rabbitmq][:host] = node[:bb_monitor][:sensu][:server_url]
 normal[:sensu][:redis][:host] = node[:bb_monitor][:sensu][:server_url]
 normal[:sensu][:api][:host] = node[:bb_monitor][:sensu][:server_url]
