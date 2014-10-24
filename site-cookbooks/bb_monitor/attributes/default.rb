@@ -18,3 +18,7 @@ default[:bb_monitor][:sensu][:default_check_handlers] = []
 default[:bb_monitor][:sensu][:default_metric_handlers] = ["graphite"]
 
 default[:bb_monitor][:sensu][:subscriptions] = ["all"] + node[:opsworks][:instance][:layers]
+
+# Disable sensu dashboard user/pass since we have nginx in front
+normal['uchiwa']['settings']['user'] = ''
+normal['uchiwa']['settings']['pass'] = ''
