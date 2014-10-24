@@ -3,6 +3,9 @@ default[:kibana][:password] = 'changeme'
 
 normal[:kibana][:config][:cookbook] = 'bb_monitor'
 
+#nginx
+# install nginx from source so we get a high enough version for websockets
+normal['nginx']['install_method'] = 'source'
 
 ##Sensu
 normal[:sensu][:use_ssl] = false
