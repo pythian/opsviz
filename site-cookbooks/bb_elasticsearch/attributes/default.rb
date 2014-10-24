@@ -3,7 +3,8 @@ normal[:elasticsearch][:download_url] = 'https://download.elasticsearch.org/elas
 normal[:elasticsearch][:checksum] = '18af629c388b442bc8daa39754ea1f39a606acd7647fe042aed79ef014a7d330'
 
 default[:elasticsearch][:http_auth] = false
-default[:elasticsearch][:http_auth_plugin] = 'https://github.com/Asquera/elasticsearch-http-basic/releases/download/1.3.2/elasticsearch-http-basic-1.3.2.jar'
+#default[:elasticsearch][:http_auth_plugin] = 'https://github.com/Asquera/elasticsearch-http-basic/releases/download/1.3.2/elasticsearch-http-basic-1.3.2.jar'
+default[:elasticsearch][:http_auth_plugin] = 'https://github.com/Asquera/elasticsearch-http-basic/releases/download/v1.3.0-security-fix/elasticsearch-http-basic-1.3.0.jar'
 
 if node[:elasticsearch][:http_auth]
   normal[:elasticsearch][:custom_config] = {}
