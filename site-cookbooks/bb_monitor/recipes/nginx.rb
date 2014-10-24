@@ -1,6 +1,4 @@
-package "nginx" do
-  action :install
-end
+include_recipe 'nginx'
 
 service 'nginx' do
   supports :status => true, :restart => true
