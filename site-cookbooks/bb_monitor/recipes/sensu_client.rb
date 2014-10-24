@@ -1,6 +1,6 @@
 include_recipe "sensu::default"
 
-sensu_client "#{node[:opsworks][:instance][:hostname]}.#{node[:opsworks][:instance][:layers][0]}.#{node[:opsworks][:stack][:name].downcase}" do
+sensu_client "#{node[:opsworks][:instance][:hostname]}.#{node[:opsworks][:instance][:layers][0]}.#{node[:opsworks][:stack][:name].downcase.gsub(' ','_')}" do
   address "#{node['opsworks']['instance']['private_ip']}"
   subscriptions node[:bb_monitor][:sensu][:subscriptions]
   additional ({
