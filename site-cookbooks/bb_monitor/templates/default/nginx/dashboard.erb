@@ -26,7 +26,8 @@ server {
     auth_basic_user_file  graphite.htpasswd;
   }
 
-  location /sensu {
+  rewrite ^/sensu$ /sensu/ redirect;
+  location ~ (/sensu/|/socket.io/) {
     proxy_pass            http://127.0.0.1:<%= node['uchiwa']['settings']['port']%>;
 
     auth_basic            "Restricted";
@@ -37,7 +38,7 @@ server {
     proxy_set_header Connection "upgrade";
     proxy_set_header Host $host;
 
-    rewrite /uchiwa/(.*) /$1 break;
+    rewrite /sensu/(.*) /$1 break;
   }
 
 }
