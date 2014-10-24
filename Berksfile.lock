@@ -12,6 +12,8 @@ DEPENDENCIES
   logstash
     git: https://github.com/foxycoder/chef-logstash.git
     revision: 71b3aa2cf4116d04f9fb5272b664e08cf2b1c407
+  nginx
+    path: nginx
   rabbitmq_cluster
     path: site-cookbooks/rabbitmq_cluster
   sensu

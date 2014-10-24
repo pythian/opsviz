@@ -18,3 +18,4 @@ cookbook 'bb_monitor', path: './site-cookbooks/bb_monitor'
 
 # Override opsworks to use community apache2
 cookbook 'apache2', path: './apache2'
+cookbook 'nginx', path: './nginx'
