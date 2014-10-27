@@ -14,9 +14,9 @@
 #
 # DEPENDENCIES:
 #   sensu-plugin Ruby gem
-#   right_aws Ruby gem
+#   fog Ruby gem
 #
-# Copyright (c) 2012, Panagiotis Papadomitsos <pj@ezgr.net>
+# Copyright (c) 2014, Panagiotis Papadomitsos <pj@ezgr.net>
 #
 # Released under the same terms as Sensu (the MIT license); see LICENSE
 # for details.
@@ -25,7 +25,7 @@ require 'rubygems' if RUBY_VERSION < '1.9.0'
 require 'sensu-plugin/check/cli'
 require 'net/http'
 require 'uri'
-require 'right_aws'
+require 'fog'
 
 class ELBHealth < Sensu::Plugin::Check::CLI
 
@@ -33,14 +33,12 @@ class ELBHealth < Sensu::Plugin::Check::CLI
     :short => '-a AWS_ACCESS_KEY',
     :long => '--aws-access-key AWS_ACCESS_KEY',
     :description => "AWS Access Key. Either set ENV['AWS_ACCESS_KEY_ID'] or provide it as an option",
-    :required => true,
     :default => ENV['AWS_ACCESS_KEY_ID']
 
   option :aws_secret_access_key,
     :short => '-s AWS_SECRET_ACCESS_KEY',
     :long => '--aws-secret-access-key AWS_SECRET_ACCESS_KEY',
     :description => "AWS Secret Access Key. Either set ENV['AWS_SECRET_ACCESS_KEY'] or provide it as an option",
-    :required => true,
     :default => ENV['AWS_SECRET_ACCESS_KEY']
 
   option :aws_region,
@@ -79,26 +77,29 @@ class ELBHealth < Sensu::Plugin::Check::CLI
   end
 
   def run
-    begin
+    # begin
       aws_region = (config[:aws_region].nil? || config[:aws_region].empty?) ? query_instance_region : config[:aws_region]
-      elb = RightAws::ElbInterface.new(config[:aws_access_key], config[:aws_secret_access_key], {
-        :logger => Logger.new('/dev/null'),
-        :cache => false,
-        :server => "elasticloadbalancing.#{aws_region}.amazonaws.com"
-      })
+
+      if config[:aws_access_key].nil?
+        elb = Fog::AWS::ELB.new(
+          :use_iam_profile => true,
+          :region => aws_region)
+      else
+        elb = Fog::AWS::ELB.new(
+          :aws_access_key_id => config[:aws_access_key],
+          :aws_secret_access_key => config[:aws_secret_access_key],
+          :region => aws_region)
+      end
+
       if config[:instances]
         instances = config[:instances].split(',')
         health = elb.describe_instance_health(config[:elb_name], instances)
       else
         health = elb.describe_instance_health(config[:elb_name])
       end
-    rescue Exception => e
-      critical "An issue occured while communicating with the AWS EC2 API: #{e.message}"
-    end
-    unless health.empty?
       unhealthy_instances = {}
-      health.each do |instance|
-        unhealthy_instances[instance[:instance_id]] = instance[:state] if instance[:state].eql?('OutOfService')
+      health.body['DescribeInstanceHealthResult']['InstanceStates'].each do |instance|
+        unhealthy_instances[instance['InstanceId']] = instance['State'] unless instance['State'].eql?('InService')
       end
       unless unhealthy_instances.empty?
         if config[:verbose]
@@ -109,9 +110,9 @@ class ELBHealth < Sensu::Plugin::Check::CLI
       else
         ok "All instances on ELB #{aws_region}::#{config[:elb_name]} healthy!"
       end
-    else
-      critical 'Failed to retrieve ELB instance health data'
-    end
+    # rescue Exception => e
+    #   warning "An issue occured while communicating with the AWS EC2 API: #{e.message}"
+    # end
   end
 
 end
