@@ -11,6 +11,7 @@
 
 include_recipe 'java'
 include_recipe 'elasticsearch'
+include_recipe 'elasticsearch::aws'
 
 if node[:elasticsearch][:http_auth]
   install_plugin 'http-basic', 'url' => node[:elasticsearch][:http_auth_plugin]
