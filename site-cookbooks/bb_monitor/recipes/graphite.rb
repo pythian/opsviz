@@ -80,5 +80,6 @@ end
 
 runit_service 'graphite-web' do
   cookbook 'graphite'
+  sv_timeout 15
   default_logger true
 end
