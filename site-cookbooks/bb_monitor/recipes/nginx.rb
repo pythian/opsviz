@@ -1,5 +1,4 @@
 include_recipe 'nginx'
-include_recipe 'nginx::ngx_lua_module'
 
 # Need to fix the package for debian, real fix isn't merged yet into nginx repo https://github.com/miketheman/nginx/pull/268
 lua_devel_package = resources(:package => "lua-devel")
