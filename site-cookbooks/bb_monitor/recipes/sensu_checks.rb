@@ -65,3 +65,11 @@ sensu_check "metric-memory" do
   subscribers ["all"]
   interval 60
 end
+
+sensu_check "rabbitmq-messages" do
+  type "metric"
+  command "check-rabbitmq-messages.rb --host RabbitMQLogstash-1957935310.us-east-1.elb.amazonaws.com --user sensu --password sensu -w 100000 -c 500000"
+  handlers node[:bb_monitor][:sensu][:default_metric_handlers]
+  subscribers ["all"]
+  interval 5
+end
