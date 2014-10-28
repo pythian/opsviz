@@ -1,10 +1,5 @@
 include_recipe 'nginx'
-include_recipe 'bb_monitor::nginx_lua_cjson'
-
-# Need to fix the package for debian, real fix isn't merged yet into nginx repo https://github.com/miketheman/nginx/pull/268
-lua_devel_package = resources(:package => "lua-devel")
-lua_devel_package.package_name "liblua5.2-dev"
-
+include_recipe 'bb_monitor::doorman'
 
 file "/etc/nginx/sites-enabled/default" do
   action :delete
