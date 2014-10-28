@@ -16,6 +16,10 @@ directory '/tmp/lua-cjson-2.1.0/build' do
   action :create
 end
 
+package 'cmake' do
+ action :install
+end
+
 execute 'make lua-cjson-2' do
   command 'cmake ..'
   action :run
