@@ -17,9 +17,3 @@ link "/etc/nginx/sites-enabled/dashboard" do
   to "/etc/nginx/sites-available/dashboard"
   notifies :restart, "service[nginx]"
 end
-
-include_recipe "htpasswd"
-htpasswd "/etc/nginx/graphite.htpasswd" do
-  user node[:kibana][:user]
-  password node[:kibana][:password]
-end
