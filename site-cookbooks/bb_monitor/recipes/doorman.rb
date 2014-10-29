@@ -11,8 +11,8 @@ execute 'install doorman dependencies' do
   action :run
 end
 
-template '/opt/doorman/config.js' do
-  source 'doorman/config.js.erb'
+template '/opt/doorman/conf.js' do
+  source 'doorman/conf.js.erb'
   owner 'root'
   group 'root'
   mode '0744'
