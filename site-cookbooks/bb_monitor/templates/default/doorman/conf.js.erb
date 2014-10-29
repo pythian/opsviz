@@ -23,17 +23,18 @@ module.exports = {
     // Register a new oauth app on Github at
     // https://github.com/account/applications/new
     github: {
-      appId: ''<%= node['doorman']['app_id']%>'',
-      appSecret: ''<%= node['doorman']['app_secret']%>'',
+      appId: '<%= node['doorman']['app_id']%>',
+      appSecret: '<%= node['doorman']['app_secret']%>',
       entryPath: '/oauth/github',
       callbackPath: '/oauth/github/callback',
-      requiredOrganization: 'InVisionApp' // short organization name
+      requiredOrganization: '<%= node['doorman']['org_name']%>' // short organization name
     },
 
-    // Simple password login, make sure you choose a very secure password.
-    // password: {
-    //  token: "YOUR-PASSWORD" // any user that knows this can log in
-    // },
+    <% if node['doorman']['password'] %>
+    password: {
+     token: "<%= node['doorman']['password']%>" // any user that knows this can log in
+    },
+    <% end %>
 
     // Register a new oauth app on Google Apps at
     // https://code.google.com/apis/console
