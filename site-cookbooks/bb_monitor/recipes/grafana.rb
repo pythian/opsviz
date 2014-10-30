@@ -1,6 +1,6 @@
 include_recipe 'grafana'
 
-template "#{node['grafana']['install_dir']}/apps/dashboards/default.json" do
+template "#{node['grafana']['install_dir']}/app/dashboards/default.json" do
   source 'system_stats.json.erb'
   owner 'root'
   group 'root'
