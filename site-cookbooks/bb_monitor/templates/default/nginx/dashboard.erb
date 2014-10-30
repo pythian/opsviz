@@ -13,7 +13,7 @@ server {
   }
 
   location /elasticsearch {
-    proxy_pass            http://23.22.60.195:9200/;
+    proxy_pass            <%= node['kibana']['elasticsearch_server'] %>:9200/;
   }
 
   rewrite ^/grafana$ $host:80/grafana/ redirect;
