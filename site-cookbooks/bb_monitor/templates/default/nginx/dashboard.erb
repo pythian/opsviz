@@ -6,16 +6,20 @@ server {
     proxy_pass            http://127.0.0.1:8081/;
   }
 
+  rewrite ^/kibana$ $host:80/kibana/ redirect;
   location /kibana {
     alias /opt/kibana/current;
+    proxy_set_header Host $host:80;
   }
 
   location /elasticsearch {
     proxy_pass            http://23.22.60.195:9200/;
   }
 
+  rewrite ^/grafana$ $host:80/grafana/ redirect;
   location /grafana {
     alias <%= node['grafana']['install_dir'] %>;
+    proxy_set_header Host $host:80;
   }
 
   rewrite ^/sensu$ $host:80/sensu/ redirect;
