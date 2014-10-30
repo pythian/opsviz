@@ -22,6 +22,7 @@ module.exports = {
   modules: {
     // Register a new oauth app on Github at
     // https://github.com/account/applications/new
+    <% if node['doorman']['app_id'] %>
     github: {
       appId: '<%= node['doorman']['app_id']%>',
       appSecret: '<%= node['doorman']['app_secret']%>',
@@ -29,6 +30,7 @@ module.exports = {
       callbackPath: '/oauth/github/callback',
       requiredOrganization: '<%= node['doorman']['org_name']%>' // short organization name
     },
+    <% end %>
 
     <% if node['doorman']['password'] %>
     password: {
