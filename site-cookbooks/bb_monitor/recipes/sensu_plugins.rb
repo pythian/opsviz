@@ -25,6 +25,10 @@ end
   metrics-splunk.rb
   rds-metrics.rb
   apache-graphite.rb
+  check-rabbitmq-messages.rb
+  check-rabbitmq-queue.rb
+  rabbitmq-cluster-health.rb
+  rabbitmq-overview-metrics.rb
 ].each do |plugin|
   cookbook_file ::File.join(node.sensu.directory, "plugins", plugin) do
     source "sensu_plugins/#{plugin}"
