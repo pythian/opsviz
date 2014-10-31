@@ -117,6 +117,7 @@ GRAPH
   rabbitmq (3.3.0)
     erlang (>= 0.9)
   rabbitmq_cluster (0.0.0)
+    bb_monitor (>= 0.0.0)
     hostsfile (>= 0.0.0)
     rabbitmq (>= 0.0.0)
   redisio (2.2.4)

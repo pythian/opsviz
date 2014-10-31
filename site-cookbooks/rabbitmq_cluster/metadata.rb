@@ -7,3 +7,5 @@ end
 %w{ rabbitmq hostsfile }.each do |ckbk|
       depends ckbk
 end
+
+depends 'bb_monitor'
