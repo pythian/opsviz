@@ -263,7 +263,7 @@
           },
           "targets": [
             {
-              "target": "aliasByNode(derivative(sumSeriesWithWildcards(stats.invisionapp_logging_stack.*.*.disk.*.writes, 5)), 3)"
+              "target": "aliasByNode(derivative(sumSeriesWithWildcards(stats.*.*.*.disk.*.writes, 5)), 3)"
             }
           ],
           "aliasColors": {},
@@ -325,7 +325,7 @@
           },
           "targets": [
             {
-              "target": "aliasByNode(derivative(sumSeriesWithWildcards(stats.invisionapp_logging_stack.*.*.disk.*.reads, 5)), 3)"
+              "target": "aliasByNode(derivative(sumSeriesWithWildcards(stats.*.*.*.disk.*.reads, 5)), 3)"
             }
           ],
           "aliasColors": {},
@@ -465,7 +465,7 @@
           },
           "targets": [
             {
-              "target": "aliasByNode(stats.invisionapp_logging_stack.*.elb.{healthyhostcount,unhealthyhostcount}, 2, -1)"
+              "target": "aliasByNode(stats.*.*.elb.{healthyhostcount,unhealthyhostcount}, 2, -1)"
             }
           ],
           "aliasColors": {},
@@ -527,7 +527,7 @@
           },
           "targets": [
             {
-              "target": "aliasByNode(stats.invisionapp_logging_stack.*.elb.requestcount, 2)"
+              "target": "aliasByNode(stats.*.*.elb.requestcount, 2)"
             }
           ],
           "aliasColors": {},
