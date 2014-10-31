@@ -37,6 +37,7 @@ GRAPH
     graphite (>= 0.0.0)
     htpasswd (>= 0.0.0)
     kibana (>= 0.0.0)
+    nodejs (>= 0.0.0)
     python (>= 0.0.0)
     runit (>= 0.0.0)
     sensu (>= 0.0.0)

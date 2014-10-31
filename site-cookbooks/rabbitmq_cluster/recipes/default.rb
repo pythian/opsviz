@@ -38,7 +38,8 @@ rabbitmq_user node['rabbitmq_cluster']['user'] do
   action :set_permissions
 end
 
-sensu_config = node.sensu.rabbitmq.to_hash
+include_recipe 'sensu'
+sensu_config = node["sensu"]["rabbitmq"].to_hash
 
 rabbitmq_vhost sensu_config["vhost"] do
   action :add
