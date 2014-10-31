@@ -1,4 +1,3 @@
-include_recipe "sensu::rabbitmq"
 include_recipe "sensu::redis"
 
 include_recipe "sensu::default"

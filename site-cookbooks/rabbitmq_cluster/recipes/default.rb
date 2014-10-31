@@ -38,12 +38,19 @@ rabbitmq_user node['rabbitmq_cluster']['user'] do
   action :set_permissions
 end
 
-rabbitmq_user "sensu" do
-  password "sensu"
+sensu_config = node.sensu.rabbitmq.to_hash
+
+rabbitmq_vhost sensu_config["vhost"] do
   action :add
 end
 
-rabbitmq_user "sensu" do
-  tag "monitoring"
-  action :set_tags
+rabbitmq_user sensu_config["user"] do
+  password sensu_config["password"]
+  action :add
+end
+
+rabbitmq_user sensu_config["user"] do
+  vhost sensu_config["vhost"]
+  permissions ".* .* .*"
+  action :set_permissions
 end
