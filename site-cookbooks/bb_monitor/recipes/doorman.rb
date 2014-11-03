@@ -8,6 +8,8 @@ end
 execute 'install doorman dependencies' do
   command 'npm install'
   cwd '/opt/doorman'
+  retries 5
+  retry_delay 10
   action :run
 end
 
