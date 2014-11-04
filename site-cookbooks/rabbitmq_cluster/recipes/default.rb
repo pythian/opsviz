@@ -27,15 +27,17 @@ rabbitmq_policy "ha-all" do
   action :set
 end
 
-rabbitmq_user node['rabbitmq_cluster']['user'] do
-  password node['rabbitmq_cluster']['password']
-  action :add
-end
+node['rabbitmq_cluster']['users'].each do |user|
+  rabbitmq_user user['user'] do
+    password user['password']
+    action :add
+  end
 
-rabbitmq_user node['rabbitmq_cluster']['user'] do
-  vhost "/"
-  permissions ".* .* .*"
-  action :set_permissions
+  rabbitmq_user user['user'] do
+    vhost "/"
+    permissions ".* .* .*"
+    action :set_permissions
+  end
 end
 
 include_recipe 'sensu'
