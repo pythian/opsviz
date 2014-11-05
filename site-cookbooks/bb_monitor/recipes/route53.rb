@@ -6,8 +6,8 @@ if node[:route53][:zone_id] && !node[:route53][:zone_id].empty?
 
   node[:opsworks][:instance][:layers].each do |layer|
     log "Creating route53 record for instance #{node[:opsworks][:instance][:hostname]}"
-    route53_record "route53 #{node[:opsworks][:instance][:hostname]}.#{layer}.#{stack_name}.#{node[:route53][:domain_name]}" do
-      name  "#{node[:opsworks][:instance][:hostname]}.#{layer}.#{stack_name}.#{node[:route53][:domain_name]}"
+    route53_record "route53 #{node[:opsworks][:instance][:hostname]}.#{stack_name}.#{node[:route53][:domain_name]}" do
+      name  "#{node[:opsworks][:instance][:hostname]}.#{stack_name}.#{node[:route53][:domain_name]}"
       value instance_dns
       type  "CNAME"
       zone_id node[:route53][:zone_id]
