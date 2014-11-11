@@ -73,6 +73,10 @@
       "Description": "RabbitMQ Password",
       "Type": "String"
     },
+    "RabbitMQSensuPassword": {
+      "Description": "RabbitMQ Sensu Password",
+      "Type": "String"
+    },
     "GraphiteVolumeSize": {
       "Description": "Size of disk in GB to use for graphite ebs volumes",
       "Type": "Number",
@@ -247,6 +251,9 @@
                   "RabbitMQELB",
                   "DNSName"
                 ]
+              },
+              "rabbitmq_password": {
+                "Ref": "RabbitMQSensuPassword"
               }
             }
           },
