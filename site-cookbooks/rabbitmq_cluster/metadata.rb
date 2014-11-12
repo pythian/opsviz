@@ -4,7 +4,7 @@ name             "rabbitmq_cluster"
       supports os
 end
 
-%w{ rabbitmq hostsfile }.each do |ckbk|
+%w{ rabbitmq }.each do |ckbk|
       depends ckbk
 end
 
