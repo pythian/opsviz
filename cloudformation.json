@@ -195,7 +195,7 @@
         "CustomJson": {
           "chef_environment": "production",
           "route53": {
-            "zone_id":{
+            "zone_id": {
               "Ref": "Route53ZoneId"
             },
             "domain_name": {
@@ -354,7 +354,18 @@
                 },
                 {
                   "statsd": {
-                    "increment": "[\"%{type}.status.%{status}\", \"%{type}.response.%{response}\"]",
+                    "increment": [
+                      "%{type}.status.%{status}",
+                      "%{type}.response.%{response}"
+                    ],
+                    "count": [
+                      "%{type}.bytes_sent","%{body_bytes_sent}",
+                      "%{type}.bytes_sent","%{body_bytes_sent}"
+                    ],
+                    "timing": [
+                      "%{type}.request_time","%{request_time}",
+                      "%{type}.responseTime","%{responseTime}"
+                    ],
                     "namespace": ""
                   }
                 }
