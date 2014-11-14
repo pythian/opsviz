@@ -351,6 +351,12 @@
                     },
                     "replication": "async"
                   }
+                },
+                {
+                  "statsd": {
+                    "increment": "[\"%{type}.status.%{status}\", \"%{type}.response.%{response}\"]",
+                    "namespace": ""
+                  }
                 }
               ]
             }
