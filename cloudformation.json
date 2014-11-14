@@ -354,6 +354,14 @@
                 }
               ]
             }
+          },
+          "statsd": {
+            "graphite_host": {
+              "Fn::GetAtt": [
+                "GraphiteELB",
+                "DNSName"
+              ]
+            }
           }
         }
       }

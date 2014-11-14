@@ -17,6 +17,7 @@ DEPENDENCIES
   rabbitmq_cluster
     path: site-cookbooks/rabbitmq_cluster
   sensu
+  statsd
 
 GRAPH
   7-zip (1.0.2)
@@ -135,6 +136,9 @@ GRAPH
     redisio (>= 1.7.0)
     windows (>= 1.8.8)
     yum (>= 0.0.0)
+  statsd (0.0.1)
+    build-essential (>= 0.0.0)
+    git (>= 0.0.0)
   uchiwa (0.5.0)
     apt (>= 0.0.0)
     nodejs (>= 0.0.0)
