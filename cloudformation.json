@@ -359,12 +359,14 @@
                       "%{type}.response.%{response}"
                     ],
                     "count": [
-                      "%{type}.bytes_sent","%{body_bytes_sent}",
-                      "%{type}.bytes_sent","%{body_bytes_sent}"
+                      "%{type}.bytes_sent",
+                      "%{body_bytes_sent}"
                     ],
                     "timing": [
-                      "%{type}.request_time","%{request_time}",
-                      "%{type}.responseTime","%{responseTime}"
+                      "%{type}.request_time",
+                      "%{request_time}",
+                      "%{type}.responseTime",
+                      "%{responseTime}"
                     ],
                     "namespace": ""
                   }
