@@ -10,7 +10,7 @@ cookbook 'graphite'
 cookbook 'kibana'
 cookbook 'logstash', git: 'https://github.com/foxycoder/chef-logstash.git'
 cookbook 'sensu'
-cookbook 'statsd'
+cookbook 'statsd', git: 'https://github.com/hectcastro/chef-statsd.git'
 
 # Our Cookbooks
 cookbook 'rabbitmq_cluster', path: './site-cookbooks/rabbitmq_cluster'
