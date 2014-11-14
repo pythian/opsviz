@@ -361,7 +361,8 @@
                 "GraphiteELB",
                 "DNSName"
               ]
-            }
+            },
+            "nodejs_bin": "/usr/bin/nodejs"
           }
         }
       }
