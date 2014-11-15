@@ -340,6 +340,23 @@
                   }
                 }
               ],
+              "filters": [
+                {
+                  "geoip": {
+                    "source": "remote_addr"
+                  }
+                },
+                {
+                  "geoip": {
+                    "source": "ipAddress"
+                  }
+                },
+                {
+                  "geoip": {
+                    "source": "clientip"
+                  }
+                }
+              ],
               "outputs": [
                 {
                   "elasticsearch_http": {
