@@ -68,7 +68,23 @@ end
 
 sensu_check "rabbitmq-messages" do
   type "metric"
-  command "check-rabbitmq-messages.rb --host RabbitMQLogstash-1957935310.us-east-1.elb.amazonaws.com --user sensu --password sensu -w 100000 -c 500000"
+  command "check-rabbitmq-messages.rb --user sensu_monitor --password sensu_monitor -w 100000 -c 500000"
+  handlers node[:bb_monitor][:sensu][:default_metric_handlers]
+  subscribers ["rabbitmq"]
+  interval 5
+end
+
+sensu_check "rabbitmq-cluster-health" do
+  type "metric"
+  command "rabbitmq-cluser-health.rb --user sensu_monitor --password sensu_monitor"
+  handlers node[:bb_monitor][:sensu][:default_metric_handlers]
+  subscribers ["rabbitmq"]
+  interval 5
+end
+
+sensu_check "rabbitmq-overview" do
+  type "metric"
+  command "rabbitmq-overview-metrics.rb --user sensu_monitor --password sensu_monitor"
   handlers node[:bb_monitor][:sensu][:default_metric_handlers]
   subscribers ["rabbitmq"]
   interval 5
