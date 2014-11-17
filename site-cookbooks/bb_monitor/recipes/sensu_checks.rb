@@ -76,7 +76,7 @@ sensu_check "rabbitmq-messages" do
 end
 
 sensu_check "rabbitmq-cluster-health" do
-  command "rabbitmq-cluster-health.rb --user sensu_monitor --password sensu_monitor --scheme stats.:::name:::"
+  command "rabbitmq-cluster-health.rb --user sensu_monitor --password sensu_monitor"
   handlers node[:bb_monitor][:sensu][:default_check_handlers]
   subscribers ["rabbitmq"]
   interval 5
