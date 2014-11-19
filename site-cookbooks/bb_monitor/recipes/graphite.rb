@@ -23,14 +23,14 @@ graphite_carbon_cache "default" do
             log_updates: false,
             log_cache_hits: false,
             whisper_autoflush: false,
-            ENABLE_AMQP: True,
-            AMQP_HOST: node[:bb_monitor][:sensu][:rabbitmq_server],
-            AMQP_PORT: 5672,
-            AMQP_VHOST: node["statsd"]["rabbitmq"]["vhost"],
-            AMQP_USER: node["statsd"]["rabbitmq"]["user"],
-            AMQP_PASSWORD: node["statsd"]["rabbitmq"]["password"],
-            AMQP_EXCHANGE: statsd,
-            AMQP_METRIC_NAME_IN_BODY: True
+            enable_amqp: true,
+            amqp_host: node[:bb_monitor][:sensu][:rabbitmq_server],
+            amqp_port: 5672,
+            amqp_vhost: node["statsd"]["rabbitmq"]["vhost"],
+            amqp_user: node["statsd"]["rabbitmq"]["user"],
+            amqp_password: node["statsd"]["rabbitmq"]["password"],
+            amqp_exchange: statsd,
+            amqp_metric_name_in_body: true
           })
 end
 
