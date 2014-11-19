@@ -50,7 +50,7 @@ rabbitmq_user sensu_config["user"] do
   permissions ".* .* .*"
   action :set_permissions
 end
-include_recipe 'rabbitmq_cluser::monitor'
+include_recipe 'rabbitmq_cluster::monitor'
 
 statsd_config = node["statsd"]["rabbitmq"]
 
