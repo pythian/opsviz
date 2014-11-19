@@ -407,7 +407,7 @@
               "vhost": "/statsd",
               "user": "statsd",
               "password": {
-                "Ref": "RabbitMQSensuPassword"
+                "Ref": "RabbitMQStatsdPassword"
               }
             }
           }
