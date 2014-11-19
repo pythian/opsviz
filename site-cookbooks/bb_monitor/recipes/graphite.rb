@@ -29,7 +29,7 @@ graphite_carbon_cache "default" do
             amqp_vhost: node["statsd"]["rabbitmq"]["vhost"],
             amqp_user: node["statsd"]["rabbitmq"]["user"],
             amqp_password: node["statsd"]["rabbitmq"]["password"],
-            amqp_exchange: statsd,
+            amqp_exchange: "statsd",
             amqp_metric_name_in_body: true
           })
 end
