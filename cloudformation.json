@@ -77,6 +77,10 @@
       "Description": "RabbitMQ Sensu Password",
       "Type": "String"
     },
+    "RabbitMQStatsdPassword": {
+      "Description": "RabbitMQ Statsd Password",
+      "Type": "String"
+    },
     "GraphiteVolumeSize": {
       "Description": "Size of disk in GB to use for graphite ebs volumes",
       "Type": "Number",
@@ -398,7 +402,14 @@
                 "DNSName"
               ]
             },
-            "nodejs_bin": "/usr/bin/nodejs"
+            "nodejs_bin": "/usr/bin/nodejs",
+            "rabbitmq": {
+              "vhost": "/statsd",
+              "user": "statsd",
+              "password": {
+                "Ref": "RabbitMQSensuPassword"
+              }
+            }
           }
         }
       }
