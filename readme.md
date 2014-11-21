@@ -100,27 +100,27 @@ Setup statsd to push metrics rabbitmq where graphite will pull out of
 2. Install rabbitmq backend `npm install git+https://github.com/mrtazz/statsd-amqp-backend.git`
 3. Setup config as follows
 
-{
-  backends: [ "statsd-amqp-backend" ]
-  , dumpMessages: true
-  , debug: true
-  , amqp: {
-    host: '<RabbitMQ ELB>'
-    , port: 5671
-    , login: 'statsd'
-    , password: '<statsd RabbitMQ password>'
-    , vhost: '/statsd'
-    , defaultExchange: 'statsd'
-    , messageFormat: 'graphite'
-    , ssl: {
-      enabled : true
-      , keyFile : '/dev/null'
-      , certFile : '/dev/null'
-      , caFile : '/dev/null'
-      , rejectUnauthorized : false
-    }
-  }
-}
+        {
+          backends: [ "statsd-amqp-backend" ]
+          , dumpMessages: true
+          , debug: true
+          , amqp: {
+            host: '<RabbitMQ ELB>'
+            , port: 5671
+            , login: 'statsd'
+            , password: '<statsd RabbitMQ password>'
+            , vhost: '/statsd'
+            , defaultExchange: 'statsd'
+            , messageFormat: 'graphite'
+            , ssl: {
+              enabled : true
+              , keyFile : '/dev/null'
+              , certFile : '/dev/null'
+              , caFile : '/dev/null'
+              , rejectUnauthorized : false
+            }
+          }
+        }
 
 ### External Sensu Clients
 We use the public facing RabbitMQ as the transport layer for external sensu clients
@@ -128,16 +128,16 @@ We use the public facing RabbitMQ as the transport layer for external sensu clie
 2. Update client config `/etc/sensu/conf.d/client.json`
 3. Update rabbitmq config `/etc/sensu/conf.d/rabbitmq.json`
 
-{
-  "rabbitmq": {
-    "host": "<RabbitMQ ELB>",
-    "port": 5671,
-    "user": "sensu",
-    "password": "<sensu RabbitMQ password>",
-    "vhost": "/sensu",
-    "ssl" : true
-  }
-}
+        {
+          "rabbitmq": {
+            "host": "<RabbitMQ ELB>",
+            "port": 5671,
+            "user": "sensu",
+            "password": "<sensu RabbitMQ password>",
+            "vhost": "/sensu",
+            "ssl" : true
+          }
+        }
 
 ### Updating Sensu Checks and Metrics
 *Todo: At this time we don't have a way to drive sensu checks or metrics directly from CloudFormation paramaters. This would make it easier
