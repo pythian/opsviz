@@ -1,0 +1,216 @@
+{
+  "chef_environment": "production",
+  "route53": {
+    "zone_id": {
+      "Ref": "Route53ZoneId"
+    },
+    "domain_name": {
+      "Ref": "Route53DomainName"
+    }
+  },
+  "aws_region": {
+    "Ref": "AWS::Region"
+  },
+  "graphite": {
+    "host": {
+      "Fn::GetAtt": [
+        "GraphiteELB",
+        "DNSName"
+      ]
+    }
+  },
+  "elasticsearch": {
+    "version": "1.0.1",
+    "cluster": {
+      "name": "logstash"
+    },
+    "plugins": {
+      "elasticsearch/elasticsearch-cloud-aws": {
+        "version": "2.2.0"
+      }
+    },
+    "cloud": {
+      "aws": {
+        "region": {
+          "Ref": "AWS::Region"
+        }
+      }
+    },
+    "discovery": {
+      "type": "ec2"
+    },
+    "http_auth": false,
+    "index.number_of_shards": 8,
+    "index.number_of_replicas": 2,
+    "index.auto_expand_replicas": "2-all"
+  },
+  "bb_monitor": {
+    "sensu": {
+      "server_url": {
+        "Fn::GetAtt": [
+          "DashboardELB",
+          "DNSName"
+        ]
+      },
+      "rabbitmq_server": {
+        "Fn::GetAtt": [
+          "RabbitMQELB",
+          "DNSName"
+        ]
+      },
+      "rabbitmq_password": {
+        "Ref": "RabbitMQSensuPassword"
+      }
+    }
+  },
+  "rabbitmq": {
+    "cluster": true,
+    "erlang_cookie": "v9wb1ju@)#lur)tch9p1!0g@hnpwp(@!gb3h9y2v0)o#h*bopm"
+  },
+  "rabbitmq_cluster": {
+    "users": [
+      {
+        "user": {
+          "Ref": "RabbitMQUser"
+        },
+        "password": {
+          "Ref": "RabbitMQPassword"
+        }
+      },
+      {
+        "user": {
+          "Ref": "RabbitMQLogstashExternalUser"
+        },
+        "password": {
+          "Ref": "RabbitMQLogstashExternalPassword"
+        }
+      },
+      {
+        "user": {
+          "Ref": "RabbitMQLogstashInternalUser"
+        },
+        "password": {
+          "Ref": "RabbitMQLogstashInternalPassword"
+        }
+      }
+    ]
+  },
+  "kibana": {
+    "version": "3",
+    "kibana3_version": "3.1.1",
+    "elasticsearch_server": {
+      "Fn::GetAtt": [
+        "ElasticSearchELB",
+        "DNSName"
+      ]
+    }
+  },
+  "doorman": {
+    "session_secret": "Jo9blyEg3jap0Juc2Ecs6iC1bAb4muC0jOrk1iaS0yaRc9oth3",
+    "app_id": {
+      "Ref": "GithubOauthAppId"
+    },
+    "app_secret": {
+      "Ref": "GithubOauthSecret"
+    },
+    "org_name": {
+      "Ref": "GithubOauthOrganization"
+    },
+    "password": {
+      "Ref": "DoormanPassword"
+    }
+  },
+  "logstash": {
+    "version": "1.4",
+    "server": {
+      "enabled": true,
+      "inputs": [
+        {
+          "rabbitmq": {
+            "exchange": "logstash",
+            "user": {
+              "Ref": "RabbitMQLogstashInternalUser"
+            },
+            "password": {
+              "Ref": "RabbitMQLogstashInternalPassword"
+            },
+            "host": {
+              "Fn::GetAtt": [
+                "RabbitMQELB",
+                "DNSName"
+              ]
+            },
+            "queue": "incoming_logs",
+            "exclusive": false,
+            "threads": 4
+          }
+        }
+      ],
+      "filters": [
+        {
+          "geoip": {
+            "source": "remote_addr"
+          }
+        },
+        {
+          "geoip": {
+            "source": "ipAddress"
+          }
+        },
+        {
+          "geoip": {
+            "source": "clientip"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "elasticsearch_http": {
+            "host": {
+              "Fn::GetAtt": [
+                "ElasticSearchELB",
+                "DNSName"
+              ]
+            },
+            "replication": "async"
+          }
+        },
+        {
+          "statsd": {
+            "increment": [
+              "%{type}.status.%{status}",
+              "%{type}.response.%{response}"
+            ],
+            "count": [
+              "%{type}.bytes_sent",
+              "%{body_bytes_sent}"
+            ],
+            "timing": [
+              "%{type}.request_time",
+              "%{request_time}",
+              "%{type}.responseTime",
+              "%{responseTime}"
+            ],
+            "namespace": ""
+          }
+        }
+      ]
+    }
+  },
+  "statsd": {
+    "graphite_host": {
+      "Fn::GetAtt": [
+        "GraphiteELB",
+        "DNSName"
+      ]
+    },
+    "nodejs_bin": "/usr/bin/nodejs",
+    "rabbitmq": {
+      "vhost": "/statsd",
+      "user": "statsd",
+      "password": {
+        "Ref": "RabbitMQStatsdPassword"
+      }
+    }
+  }
+}
