@@ -1,12 +1,12 @@
 server {
   listen 8080;
   server_name _;
+  port_in_redirect off;
 
   location / {
     proxy_pass            http://<%= node['graphite']['host'] %>:<%= node['graphite']['listen_port'] %>/;
   }
 
-  rewrite ^/kibana$ $host:80/kibana/ redirect;
   location /kibana {
     alias /opt/kibana/current;
     proxy_set_header Host $host:80;
@@ -16,12 +16,12 @@ server {
     proxy_pass            http://<%= node['kibana']['elasticsearch_server'] %>:9200/;
   }
 
-  rewrite ^/grafana$ $host:80/grafana/ redirect;
   location /grafana {
     alias <%= node['grafana']['install_dir'] %>;
     proxy_set_header Host $host:80;
   }
 
+  rewrite /sensu$ $scheme://$host:80/sensu/ permanent;
   rewrite ^/sensu$ $host:80/sensu/ redirect;
   location ~ (/sensu/|/socket.io/) {
     proxy_pass            http://127.0.0.1:<%= node['uchiwa']['settings']['port']%>;
