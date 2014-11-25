@@ -402,7 +402,7 @@
                 "DNSName"
               ]
             },
-            "nodejs_bin": "/usr/bin/nodejs",
+            "nodejs_bin": "/usr/bin/node",
             "rabbitmq": {
               "vhost": "/statsd",
               "user": "statsd",
