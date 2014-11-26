@@ -15,7 +15,7 @@ end
 
 rabbitmq_policy "ha-all" do
   pattern "^(?!amq\\.).*"
-  params ({"ha-mode"=>"all"})
+  params ({"ha-mode"=>"all","ha-sync-mode":"automatic"})
   priority 1
   action :set
 end
