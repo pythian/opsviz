@@ -1,7 +1,16 @@
 # OpsVis Stack
+## The first step in DevOps transformation is knowing where change is needed
 
 ### Overview
 
+This repository includes the cloudformation json and opsworks cookbooks to stand up a complete ELK stack in AWS.
+
+Out of the box, it is Highly Available within one availability zone and automatically scales on load and usage.
+
+It also builds everything with private-only ip addresses and restricts all external access to two endpoints:
+
+1. Logs and metrics flow in through HA RabbitMQ with SSL terminated at the ELB
+1. All dashboards and elasticsearch requests are protected by doorman and hosted together on a “dashboard” host
 
 ### Components [Architecture Diagram](screenshots/architecture_diagram.png)
 - Cloud Formation Script
