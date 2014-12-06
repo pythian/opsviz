@@ -67,7 +67,7 @@ stack_name = node[:opsworks][:stack][:name].downcase.gsub(' ','_')
 # Metrics
 sensu_check "metric-cluster-elasticsearch" do
   type "metric"
-  command "es-cluster-metrics.rb -h #{node[:kibana][:elasticsearch_server]} -s stats.#{stack_name}.elasticsearch"
+  command "es-cluster-metrics.rb -h #{node[:kibana][:elasticsearch_server]} -s stats.#{stack_name}.elasticsearch.cluster"
   handlers node[:bb_monitor][:sensu][:default_check_handlers]
   subscribers ["dashboard"]
   interval 60
