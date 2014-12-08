@@ -34,17 +34,10 @@ graphite_carbon_cache "default" do
           })
 end
 
-graphite_storage_schema "carbon" do
-  config ({
-            pattern: "^carbon\.",
-            retentions: "60:90d"
-          })
-end
-
-graphite_storage_schema "default_1min_for_1day" do
+graphite_storage_schema "default" do
   config ({
             pattern: ".*",
-            retentions: "60s:365d,300s:1095d"
+            retentions: "1m:30d,5m:1y,1h:5y"
           })
 end
 
