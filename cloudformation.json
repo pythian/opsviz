@@ -376,8 +376,7 @@
                 {
                   "statsd": {
                     "increment": [
-                      "%{type}.status.%{status}",
-                      "%{type}.response.%{response}"
+                      "%{type}.status.%{status}"
                     ],
                     "count": [
                       "%{type}.bytes_sent",
