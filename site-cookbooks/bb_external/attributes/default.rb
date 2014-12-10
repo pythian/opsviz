@@ -18,5 +18,6 @@ normal[:sensu][:rabbitmq][:password] = node[:bb_external][:sensu][:rabbitmq][:pa
 normal[:sensu][:rabbitmq][:user] = node[:bb_external][:sensu][:rabbitmq][:user]
 
 # Since we aren't use client side ssl certs we need to force sensu cookbook to use this specific settings
+force_override[:sensu][:use_ssl] = false
 force_override[:sensu][:rabbitmq][:port] = node[:bb_external][:sensu][:rabbitmq][:port]
 force_override[:sensu][:rabbitmq][:ssl] = node[:bb_external][:sensu][:rabbitmq][:ssl]
