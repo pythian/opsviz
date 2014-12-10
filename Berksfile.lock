@@ -3,6 +3,8 @@ DEPENDENCIES
     path: apache2
   bb_elasticsearch
     path: site-cookbooks/bb_elasticsearch
+  bb_external
+    path: site-cookbooks/bb_external
   bb_monitor
     path: site-cookbooks/bb_monitor
   elasticsearch
@@ -35,7 +37,10 @@ GRAPH
   bb_elasticsearch (0.1.0)
     elasticsearch (>= 0.0.0)
     java (>= 0.0.0)
+  bb_external (0.1.0)
+    sensu (>= 0.0.0)
   bb_monitor (0.1.0)
+    bb_external (>= 0.0.0)
     grafana (>= 0.0.0)
     graphite (>= 0.0.0)
     htpasswd (>= 0.0.0)

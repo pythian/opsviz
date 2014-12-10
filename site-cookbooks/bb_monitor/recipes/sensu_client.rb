@@ -13,7 +13,7 @@ sensu_client "#{node[:opsworks][:instance][:hostname]}.#{node[:opsworks][:instan
   })
 end
 
-include_recipe "bb_monitor::sensu_plugins"
+include_recipe "bb_external::sensu_plugins"
 
 include_recipe "sensu::client_service"
 service_resource = resources(:sensu_service => "sensu-client")
@@ -26,6 +26,7 @@ end
 
 template "/etc/sudoers.d/sensu" do
   source "sudoer_sensu.erb"
+  cookook "bb_external"
   owner "root"
   group "root"
   mode "0440"
