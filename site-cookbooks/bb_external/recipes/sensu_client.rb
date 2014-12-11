@@ -33,3 +33,5 @@ unless platform_family?("windows")
     mode "0440"
   end
 end
+
+include_recipe "sensu::client_service"
