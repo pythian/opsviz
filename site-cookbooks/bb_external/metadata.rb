@@ -7,4 +7,4 @@ long_description 'Installs/Configures bb_external'
 version          '0.1.0'
 
 depends "sensu"
-depends "logstash"
+depends "logstash", git: 'https://github.com/foxycoder/chef-logstash.git'
