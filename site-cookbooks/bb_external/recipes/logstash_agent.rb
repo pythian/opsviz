@@ -23,8 +23,8 @@ end
 
 file_patterns = []
 
-file_inputs = file_inputs.to_hash
 file_inputs.map! do |input|
+  input = input.to_hash
   if input.has_key?('pattern') && input.has_key?('type')
     file_patterns << {"grok" => {"type" => input['type'], 'pattern' => input['pattern']}}
     input.delete('pattern')
