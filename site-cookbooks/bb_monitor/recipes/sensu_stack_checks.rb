@@ -32,7 +32,7 @@ node[:opsworks][:layers].each do |key, value|
 end
 
 sensu_check "check-graphite-cache" do
-  command "graphite.rb -h #{node[:graphite][:host]}:8081 -t carbon.agents.*.cache.size -a 100,500 -p 10minutes -g"
+  command "graphite.rb -h #{node[:graphite][:host]}:8081 -t carbon.agents.*.cache.size -a 1000,5000 -p 10minutes -g"
   handlers node[:bb_monitor][:sensu][:default_check_handlers]
   subscribers ["dashboard"]
   interval 300
