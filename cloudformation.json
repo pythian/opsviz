@@ -106,6 +106,10 @@
     "Route53DomainName": {
       "Description": "The domain name to append to dns records",
       "Type": "String"
+    },
+    "PagerDutyAPIKey": {
+      "Description": "The pagerduty api key if you want sensu alerts forwarded to pagerduty",
+      "Type": "String"
     }
   },
   "Mappings": {
@@ -258,6 +262,9 @@
               },
               "rabbitmq_password": {
                 "Ref": "RabbitMQSensuPassword"
+              },
+              "pagerduty_api": {
+                "Ref": "PagerDutyAPIKey"
               }
             }
           },
