@@ -28,7 +28,6 @@ include_recipe "bb_external::sensu_plugins"
 unless platform_family?("windows")
   template "/etc/sudoers.d/sensu" do
     source "sudoer_sensu.erb"
-    cookook "bb_external"
     owner "root"
     group "root"
     mode "0440"
