@@ -1,5 +1,5 @@
 # When true node name and subscriptions will be determined from opsworks attributes
-default[:bb_external][:sensu][:opsworks] = false
+default[:bb_external][:opsworks] = false
 
 default[:bb_external][:sensu][:keepalive_handler] = []
 default[:bb_external][:sensu][:subscriptions] = ["all"]

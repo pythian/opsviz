@@ -7,7 +7,7 @@ include_recipe "sensu::default"
 end
 
 # It can run via chef solo on a single instance as well as capabilites for opsworks
-if node[:bb_external][:sensu][:opsworks]
+if node[:bb_external][:opsworks]
   sensu_client "#{node[:opsworks][:instance][:hostname]}.#{node[:opsworks][:instance][:layers][0]}.#{node[:opsworks][:stack][:name].downcase.gsub(' ','_')}" do
     address "#{node['opsworks']['instance']['private_ip']}"
     subscriptions node[:bb_external][:sensu][:subscriptions] + node[:opsworks][:instance][:layers]
