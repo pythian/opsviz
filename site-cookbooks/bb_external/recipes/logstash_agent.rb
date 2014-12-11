@@ -11,7 +11,7 @@ groups = ['all', node.name]
 # It can run via chef solo on a single instance as well as capabilites for opsworks
 groups += node[:opsworks][:instance][:layers] if node[:bb_external][:opsworks]
 
-Chef::Log.info "Logstash file input groups"
+Chef::Log.info "Logstash file input #{groups}"
 groups.each do |group|
   next unless node[:bb_external][:logstash][:file_inputs].has_key?(group)
   if node[:bb_external][:logstash][:file_inputs][group].kind_of?(Array)
@@ -29,7 +29,7 @@ file_inputs.map! do |input|
   end
   input
 end
-Chef::Log.info "Logstash inputs #{inputs}"
+Chef::Log.info "Logstash inputs #{file_inputs}"
 Chef::Log.info "Logstash patterns #{file_patterns}"
 
 # Forward attributes to logstash cookbook in correct format
