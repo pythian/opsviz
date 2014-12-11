@@ -13,7 +13,7 @@ if node[:bb_external][:sensu][:opsworks]
       :aws_instance_id => node[:opsworks][:instance][:aws_instance_id],
       :region => node[:opsworks][:instance][:region],
       :keepalive => {:handlers => node[:bb_external][:sensu][:keepalive_handler]}
-      })
+    })
   end
 else
   node_name = node[:bb_external][:sensu][:client_name] || node.name

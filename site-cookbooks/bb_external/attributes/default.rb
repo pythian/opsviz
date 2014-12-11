@@ -2,14 +2,16 @@
 default[:bb_external][:sensu][:opsworks] = false
 
 default[:bb_external][:sensu][:keepalive_handler] = []
-default[:bb_external][:sensu][:subscriptions] = []
+default[:bb_external][:sensu][:subscriptions] = ["all"]
 
-default[:bb_external][:senu][:rabbitmq][:user] = "sensu"
-default[:bb_external][:senu][:rabbitmq][:ssl] = true
-default[:bb_external][:senu][:rabbitmq][:port] = 5671
+default[:bb_external][:sensu][:rabbitmq][:user] = "sensu"
+default[:bb_external][:sensu][:rabbitmq][:ssl] = true
+default[:bb_external][:sensu][:rabbitmq][:port] = 5671
 
 %w(server password).each do |attribute|
-  Chef::Log.error "Missing attribute bb_external.sensu.rabbitmq.#{attribute}" unless node[:bb_external][:senu][:rabbitmq].has_key?(attribute)
+  unless node[:bb_external][:sensu][:rabbitmq].has_key?(attribute)
+    raise "Missing attribute bb_external.sensu.rabbitmq.#{attribute}"
+  end
 end
 
 # Forward attributes to sensu cookbook
