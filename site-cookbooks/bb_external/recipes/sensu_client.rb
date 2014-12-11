@@ -1,7 +1,12 @@
 include_recipe "sensu::default"
 
-# Build this in a way that it can run via chef solo on a single instance as well as capabilites for opsworks
+%w(server password).each do |attribute|
+  unless node[:bb_external][:sensu][:rabbitmq].has_key?(attribute)
+    raise "Missing attribute bb_external.sensu.rabbitmq.#{attribute}"
+  end
+end
 
+# It can run via chef solo on a single instance as well as capabilites for opsworks
 if node[:bb_external][:sensu][:opsworks]
   sensu_client "#{node[:opsworks][:instance][:hostname]}.#{node[:opsworks][:instance][:layers][0]}.#{node[:opsworks][:stack][:name].downcase.gsub(' ','_')}" do
     address "#{node['opsworks']['instance']['private_ip']}"
