@@ -15,6 +15,7 @@ default[:bb_external][:logstash][:rabbitmq][:exchange] = "logstash"
 default[:bb_external][:logstash][:rabbitmq][:exchange_type] = "direct"
 default[:bb_external][:logstash][:rabbitmq][:user] = "logstash_external"
 default[:bb_external][:logstash][:file_inputs] = {}
+default[:bb_external][:logstash][:filters] = []
 default[:bb_external][:logstash][:root] = false
 
 # Forward attributes to sensu cookbook

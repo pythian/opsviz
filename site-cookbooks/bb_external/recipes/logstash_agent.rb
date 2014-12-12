@@ -37,7 +37,7 @@ Chef::Log.info "Logstash patterns #{file_patterns}"
 # Forward attributes to logstash cookbook in correct format
 node.normal[:logstash][:agent][:outputs] = [{'rabbitmq' => node[:bb_external][:logstash][:rabbitmq]}]
 node.normal[:logstash][:agent][:inputs] = file_inputs.map {|config| {"file" => config} }
-node.normal[:logstash][:agent][:filters] = file_patterns
+node.normal[:logstash][:agent][:filters] = file_patterns + node[:bb_external][:logstash][:filters]
 
 Chef::Log.info "Logstash config #{node[:logstash]}"
 
