@@ -37,7 +37,8 @@
 - `GithubOauthSecret` - *Github Oauth App Secret to use for doorman authentication. Leave empty for none.*
 - `GraphiteVolumeSize` - *Size of disk in GB to use for graphite ebs volumes*
 - `OpsWorksStackColor` - *RGB Color to use for OpsWorks Stack*
-- `RabbitMQCertificateARN` - *ARN of hte certificate to use for rabbitmq*
+- `PagerDutyAPIKey` - *The pagerduty api key if you want sensu alerts forwarded to pagerduty*
+- `RabbitMQCertificateARN` - *ARN of the certificate to use for rabbitmq*
 - `RabbitMQLogstashExternalPassword` - *RabbitMQ Password*
 - `RabbitMQLogstashExternalUser` - *RabbitMQ User*
 - `RabbitMQLogstashInternalPassword` - *RabbitMQ Password*
@@ -88,11 +89,15 @@ The bastion host has an Elastic IP attached to it and is on the public subnet so
 SSH Users are managed by OpsWorks. After creating the stack login to the OpsWorks dashboard to see the list if IAM users. From there you can assign SSH and Sudo access
 to individual users as well as upload public keys. After making changes OpsWorks will run a chef recipe on all boxes to update the user accounts accordingly on each instance
 
+## External Clients
+A separate cookbook has been created that contains recipes for installing external clients. The are abstracted out from OpsWorks and AWS so they can be ran on any machine to start sending logs to this OpViz Stack.
+
+See [bb_external](site-cookbooks/bb_external) for more documentation
 
 ### External Logstash Clients
 To setup an external logstash client
 1. Install logstash according to [documentation](http://logstash.net/docs/1.4.2/tutorials/getting-started-with-logstash)
-2. Update the config to push logs to the elasticsearch ELB
+2. Update the config to push logs to the rabbitmq ELB
 
 ### External Statsd Clients
 Setup statsd to push metrics rabbitmq where graphite will pull out of
@@ -140,8 +145,8 @@ We use the public facing RabbitMQ as the transport layer for external sensu clie
         }
 
 ### Updating Sensu Checks and Metrics
-*Todo: At this time we don't have a way to drive sensu checks or metrics directly from CloudFormation paramaters. This would make it easier
-to update sensu without needing to worry about making changes directly to the sensu config or making standalone checks on each client*
+*Todo: At this time we don't have a way to drive sensu checks or metrics directly from CloudFormation paramaters or any other external definitions.
+This would make it easier to update sensu without needing to worry about making changes directly to the sensu config without configuration management or making standalone checks on each client*
 
 - Option 1: SSH into the sensu box and make changes according to sensu [documentation](http://sensuapp.org/docs/0.11/checks)
 - Option 2: Setup standalone checks on each external client according to [documentation](http://sensuapp.org/docs/0.11/adding_a_standalone_check)
@@ -151,6 +156,7 @@ to update sensu without needing to worry about making changes directly to the se
   When adding a check as [type metric](http://sensuapp.org/docs/0.11/adding_a_metric) set the handlers to "graphite".
   *This will forward any metrics onto graphite for us automatically*
 
+***
 
 ### Custom JSON
 [This Custom Json](custom_json.example.json) is the Custom Json block that is set as the OpsWorks custom json. It drives a lot of the custom configuration
