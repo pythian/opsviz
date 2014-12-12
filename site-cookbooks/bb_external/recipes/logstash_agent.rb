@@ -43,3 +43,12 @@ Chef::Log.info "Logstash config #{node[:logstash]}"
 
 
 include_recipe "logstash::default"
+
+template '/etc/init/logstash.conf' do
+  source 'logstash.init.conf'
+  owner 'root'
+  group 'root'
+  mode '0755'
+  variables( :root => node[:bb_external][:logstash][:root] )
+  notifies :restart, "service[logstash]"
+end
