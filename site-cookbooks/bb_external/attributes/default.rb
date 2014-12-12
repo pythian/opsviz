@@ -13,7 +13,7 @@ default[:bb_external][:logstash][:rabbitmq][:ssl] = true
 default[:bb_external][:logstash][:rabbitmq][:verify_ssl] = false
 default[:bb_external][:logstash][:rabbitmq][:exchange] = "logstash"
 default[:bb_external][:logstash][:rabbitmq][:exchange_type] = "direct"
-default[:bb_external][:logstash][:rabbitmq][:user] = "direct"
+default[:bb_external][:logstash][:rabbitmq][:user] = "logstash_external"
 default[:bb_external][:logstash][:file_inputs] = {}
 default[:bb_external][:logstash][:root] = false
 
