@@ -1,5 +1,5 @@
 rabbitmq_user "sensu_monitor" do
-  password "sensu_monitor"
+  password node["sensu"]["rabbitmq"]["password"]
   action :add
 end
 
