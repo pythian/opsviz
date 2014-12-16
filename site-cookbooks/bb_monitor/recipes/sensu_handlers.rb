@@ -34,9 +34,12 @@ unless node[:bb_monitor][:sensu][:pagerduty_api].empty?
     })
   end
 
+  pd_severities = ["ok", "critical"]
+  pd_severities << "warning" if node[:bb_monitor][:sensu][:pagerduty_warn]
+
   sensu_handler "pagerduty" do
     type "pipe"
     command "pagerduty.rb"
-    severities ["ok", "critical", "warning"]
+    severities pd_severities
   end
 end

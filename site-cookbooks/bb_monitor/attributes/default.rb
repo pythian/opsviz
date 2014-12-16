@@ -17,6 +17,7 @@ normal[:sensu][:log_level] = "warn"
 
 default[:bb_monitor][:sensu][:rds_identifiers] = []
 default[:bb_monitor][:sensu][:pagerduty_api] = ""
+default[:bb_monitor][:sensu][:pagerduty_warn] = true
 
 default[:bb_monitor][:sensu][:default_check_handlers] = []
 
