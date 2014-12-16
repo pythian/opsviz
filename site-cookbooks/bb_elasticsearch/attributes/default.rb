@@ -16,5 +16,7 @@ if node[:elasticsearch][:http_auth] == true
   normal[:elasticsearch][:custom_config]["http.basic.ipwhitelist"] = ["localhost", "127.0.0.1"]
 end
 
+normal[:elasticsearch][:custom_config]["indices.fielddata.cache.size"] = "40%"
+
 normal[:java][:install_flavor] = 'openjdk'
 normal[:java][:jdk_version] = '7'

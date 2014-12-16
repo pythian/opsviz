@@ -69,23 +69,24 @@ end
 include_recipe "sensu"
 
 sensu_check "rabbitmq-messages" do
-  command "check-rabbitmq-messages.rb --user sensu_monitor --password sensu_monitor -w 100000 -c 500000"
+  command "check-rabbitmq-messages.rb --user sensu_monitor --password #{node["sensu"]["rabbitmq"]["password"]} -w 600 -c 900"
   handlers node[:bb_monitor][:sensu][:default_check_handlers]
   subscribers ["rabbitmq"]
-  interval 5
+  interval 60
+  additional(:occurrences => 2)
 end
 
 sensu_check "rabbitmq-cluster-health" do
-  command "rabbitmq-cluster-health.rb --user sensu_monitor --password sensu_monitor"
+  command "rabbitmq-cluster-health.rb --user sensu_monitor --password #{node["sensu"]["rabbitmq"]["password"]}"
   handlers node[:bb_monitor][:sensu][:default_check_handlers]
   subscribers ["rabbitmq"]
-  interval 5
+  interval 60
 end
 
 sensu_check "rabbitmq-overview" do
   type "metric"
-  command "rabbitmq-overview-metrics.rb --user sensu_monitor --password sensu_monitor --scheme stats.:::name:::"
+  command "rabbitmq-overview-metrics.rb --user sensu_monitor --password #{node["sensu"]["rabbitmq"]["password"]} --scheme stats.:::name:::"
   handlers node[:bb_monitor][:sensu][:default_metric_handlers]
   subscribers ["rabbitmq"]
-  interval 5
+  interval 60
 end

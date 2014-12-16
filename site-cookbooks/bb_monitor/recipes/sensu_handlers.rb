@@ -27,7 +27,7 @@ sensu_handler "graphite" do
 end
 
 
-if node[:bb_monitor][:sensu][:pagerduty_api]
+unless node[:bb_monitor][:sensu][:pagerduty_api].empty?
   sensu_snippet "pagerduty" do
     content({
       :api_key =>  node[:bb_monitor][:sensu][:pagerduty_api]

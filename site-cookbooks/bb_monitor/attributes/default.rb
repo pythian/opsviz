@@ -16,10 +16,14 @@ normal[:sensu][:api][:host] = node[:bb_monitor][:sensu][:server_url]
 normal[:sensu][:log_level] = "warn"
 
 default[:bb_monitor][:sensu][:rds_identifiers] = []
-# TODO:: Get pagerduty api key
 default[:bb_monitor][:sensu][:pagerduty_api] = ""
 
 default[:bb_monitor][:sensu][:default_check_handlers] = []
+
+unless node[:bb_monitor][:sensu][:pagerduty_api].empty?
+  default[:bb_monitor][:sensu][:default_check_handlers] = ["pagerduty"] + node[:bb_monitor][:sensu][:default_check_handlers]
+end
+
 default[:bb_monitor][:sensu][:default_metric_handlers] = ["graphite"]
 
 default[:bb_monitor][:sensu][:subscriptions] = ["all"] + node[:opsworks][:instance][:layers]

@@ -20,92 +20,111 @@ require 'array_stats'
 class Graphite < Sensu::Plugin::Check::CLI
 
   option :host,
-         :short => "-h HOST",
-         :long => "--host HOST",
-         :description => "Graphite host to connect to, include port",
-         :required => true
+  :short => "-h HOST",
+  :long => "--host HOST",
+  :description => "Graphite host to connect to, include port",
+  :required => true
 
   option :target,
-         :description => "The graphite metric name. Could be a comma separated list of metric names.",
-         :short => "-t TARGET",
-         :long => "--target TARGET",
-         :required => true
+  :description => "The graphite metric name. Could be a comma separated list of metric names.",
+  :short => "-t TARGET",
+  :long => "--target TARGET",
+  :required => true
 
   option :period,
-         :description => "The period back in time to extract from Graphite and compare with. Use 24hours,2days etc, same format as in Graphite",
-         :short => "-p PERIOD",
-         :long => "--period PERIOD",
-         :default => "2hours"
+  :description => "The period back in time to extract from Graphite and compare with. Use 24hours,2days etc, same format as in Graphite",
+  :short => "-p PERIOD",
+  :long => "--period PERIOD",
+  :default => "2hours"
 
   option :updated_since,
-         :description => "The graphite value should have been updated within UPDATED_SINCE seconds, default to 600 seconds",
-         :short => "-u UPDATED_SINCE",
-         :long => "--updated_since UPDATED_SINCE",
-         :default => 600
+  :description => "The graphite value should have been updated within UPDATED_SINCE seconds, default to 600 seconds",
+  :short => "-u UPDATED_SINCE",
+  :long => "--updated_since UPDATED_SINCE",
+  :default => 600
 
   option :acceptable_diff_percentage,
-         :description => "The acceptable diff from max values in percentage, used in check_function_increasing",
-         :short => "-d ACCEPTABLE_DIFF_PERCENTAGE",
-         :long => "--acceptable_diff_percentage ACCEPTABLE_DIFF_PERCENTAGE",
-         :default => 0
+  :description => "The acceptable diff from max values in percentage, used in check_function_increasing",
+  :short => "-d ACCEPTABLE_DIFF_PERCENTAGE",
+  :long => "--acceptable_diff_percentage ACCEPTABLE_DIFF_PERCENTAGE",
+  :default => 0
 
   option :check_function_increasing,
-         :description => "Check that value is increasing or equal over time (use acceptable_diff_percentage if it should allow to be lower)",
-         :short => "-i",
-         :long => "--check_function_decreasing",
-         :default => false,
-         :boolean => true
+  :description => "Check that value is increasing or equal over time (use acceptable_diff_percentage if it should allow to be lower)",
+  :short => "-i",
+  :long => "--check_function_decreasing",
+  :default => false,
+  :boolean => true
 
   option :greater_than,
-         :description => "Change whether value is greater than or less than check",
-         :short => "-g",
-         :long => "--greater_than",
-         :default => false
+  :description => "Change whether value is greater than or less than check",
+  :short => "-g",
+  :long => "--greater_than",
+  :default => false
 
   option :check_last,
-         :description => "Check that the last value in GRAPHITE is greater/less than VALUE",
-         :short => "-l VALUE",
-         :long => "--last VALUE",
-         :default => nil
+  :description => "Check that the last value in GRAPHITE is greater/less than VALUE",
+  :short => "-l VALUE",
+  :long => "--last VALUE",
+  :default => nil
 
   option :ignore_nulls,
-         :description => "Do not error on null values, used in check_function_increasing",
-         :short => "-n",
-         :long => "--ignore_nulls",
-         :default => false,
-         :boolean => true
+  :description => "Do not error on null values, used in check_function_increasing",
+  :short => "-n",
+  :long => "--ignore_nulls",
+  :default => false,
+  :boolean => true
 
   option :concat_output,
-         :description => "Include warning messages in output even if overall status is critical",
-         :short => "-c",
-         :long => "--concat_output",
-         :default => false,
-         :boolean => true
+  :description => "Include warning messages in output even if overall status is critical",
+  :short => "-c",
+  :long => "--concat_output",
+  :default => false,
+  :boolean => true
+
+  option :short_output,
+  :description => "Report only the highest status per series in output",
+  :short => "-s",
+  :long => "--short_output",
+  :default => false,
+  :boolean => true
 
   option :check_average,
-         :description => "MAX_VALUE should be greater than the average of Graphite values from PERIOD",
-         :short => "-a MAX_VALUE",
-         :long => "--average_value MAX_VALUE"
+  :description => "MAX_VALUE should be greater than the average of Graphite values from PERIOD",
+  :short => "-a MAX_VALUE",
+  :long => "--average_value MAX_VALUE"
 
   option :data_points,
-         :description => "Number of data points to include in average check (smooths out spikes)",
-         :short => "-d VALUE",
-         :long => "--data_points VALUE",
-         :default => 1
+  :description => "Number of data points to include in average check (smooths out spikes)",
+  :short => "-d VALUE",
+  :long => "--data_points VALUE",
+  :default => 1
 
   option :check_average_percent,
-         :description => "MAX_VALUE% should be greater than the average of Graphite values from PERIOD",
-         :short => "-b MAX_VALUE",
-         :long => "--average_percent_value MAX_VALUE"
+  :description => "MAX_VALUE% should be greater than the average of Graphite values from PERIOD",
+  :short => "-b MAX_VALUE",
+  :long => "--average_percent_value MAX_VALUE"
 
   option :percentile,
-         :description => "Percentile value, should be used in conjunction with percentile_value, defaults to 90",
-         :long => "--percentile PERCENTILE",
-         :default => 90
+  :description => "Percentile value, should be used in conjunction with percentile_value, defaults to 90",
+  :long => "--percentile PERCENTILE",
+  :default => 90
 
   option :check_percentile,
-         :description => "Values should not be greater than the VALUE of Graphite values from PERIOD",
-         :long => "--percentile_value VALUE"
+  :description => "Values should not be greater than the VALUE of Graphite values from PERIOD",
+  :long => "--percentile_value VALUE"
+
+  option :http_user,
+  :description => "Basic HTTP authentication user",
+  :short => "-U USER",
+  :long => "--http-user USER",
+  :default => nil
+
+  option :http_password,
+  :description => "Basic HTTP authentication password",
+  :short => "-P PASSWORD",
+  :long => "--http-password USER",
+  :default => nil
 
   def initialize
     super
@@ -144,11 +163,20 @@ class Graphite < Sensu::Plugin::Check::CLI
     cache_value = graphite_cache target
     return cache_value if cache_value
     params = {
-        :target => target,
-        :from   => "-#{@period.to_s}",
-        :format => 'json'
+      :target => target,
+      :from   => "-#{@period.to_s}",
+      :format => 'json'
     }
-    resp = Net::HTTP.post_form(graphite_url, params)
+
+    req = Net::HTTP::Post.new(graphite_url.path)
+
+    # If the basic http authentication credentials have been provided, then use them
+    if !config[:http_user].nil? && !config[:http_password].nil?
+      req.basic_auth(config[:http_user], config[:http_password])
+    end
+
+    req.set_form_data(params)
+    resp = Net::HTTP.new(graphite_url.host, graphite_url.port).start { |http| http.request(req) }
     data = JSON.parse(resp.body)
     @graphite_cache[target] = []
     if data.size > 0
@@ -279,7 +307,9 @@ class Graphite < Sensu::Plugin::Check::CLI
       avg_value = values_array.inject{ |sum, el| sum + el if el }.to_f / values_array.size
       last_value = last_values[target]
       percent = last_value / avg_value unless last_value.nil? || avg_value.nil?
-      max_values.each_pair do |type, max_value|
+      ['fatal', 'error', 'warning'].each do |type|
+        next unless max_values.has_key?(type)
+        max_value = max_values[type]
         var1 = config[:greater_than] ? percent : max_value.to_f
         var2 = config[:greater_than] ? max_value.to_f : percent
         if !percent.nil? && var1 > var2 && (values_array.size > 0 || !config[:ignore_nulls])
@@ -294,6 +324,7 @@ class Graphite < Sensu::Plugin::Check::CLI
           else
             raise "Unknown type #{type}"
           end
+          break if config[:short_output]
         end
       end
     end
@@ -311,7 +342,9 @@ class Graphite < Sensu::Plugin::Check::CLI
       values_pair = data[:datapoints]
       values_array = values_pair.find_all{|v| v.first}.map {|v| v.first if v.first != nil}
       avg_value = values_array.inject{ |sum, el| sum + el if el }.to_f / values_array.size
-      max_values.each_pair do |type, max_value|
+      ['fatal', 'error', 'warning'].each do |type|
+        next unless max_values.has_key?(type)
+        max_value = max_values[type]
         var1 = config[:greater_than] ? avg_value : max_value.to_f
         var2 = config[:greater_than] ? max_value.to_f : avg_value
         if var1 > var2 && (values_array.size > 0 || !config[:ignore_nulls])
@@ -326,6 +359,7 @@ class Graphite < Sensu::Plugin::Check::CLI
           else
             raise "Unknown type #{type}"
           end
+          break if config[:short_output]
         end
       end
     end
@@ -346,12 +380,14 @@ class Graphite < Sensu::Plugin::Check::CLI
       percentile_value = values_array.percentile(percentile)
       last_value = last_values[target]
       percent = last_value / percentile_value unless last_value.nil? || percentile_value.nil?
-      max_values.each_pair do |type, max_value|
+      ['fatal', 'error', 'warning'].each do |type|
+        next unless max_values.has_key?(type)
+        max_value = max_values[type]
         var1 = config[:greater_than] ? percent : max_value.to_f
         var2 = config[:greater_than] ? max_value.to_f : percent
         if !percentile_value.nil? && var1 > var2
           text = "The percentile value of metric #{target} (#{last_value}) is #{greater_less} than the
-            #{percentile}th percentile (#{percentile_value}) by more than #{max_value}%"
+          #{percentile}th percentile (#{percentile_value}) by more than #{max_value}%"
           case type
           when "warning"
             warnings <<  text
@@ -362,6 +398,7 @@ class Graphite < Sensu::Plugin::Check::CLI
           else
             raise "Unknown type #{type}"
           end
+          break if config[:short_output]
         end
       end
     end
@@ -377,10 +414,12 @@ class Graphite < Sensu::Plugin::Check::CLI
     last_targets.each do | target_name, last |
       last_value = last.first
       unless last_value.nil?
-        max_values.each_pair do |type, max_value|
+        ['fatal', 'error', 'warning'].each do |type|
+          next unless max_values.has_key?(type)
+          max_value = max_values[type]
           var1 = config[:greater_than] ? last_value : max_value.to_f
           var2 = config[:greater_than] ? max_value.to_f : last_value
-          if  var1 > var2
+          if var1 > var2
             text = "The metric #{target_name} is #{last_value} that is #{greater_less} than max allowed #{max_value}"
             case type
             when "warning"
@@ -392,6 +431,7 @@ class Graphite < Sensu::Plugin::Check::CLI
             else
               raise "Unknown type #{type}"
             end
+            break if config[:short_output]
           end
         end
       end
@@ -405,7 +445,6 @@ class Graphite < Sensu::Plugin::Check::CLI
     critical_errors = []
     warnings = []
     fatals = []
-
     targets.each do |target|
       if config[:check_function_increasing]
         inc_warnings, inc_critical, inc_fatal = check_increasing target
