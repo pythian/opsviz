@@ -36,6 +36,7 @@ It also builds everything with private-only ip addresses and restricts all exter
 
 
 ### Cloudformation Paramaters
+All of these will need to be filled in, for secure passwords and a secure erlang cookie you can use [gen_secrets.py](/gen_secrets.py)
 - `CookbooksRef` - *The git reference to checkout for custom cookbooks*
 - `CookbooksRepo` - *The github url for your custom cookbooks*
 - `CookbooksSshKey` - *The ssh key needed to clone the cookbooks repo*
