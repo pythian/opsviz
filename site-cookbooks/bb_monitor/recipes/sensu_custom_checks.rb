@@ -1,4 +1,4 @@
-node[:sensu][:custom_checks].each do |name, attributes|
+node[:bb_monitor][:sensu][:custom_checks].each do |name, attributes|
   if attributes[:command].nil?
     Chef::Log.warn "Skipping custom sensu check #{name} as command is not set"
     next
