@@ -15,6 +15,9 @@ normal[:sensu][:redis][:host] = node[:bb_monitor][:sensu][:server_url]
 normal[:sensu][:api][:host] = node[:bb_monitor][:sensu][:server_url]
 normal[:sensu][:log_level] = "warn"
 
+# Define custom checks via custom json. See Readme for more info
+default[:sensu][:custom_checks] = {}
+
 default[:bb_monitor][:sensu][:rds_identifiers] = []
 default[:bb_monitor][:sensu][:pagerduty_api] = ""
 default[:bb_monitor][:sensu][:pagerduty_warn] = true

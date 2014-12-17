@@ -1,4 +1,5 @@
 include_recipe "bb_monitor::sensu_stack_checks"
+include_recipe "bb_monitor::sensu_custom_checks"
 
 # All Checks
 sensu_check "check-disk_free" do
