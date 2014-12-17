@@ -11,14 +11,11 @@ node[:bb_monitor][:sensu][:custom_checks].each do |name, attributes|
   end
   chandlers += attributes[:handlers] if attributes[:handlers].kind_of?(Array)
 
-  csusbscribers = ["all"]
-  csusbscribers += attributes[:subscribers] if attributes[:subscribers].kind_of?(Array)
-
   sensu_check name do
     type attributes[:type]
     command attributes[:command]
     handlers chandlers
-    subscribers csusbscribers
+    subscribers attributes[:subscribers]
     interval attributes[:interval]
     additional attributes[:additional]
   end
