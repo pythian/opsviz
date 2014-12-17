@@ -4,7 +4,11 @@ node[:bb_monitor][:sensu][:custom_checks].each do |name, attributes|
     next
   end
 
-  chandlers = node[:bb_monitor][:sensu][:default_check_handlers]
+  if attributes[:type] == 'metric'
+    chandlers = node[:bb_monitor][:sensu][:default_metric_handlers]
+  else
+    chandlers = node[:bb_monitor][:sensu][:default_check_handlers]
+  end
   chandlers += attributes[:handlers] if attributes[:handlers].kind_of?(Array)
 
   csusbscribers = ["all"]
