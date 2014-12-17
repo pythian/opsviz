@@ -648,7 +648,7 @@
             "Ref": "OpsWorksElasticSearchLayer"
           }
         ],
-        "InstanceType": "c3.large"
+        "InstanceType": "r3.large"
       }
     },
     "ElasticSearchInstance3": {
@@ -665,7 +665,7 @@
             "Ref": "OpsWorksElasticSearchLayer"
           }
         ],
-        "InstanceType": "c3.large"
+        "InstanceType": "r3.large"
       }
     },
     "OpsWorksRabbitMQLayer": {
