@@ -422,7 +422,7 @@
             "Ref": "OpsWorksBastionLayer"
           }
         ],
-        "InstanceType": "c3.large",
+        "InstanceType": "m3.xlarge",
         "SubnetId": {
           "Ref": "PublicSubnet"
         }
@@ -491,7 +491,7 @@
             "Ref": "OpsWorksDashboardLayer"
           }
         ],
-        "InstanceType": "c3.large"
+        "InstanceType": "m3.2xlarge"
       }
     },
     "OpsWorksGraphiteLayer": {
@@ -631,7 +631,7 @@
             "Ref": "OpsWorksElasticSearchLayer"
           }
         ],
-        "InstanceType": "c3.large"
+        "InstanceType": "r3.large"
       }
     },
     "ElasticSearchInstance2": {
