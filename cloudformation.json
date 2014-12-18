@@ -266,6 +266,27 @@
               "pagerduty_api": {
                 "Ref": "PagerDutyAPIKey"
               }
+            },
+            "logstash": {
+              "rabbitmq_server": {
+                "Fn::GetAtt": [
+                  "RabbitMQELB",
+                  "DNSName"
+                ]
+              },
+              "rabbitmq_password": {
+                "Ref": "RabbitMQLogstashInternalPassword"
+              },
+              "server": {
+                "elasticsearch_server": {
+                  "Fn::GetAtt": [
+                    "ElasticSearchELB",
+                    "DNSName"
+                  ]
+                },
+                "filters": [],
+                "statsd_output": {}
+              }
             }
           },
           "rabbitmq": {
@@ -323,82 +344,6 @@
             },
             "password": {
               "Ref": "DoormanPassword"
-            }
-          },
-          "logstash": {
-            "version": "1.4",
-            "server": {
-              "enabled": true,
-              "inputs": [
-                {
-                  "rabbitmq": {
-                    "exchange": "logstash",
-                    "user": {
-                      "Ref": "RabbitMQLogstashInternalUser"
-                    },
-                    "password": {
-                      "Ref": "RabbitMQLogstashInternalPassword"
-                    },
-                    "host": {
-                      "Fn::GetAtt": [
-                        "RabbitMQELB",
-                        "DNSName"
-                      ]
-                    },
-                    "queue": "incoming_logs",
-                    "exclusive": false,
-                    "threads": 4
-                  }
-                }
-              ],
-              "filters": [
-                {
-                  "geoip": {
-                    "source": "remote_addr"
-                  }
-                },
-                {
-                  "geoip": {
-                    "source": "ipAddress"
-                  }
-                },
-                {
-                  "geoip": {
-                    "source": "clientip"
-                  }
-                }
-              ],
-              "outputs": [
-                {
-                  "elasticsearch_http": {
-                    "host": {
-                      "Fn::GetAtt": [
-                        "ElasticSearchELB",
-                        "DNSName"
-                      ]
-                    },
-                    "replication": "async"
-                  }
-                },
-                {
-                  "statsd": {
-                    "increment": [
-                      "%{type}.status.%{status}"
-                    ],
-                    "count": [
-                      "%{type}.bytes_sent",
-                      "%{body_bytes_sent}"
-                    ],
-                    "timing": [
-                      "%{type}.request_time",
-                      "%{request_time}",
-                      "%{type}.responseTime",
-                      "%{responseTime}"
-                    ],
-                    "namespace": ""
-                  }
-                }
-              ]
             }
           },
           "statsd": {
