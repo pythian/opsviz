@@ -254,14 +254,16 @@
                   "DNSName"
                 ]
               },
-              "rabbitmq_server": {
-                "Fn::GetAtt": [
-                  "RabbitMQELB",
-                  "DNSName"
-                ]
-              },
-              "rabbitmq_password": {
-                "Ref": "RabbitMQSensuPassword"
+            "rabbitmq": {
+                "server": {
+                  "Fn::GetAtt": [
+                    "RabbitMQELB",
+                    "DNSName"
+                  ]
+                },
+                "password": {
+                  "Ref": "RabbitMQSensuPassword"
+                }
               },
               "pagerduty_api": {
                 "Ref": "PagerDutyAPIKey"
