@@ -39,6 +39,17 @@ node.normal[:logstash][:agent][:outputs] = [{'rabbitmq' => node[:bb_external][:l
 node.normal[:logstash][:agent][:inputs] = file_inputs.map {|config| {"file" => config} }
 node.normal[:logstash][:agent][:filters] = file_patterns + node[:bb_external][:logstash][:filters]
 
+if node[:bb_external][:opsworks]
+  node.normal[:logstash][:agent][:filters] << {
+    "mutate" => {
+      "add_field" => {
+        "opsworks_stack"=> node[:opsworks][:stack][:name].downcase.gsub(' ','_'),
+        "opsworks_layers"=> node[:opsworks][:instance][:layers].join(',')
+      }
+    }
+  }
+end
+
 Chef::Log.info "Logstash config #{node[:logstash]}"
 
 
