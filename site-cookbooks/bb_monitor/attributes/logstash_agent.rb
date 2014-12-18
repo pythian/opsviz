@@ -55,17 +55,20 @@ normal[:logstash][:agent][:inputs]  = [
     }
   }
 ]
-normal[:logstash][:agent][:outputs] = [
-  {
-    'rabbitmq' => {
-      'exchange' => node[:bb_monitor][:logstash][:rabbitmq][:exchange],
-      'exchange_type' => node[:bb_monitor][:logstash][:rabbitmq][:exchange_type],
-      'host' => node[:bb_monitor][:logstash][:rabbitmq][:server],
-      'password' => node[:bb_monitor][:logstash][:rabbitmq][:password],
-      'user' => node[:bb_monitor][:logstash][:rabbitmq][:user]
+
+unless node[:logstash][:server][:enabled]
+  normal[:logstash][:agent][:outputs] = [
+    {
+      'rabbitmq' => {
+        'exchange' => node[:bb_monitor][:logstash][:rabbitmq][:exchange],
+        'exchange_type' => node[:bb_monitor][:logstash][:rabbitmq][:exchange_type],
+        'host' => node[:bb_monitor][:logstash][:rabbitmq][:server],
+        'password' => node[:bb_monitor][:logstash][:rabbitmq][:password],
+        'user' => node[:bb_monitor][:logstash][:rabbitmq][:user]
+      }
     }
-  }
-]
+  ]
+end
 
 # TODO: Add more patterns for other log types
 normal[:logstash][:agent][:filters] = [

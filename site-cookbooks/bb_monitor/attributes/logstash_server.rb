@@ -1,3 +1,4 @@
+normal[:logstash][:server][:enabled] = true
 include_attribute "bb_monitor::logstash_agent"
 
 default[:bb_monitor][:logstash][:server][:elasticsearch_server] = ""
@@ -8,7 +9,6 @@ default[:bb_monitor][:logstash][:server][:statsd_output] = {}
 
 
 # Forward attributes on to logstash recipe
-normal[:logstash][:server][:enabled] = true
 
 normal[:logstash][:server][:filters] = node[:bb_monitor][:logstash][:server][:filters]
 
