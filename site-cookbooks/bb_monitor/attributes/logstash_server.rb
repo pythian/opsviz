@@ -1,4 +1,4 @@
-include_attributes "bb_monitor::logstash_agent"
+include_attribute "bb_monitor::logstash_agent"
 
 default[:bb_monitor][:logstash][:server][:elasticsearch_server] = ""
 default[:bb_monitor][:logstash][:server][:threads] = "4"
