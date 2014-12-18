@@ -10,7 +10,7 @@ default[:bb_monitor][:logstash][:server][:statsd_output] = {}
 # Forward attributes on to logstash recipe
 normal[:logstash][:server][:enabled] = true
 
-normal[:logstash][:server][:filters] = [:bb_monitor][:logstash][:server][:filters]
+normal[:logstash][:server][:filters] = node[:bb_monitor][:logstash][:server][:filters]
 
 normal[:logstash][:server][:inputs] = [
   {
