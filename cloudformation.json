@@ -399,9 +399,12 @@
         ],
         "CustomRecipes": {
           "Setup": [
-            "bb_monitor::route53"
+            "bb_monitor::route53",
+            "bb_monitor::logstash_agent"
           ],
-          "Configure": [],
+          "Configure": [
+            "bb_monitor::sensu_client"
+          ],
           "Deploy": [],
           "Undeploy": [],
           "Shutdown": []
@@ -461,9 +464,12 @@
             "bb_monitor::grafana",
             "bb_monitor::sensu_server",
             "bb_monitor::nginx",
-            "bb_monitor::route53"
+            "bb_monitor::route53",
+            "bb_monitor::logstash_agent"
           ],
-          "Configure": [],
+          "Configure": [
+            "bb_monitor::sensu_client"
+          ],
           "Deploy": [],
           "Undeploy": [],
           "Shutdown": []
@@ -521,7 +527,8 @@
         "CustomRecipes": {
           "Setup": [
             "bb_monitor::graphite",
-            "bb_monitor::route53"
+            "bb_monitor::route53",
+            "bb_monitor::logstash_agent"
           ],
           "Configure": [
             "bb_monitor::sensu_client"
@@ -590,7 +597,8 @@
         "CustomRecipes": {
           "Setup": [
             "bb_elasticsearch",
-            "bb_monitor::route53"
+            "bb_monitor::route53",
+            "bb_monitor::logstash_agent"
           ],
           "Configure": [
             "bb_monitor::sensu_client"
@@ -693,7 +701,8 @@
         "CustomRecipes": {
           "Setup": [
             "rabbitmq_cluster",
-            "bb_monitor::route53"
+            "bb_monitor::route53",
+            "bb_monitor::logstash_agent"
           ],
           "Configure": [
             "bb_monitor::sensu_client"
@@ -761,8 +770,8 @@
         ],
         "CustomRecipes": {
           "Setup": [
-            "logstash",
-            "bb_monitor::route53"
+            "bb_monitor::route53",
+            "bb_monitor::logstash_server"
           ],
           "Configure": [
             "bb_monitor::sensu_client"
