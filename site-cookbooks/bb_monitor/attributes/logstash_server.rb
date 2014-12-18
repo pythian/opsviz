@@ -26,7 +26,7 @@ normal[:logstash][:server][:inputs] = [
   }
 ]
 
-normal[:logstash][:server][:filters][:outputs] = [
+normal[:logstash][:server][:outputs] = [
   {
     "elasticsearch_http"=> {
       "host"=> node[:bb_monitor][:logstash][:server][:elasticsearch_server],
