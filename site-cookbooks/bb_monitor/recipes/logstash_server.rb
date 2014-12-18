@@ -1,3 +1,5 @@
+node.normal[:logstash][:server][:enabled] = true
+
 # We don't want to have the server have an input and output to rabbitmq
 node.force_override[:logstash][:agent][:outputs] = []
 

@@ -9,49 +9,57 @@ default[:bb_monitor][:logstash][:rabbitmq][:queue] = "incoming_logs"
 default[:bb_monitor][:logstash][:rabbitmq][:exchange] = "logstash"
 default[:bb_monitor][:logstash][:rabbitmq][:exchange_type] = "direct"
 
+default[:bb_monitor][:logstash][:tags] = [node[:opsworks][:stack][:name].downcase.gsub(' ','_')]
 # Forward attributes on to logstash recipe
 normal[:logstash][:agent][:inputs]  = [
   {
     "file" => {
       "type"=> "sensu",
       "path"=> "/var/log/sensu/*.log",
-      "codec"=> "json",
+      "tags"=> [node[:bb_monitor][:logstash][:tags]],
+      "codec"=> "json"
     }
   },
   {
     "file" => {
       "type"=> "doorman",
       "path"=> "/var/log/doorman/current",
+      "tags"=> [node[:bb_monitor][:logstash][:tags]]
     }
   },
   {
     "file" => {
       "type"=> "nginx_access",
       "path"=> "/var/log/nginx/access.log",
+      "tags"=> [node[:bb_monitor][:logstash][:tags]]
     }
   },
   {
     "file" => {
       "type"=> "nginx_error",
       "path"=> "/var/log/nginx/error.log",
+      "tags"=> [node[:bb_monitor][:logstash][:tags]]
     }
   },
   {
     "file" => {
       "type"=> "elasticsearch",
       "path"=> "/usr/local/var/log/elasticsearch/*.log",
+      "tags"=> [node[:bb_monitor][:logstash][:tags]]
     }
   },
   {
     "file" => {
       "type"=> "carbon-cache",
       "path"=> "/var/log/carbon-cache/current",
+      "tags"=> [node[:bb_monitor][:logstash][:tags]]
     }
   },
   {
     "file" => {
       "type"=> "rabbitmq",
       "path"=> "/var/log/rabbitmq/*log",
+      "tags"=> [node[:bb_monitor][:logstash][:tags]]
     }
   }
 ]

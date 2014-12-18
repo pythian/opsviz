@@ -1,4 +1,3 @@
-normal[:logstash][:server][:enabled] = true
 include_attribute "bb_monitor::logstash_agent"
 
 default[:bb_monitor][:logstash][:server][:elasticsearch_server] = ""
