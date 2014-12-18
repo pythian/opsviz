@@ -70,20 +70,20 @@ normal[:logstash][:agent][:outputs] = [
 # TODO: Add more patterns for other log types
 normal[:logstash][:agent][:filters] = [
   {
-    grok {
-      type => "nginx_access"
-      match => [
+    "grok"=> {
+      "type" => "nginx_access",
+      "match" => [
         "message", "%{IPORHOST:http_host} %{IPORHOST:clientip} \[%{HTTPDATE:timestamp}\] \"(?:%{WORD:verb} %{NOTSPACE:request}(?: HTTP/%{NUMBER:httpversion})?|%{DATA:rawrequest})\" %{NUMBER:response} (?:%{NUMBER:bytes}|-) %{QS:referrer} %{QS:agent} %{NUMBER:request_time:float} %{NUMBER:upstream_time:float}",
         "message", "%{IPORHOST:http_host} %{IPORHOST:clientip} \[%{HTTPDATE:timestamp}\] \"(?:%{WORD:verb} %{NOTSPACE:request}(?: HTTP/%{NUMBER:httpversion})?|%{DATA:rawrequest})\" %{NUMBER:response} (?:%{NUMBER:bytes}|-) %{QS:referrer} %{QS:agent} %{NUMBER:request_time:float}"
       ]
-    }
-    date {
-      type => "nginx_access"
-      match => [ "timestamp" , "dd/MMM/YYYY:HH:mm:ss Z" ]
-    }
-    geoip {
-      type => "nginx_access"
-      source => "clientip"
+    },
+    "date"=> {
+      "type" => "nginx_access",
+      "match" => [ "timestamp" , "dd/MMM/YYYY:HH:mm:ss Z" ]
+    },
+    "geoip"=> {
+      "type" => "nginx_access",
+      "source" => "clientip"
     }
   }
 ]
