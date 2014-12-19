@@ -1023,7 +1023,7 @@
           {
             "LoadBalancerPort": "80",
             "InstancePort": "80",
-            "Protocol": "TCP"
+            "Protocol": "HTTP"
           },
           {
             "LoadBalancerPort": "6379",

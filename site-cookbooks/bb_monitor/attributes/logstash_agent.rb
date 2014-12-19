@@ -29,6 +29,13 @@ normal[:logstash][:agent][:inputs]  = [
   },
   {
     "file" => {
+      "type"=> "doorman-app",
+      "path"=> "/opt/doorman/log/*.log",
+      "tags"=> node[:bb_monitor][:logstash][:tags]
+    }
+  },
+  {
+    "file" => {
       "type"=> "nginx_access",
       "path"=> "/var/log/nginx/access.log",
       "tags"=> node[:bb_monitor][:logstash][:tags]

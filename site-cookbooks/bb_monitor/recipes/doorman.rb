@@ -22,4 +22,5 @@ end
 
 runit_service "doorman" do
   default_logger true
+  env("NODE_ENV" => "production")
 end

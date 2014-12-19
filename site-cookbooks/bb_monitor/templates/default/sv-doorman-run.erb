@@ -1,4 +1,4 @@
 #!/bin/sh
 exec 2>&1
 cd /opt/doorman
-exec node app.js
+exec chpst -e /etc/sv/doorman/env node app.js
