@@ -113,7 +113,7 @@ normal[:logstash][:agent][:filters] = [
     "mutate" => {
       # Get rid of color codes
       "type" => "doorman",
-      "gsub" => ["@message", "\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]", ""]
+      "gsub" => ["@message", '\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]', ""]
     }
   }
 ]
