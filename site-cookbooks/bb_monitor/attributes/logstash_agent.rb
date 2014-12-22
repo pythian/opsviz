@@ -16,7 +16,7 @@ normal[:logstash][:agent][:inputs]  = [
     "file" => {
       "type"=> "sensu",
       "path"=> "/var/log/sensu/*.log",
-      "tags"=> [node[:bb_monitor][:logstash][:tags]],
+      "tags"=> node[:bb_monitor][:logstash][:tags],
       "codec"=> "json"
     }
   },
@@ -24,42 +24,49 @@ normal[:logstash][:agent][:inputs]  = [
     "file" => {
       "type"=> "doorman",
       "path"=> "/var/log/doorman/current",
-      "tags"=> [node[:bb_monitor][:logstash][:tags]]
+      "tags"=> node[:bb_monitor][:logstash][:tags]
+    }
+  },
+  {
+    "file" => {
+      "type"=> "doorman-app",
+      "path"=> "/opt/doorman/log/*.log",
+      "tags"=> node[:bb_monitor][:logstash][:tags]
     }
   },
   {
     "file" => {
       "type"=> "nginx_access",
       "path"=> "/var/log/nginx/access.log",
-      "tags"=> [node[:bb_monitor][:logstash][:tags]]
+      "tags"=> node[:bb_monitor][:logstash][:tags]
     }
   },
   {
     "file" => {
       "type"=> "nginx_error",
       "path"=> "/var/log/nginx/error.log",
-      "tags"=> [node[:bb_monitor][:logstash][:tags]]
+      "tags"=> node[:bb_monitor][:logstash][:tags]
     }
   },
   {
     "file" => {
       "type"=> "elasticsearch",
       "path"=> "/usr/local/var/log/elasticsearch/*.log",
-      "tags"=> [node[:bb_monitor][:logstash][:tags]]
+      "tags"=> node[:bb_monitor][:logstash][:tags]
     }
   },
   {
     "file" => {
       "type"=> "carbon-cache",
       "path"=> "/var/log/carbon-cache/current",
-      "tags"=> [node[:bb_monitor][:logstash][:tags]]
+      "tags"=> node[:bb_monitor][:logstash][:tags]
     }
   },
   {
     "file" => {
       "type"=> "rabbitmq",
       "path"=> "/var/log/rabbitmq/*log",
-      "tags"=> [node[:bb_monitor][:logstash][:tags]]
+      "tags"=> node[:bb_monitor][:logstash][:tags]
     }
   }
 ]
@@ -94,6 +101,19 @@ normal[:logstash][:agent][:filters] = [
     "geoip"=> {
       "type" => "nginx_access",
       "source" => "clientip"
+    },
+    "mutate" => {
+      "add_field" => {
+        "opsworks_stack"=> node[:opsworks][:stack][:name].downcase.gsub(' ','_'),
+        "opsworks_layers"=> node[:opsworks][:instance][:layers].join(',')
+      }
+    }
+  },
+  {
+    "mutate" => {
+      # Get rid of color codes
+      "type" => "doorman",
+      "gsub" => ["@message", '\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[m|K]', ""]
     }
   }
 ]
