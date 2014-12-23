@@ -1,7 +1,8 @@
 execute 'name' do
   command  <<-EOF
-  sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 8406B0E3803709B6
-  echo 'deb http://packages.flapjack.io/deb trusty main' | sudo tee  /etc/apt/sources.list.d/flapjack.list
+  echo "deb http://packages.flapjack.io/deb/v1 trusty main" | sudo tee /etc/apt/sources.list.d/flapjack.list
+  gpg --keyserver keys.gnupg.net --recv-keys 803709B6
+  gpg -a --export 803709B6 | sudo apt-key add -
   sudo apt-get update
   EOF
   action :run
