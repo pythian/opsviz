@@ -12,3 +12,10 @@ end
 package 'flapjack' do
  action :install
 end
+
+template '/etc/flapjack/flapjack_config.yaml' do
+  source 'flapjack_config.yaml.erb'
+  owner 'root'
+  group 'root'
+  mode '0744'
+end
