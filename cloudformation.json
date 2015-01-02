@@ -46,6 +46,42 @@
       "Type": "String",
       "Default": "rgb(45, 114, 184)"
     },
+    "BastionInstanceType":{
+        "Type" : "String",
+        "Default" : "t2.small",
+        "AllowedValues" : ["t2.small", "t2.medium", "m3.medium" ],
+        "Description" : "Enter t2.small, t2.medium, m3.medium. Default is t2.small."
+    },
+    "RabbitMQInstanceType":{
+        "Type" : "String",
+        "Default" : "r3.large",
+        "AllowedValues" : ["m3.large", "c3.large", "r3.large"],
+        "Description" : "Enter m3.large, c3.large, or r3.large. Default is r3.large."
+    },
+    "GraphiteInstanceType":{
+        "Type" : "String",
+        "Default" : "c3.large",
+        "AllowedValues" : ["m3.medium", "m3.large", "c3.large", "r3.large"],
+        "Description" : "Enter m3.medium, m3.large, c3.large, or r3.large. Default is c3.large."
+    },
+    "ElasticSearchInstanceType":{
+        "Type" : "String",
+        "Default" : "r3.large",
+        "AllowedValues" : ["m3.medium", "m3.large", "c3.large", "r3.large"],
+        "Description" : "Enter m3.medium, m3.large, c3.large, or r3.large. Default is r3.large."
+    },
+    "LogstashInstanceType":{
+        "Type" : "String",
+        "Default" : "c3.large",
+        "AllowedValues" : ["m3.medium", "m3.large", "c3.large", "r3.large"],
+        "Description" : "Enter m3.medium, m3.large, c3.large, or r3.large. Default is c3.large."
+    },
+    "DashboardInstanceType":{
+        "Type" : "String",
+        "Default" : "c3.large",
+        "AllowedValues" : ["m3.medium", "m3.large", "c3.large", "r3.large"],
+        "Description" : "Enter m3.medium, m3.large, c3.large, or r3.large. Default is c3.large."
+    },
     "RabbitMQUser": {
       "Description": "RabbitMQ User",
       "Type": "String",
@@ -422,7 +458,7 @@
             "Ref": "OpsWorksBastionLayer"
           }
         ],
-        "InstanceType": "m3.xlarge",
+        "InstanceType": { "Ref":"BastionInstanceType"} ,
         "SubnetId": {
           "Ref": "PublicSubnet"
         }
@@ -491,7 +527,7 @@
             "Ref": "OpsWorksDashboardLayer"
           }
         ],
-        "InstanceType": "m3.2xlarge"
+        "InstanceType": { "Ref" : "DashboardInstanceType" }
       }
     },
     "OpsWorksGraphiteLayer": {
@@ -561,7 +597,7 @@
             "Ref": "OpsWorksGraphiteLayer"
           }
         ],
-        "InstanceType": "c3.large"
+        "InstanceType": { "Ref" : "GraphiteInstanceType" },
       }
     },
     "OpsWorksElasticSearchLayer": {
@@ -631,7 +667,7 @@
             "Ref": "OpsWorksElasticSearchLayer"
           }
         ],
-        "InstanceType": "r3.large"
+        "InstanceType": { "Ref" : "ElasticSearchInstanceType" }
       }
     },
     "ElasticSearchInstance2": {
@@ -648,7 +684,7 @@
             "Ref": "OpsWorksElasticSearchLayer"
           }
         ],
-        "InstanceType": "r3.large"
+        "InstanceType": { "Ref" : "ElasticSearchInstanceType" }
       }
     },
     "ElasticSearchInstance3": {
@@ -665,7 +701,7 @@
             "Ref": "OpsWorksElasticSearchLayer"
           }
         ],
-        "InstanceType": "r3.large"
+        "InstanceType": { "Ref" : "ElasticSearchInstanceType" }
       }
     },
     "OpsWorksRabbitMQLayer": {
@@ -735,7 +771,7 @@
             "Ref": "OpsWorksRabbitMQLayer"
           }
         ],
-        "InstanceType": "c3.large"
+        "InstanceType": { "Ref" : "RabbitMQInstanceType" }
       }
     },
     "OpsWorksLogstashLayer": {
@@ -801,7 +837,7 @@
             "Ref": "OpsWorksLogstashLayer"
           }
         ],
-        "InstanceType": "c3.large"
+        "InstanceType": { "Ref" : "LogstashInstanceType" }
       }
     },
     "OpsWorksServiceRole": {
