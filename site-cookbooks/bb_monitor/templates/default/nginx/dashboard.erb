@@ -1,5 +1,5 @@
 server {
-listen <% if node[:doorman][:enabled] -%>8080<% else -%>80<% end -%>;
+listen <% if node[:doorman][:enabled]=='true' -%>8080<% else -%>80<% end -%>;
   server_name _;
   port_in_redirect off;
 
