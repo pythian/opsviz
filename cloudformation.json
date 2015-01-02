@@ -37,6 +37,17 @@
       "Description": "Github Organization to allow through doorman",
       "Type": "String"
     },
+    "DoormanEnable": {
+        "Description": "Protect all internal resources through Doorman? If you are not deploying this privately through a VPN, this is recommended",
+        "Type": "String",
+        "Default": "true",
+        "AllowedValues": ["true","false"]
+    },
+    "DoormanSessionSecret": {
+      "Description": "A Secret Salt used to encrypt cookies for doorman",
+      "Type": "String",
+      "NoEcho": "true"
+    },
     "DoormanPassword": {
       "Description": "Password to use for alternate authentication through doorman. Leave empty for none",
       "Type": "String"
@@ -50,6 +61,11 @@
       "Description": "RabbitMQ User",
       "Type": "String",
       "Default": "logger"
+    },
+    "RabbitMQErlangCookie": {
+      "Description": "RabbitMQ Erlang Cookie. This should be unique per stack",
+      "Type": "String",
+      "NoEcho": "true"
     },
     "RabbitMQPassword": {
       "Description": "RabbitMQ Password",
@@ -293,7 +309,9 @@
           },
           "rabbitmq": {
             "cluster": true,
-            "erlang_cookie": "v9wb1ju@)#lur)tch9p1!0g@hnpwp(@!gb3h9y2v0)o#h*bopm"
+            "erlang_cookie": {
+                "Ref": "RabbitMQErlangCookie"
+            }
           },
           "rabbitmq_cluster": {
             "users": [
@@ -334,7 +352,13 @@
             }
           },
           "doorman": {
-            "session_secret": "Jo9blyEg3jap0Juc2Ecs6iC1bAb4muC0jOrk1iaS0yaRc9oth3",
+            "password": {
+              "Ref": "DoormanEnable"
+            }
+            "session_secret": 
+            { 
+             "Ref": "DoormanSessionSecret"
+            },
             "app_id": {
               "Ref": "GithubOauthAppId"
             },
