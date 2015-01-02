@@ -1,5 +1,5 @@
 include_recipe 'nginx'
-include_recipe 'bb_monitor::doorman'
+include_recipe 'bb_monitor::doorman' if node["doorman"]["enabled"]
 
 file "/etc/nginx/sites-enabled/default" do
   action :delete
