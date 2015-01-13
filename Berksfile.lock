@@ -10,7 +10,6 @@ DEPENDENCIES
   elasticsearch
   grafana
   graphite
-
   kibana
   logstash
     git: https://github.com/foxycoder/chef-logstash.git
@@ -100,8 +99,9 @@ GRAPH
     python (>= 0.0.0)
   htpasswd (0.2.4)
     python (>= 0.0.0)
-  iptables (0.14.0)
-  java (1.28.0)
+
+  iptables (0.14.1)
+  java (1.29.0)
   kibana (0.1.8)
     apache2 (>= 2.0)
     ark (>= 0.0.0)
