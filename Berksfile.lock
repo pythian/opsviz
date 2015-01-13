@@ -37,7 +37,7 @@ GRAPH
     gunicorn (>= 0.0.0)
     python (>= 0.0.0)
     supervisor (>= 0.0.0)
-    apt (2.6.0)
+  apt (2.6.1)
   ark (0.9.0)
     7-zip (>= 0.0.0)
     windows (>= 0.0.0)
