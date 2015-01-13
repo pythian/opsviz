@@ -65,7 +65,7 @@ GRAPH
   chef_handler (1.1.6)
   curl (2.0.1)
   dmg (2.2.2)
-  elasticsearch (0.3.12)
+  elasticsearch (0.3.13)
     ark (>= 0.2.4)
     build-essential (>= 0.0.0)
     java (>= 0.0.0)
