@@ -12,7 +12,8 @@ DEPENDENCIES
   graphite
   iMatchative
     git: git@bitbucket.org:/imatchative/imatchative_deploy.git
-    revision: 5e8f5c4ec4647a3e34175c8eede11c09df5b4dd2
+    revision: 0df46a91c795786ac25e5de25786a59baffa335e
+    branch: master
     rel: site-cookbooks/imatchative/
   kibana
   logstash
@@ -69,7 +70,7 @@ GRAPH
   chef_handler (1.1.6)
   curl (2.0.1)
   dmg (2.2.2)
-  elasticsearch (0.3.12)
+  elasticsearch (0.3.13)
     ark (>= 0.2.4)
     build-essential (>= 0.0.0)
     java (>= 0.0.0)
