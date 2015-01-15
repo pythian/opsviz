@@ -34,6 +34,9 @@ end
   check-es-heap.rb
   es-cluster-metrics.rb
   es-node-metrics.rb
+  check-snmp.rb
+  snmp-metrics.rb
+  snmp-if-metrics.rb
 ].each do |plugin|
   cookbook_file ::File.join(node.sensu.directory, "plugins", plugin) do
     source "sensu_plugins/#{plugin}"
