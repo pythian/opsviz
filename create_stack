@@ -81,6 +81,7 @@ class OpsVizStackCreator(object):
             'RabbitMQLogstashInternalPassword': gen_password(),
             'RabbitMQErlangCookie': gen_password(50),
             'RabbitMQCertificateARN': self.cert_arn,
+            'DoormanSessionSecret': gen_password(50)
         }
 
         #user provided params override whatever we generate or set
