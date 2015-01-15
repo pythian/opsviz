@@ -14,11 +14,13 @@
     "CookbooksSshKey": {
       "Description": "The ssh key needed to clone the cookbooks repo",
       "Type": "String",
-      "NoEcho": "true"
+      "NoEcho": "true",
+      "Default": ""
     },
     "Version": {
       "Description": "Just a place holder for version",
-      "Type": "String"
+      "Type": "String",
+      "Default": "0.1"
     },
     "RabbitMQCertificateARN": {
       "Description": "ARN of hte certificate to use for rabbitmq",
@@ -26,16 +28,19 @@
     },
     "GithubOauthAppId": {
       "Description": "Github Oauth App Id to use for doorman authentication. Leave empty for none.",
-      "Type": "String"
+      "Type": "String",
+      "Default": ""
     },
     "GithubOauthSecret": {
       "Description": "Github Oauth App Secret to use for doorman authentication. Leave empty for none.",
       "Type": "String",
-      "NoEcho": "true"
+      "NoEcho": "true",
+      "Default": ""
     },
     "GithubOauthOrganization": {
       "Description": "Github Organization to allow through doorman",
-      "Type": "String"
+      "Type": "String",
+      "Default": ""
     },
     "DoormanEnable": {
         "Description": "Protect all internal resources through Doorman? If you are not deploying this privately through a VPN, this is recommended",
@@ -46,11 +51,13 @@
     "DoormanSessionSecret": {
       "Description": "A Secret Salt used to encrypt cookies for doorman",
       "Type": "String",
-      "NoEcho": "true"
+      "NoEcho": "true",
+      "Default": ""
     },
     "DoormanPassword": {
       "Description": "Password to use for alternate authentication through doorman. Leave empty for none",
-      "Type": "String"
+      "Type": "String",
+      "Default": ""
     },
     "OpsWorksStackColor": {
       "Description": "RGB Color to use for OpsWorks Stack",
@@ -105,7 +112,8 @@
     },
     "RabbitMQPassword": {
       "Description": "RabbitMQ Password",
-      "Type": "String"
+      "Type": "String",
+      "Default": "hunter2"
     },
     "RabbitMQLogstashInternalUser": {
       "Description": "RabbitMQ User",
@@ -153,15 +161,18 @@
     },
     "Route53ZoneId": {
       "Description": "The zone id to add dns records to on instance setup. If empty updates won't happen",
-      "Type": "String"
+      "Type": "String",
+      "Default": ""
     },
     "Route53DomainName": {
       "Description": "The domain name to append to dns records",
-      "Type": "String"
+      "Type": "String",
+      "Default": ""
     },
     "PagerDutyAPIKey": {
       "Description": "The pagerduty api key if you want sensu alerts forwarded to pagerduty",
-      "Type": "String"
+      "Type": "String",
+      "Default": ""
     }
   },
   "Mappings": {
@@ -390,7 +401,7 @@
           "doorman": {
             "password": {
               "Ref": "DoormanEnable"
-            }
+            },
             "session_secret": 
             { 
              "Ref": "DoormanSessionSecret"
@@ -621,7 +632,7 @@
             "Ref": "OpsWorksGraphiteLayer"
           }
         ],
-        "InstanceType": { "Ref" : "GraphiteInstanceType" },
+        "InstanceType": { "Ref" : "GraphiteInstanceType" }
       }
     },
     "OpsWorksElasticSearchLayer": {
