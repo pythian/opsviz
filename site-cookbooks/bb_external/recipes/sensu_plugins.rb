@@ -7,34 +7,35 @@
 end
 
 %w[
+  apache-graphite.rb
   check-cpu.rb
   check-disk.rb
   check-elb-health.rb
+  check-es-cluster-status.rb
+  check-es-file-descriptors.rb
+  check-es-heap.rb
   check-http.rb
   check-load.rb
+  check-rabbitmq-messages.rb
+  check-rabbitmq-queue.rb
   check-ram.rb
+  check-snmp.rb
   cpu-metrics.rb
   cpu-pcnt-usage-metrics.rb
   disk-metrics.rb
   elb-metrics.rb
+  es-cluster-metrics.rb
+  es-node-metrics.rb
   graphite.rb
   java-heap-graphite.sh
   load-metrics.rb
   memory-metrics.rb
   metrics-curl.rb
   metrics-splunk.rb
-  rds-metrics.rb
-  apache-graphite.rb
-  check-rabbitmq-messages.rb
-  check-rabbitmq-queue.rb
+  nginx-metrics.rb
   rabbitmq-cluster-health.rb
   rabbitmq-overview-metrics.rb
-  check-es-cluster-status.rb
-  check-es-file-descriptors.rb
-  check-es-heap.rb
-  es-cluster-metrics.rb
-  es-node-metrics.rb
-  check-snmp.rb
+  rds-metrics.rb
   snmp-metrics.rb
   snmp-if-metrics.rb
 ].each do |plugin|
