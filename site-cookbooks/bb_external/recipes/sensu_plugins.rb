@@ -12,6 +12,7 @@ end
   check-cpu.rb
   check-disk.rb
   check-elb-health.rb
+  check-elb-nodes.rb
   check-es-cluster-status.rb
   check-es-file-descriptors.rb
   check-es-heap.rb
@@ -23,7 +24,7 @@ end
   check-ram.rb
   check-rds.rb
   check-rds-events.rb
-  check-snmp.rb
+  check-snmp.rb 
   cpu-metrics.rb
   cpu-pcnt-usage-metrics.rb
   disk-metrics.rb
