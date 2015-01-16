@@ -66,7 +66,7 @@
     },
     "BastionInstanceType":{
         "Type" : "String",
-        "Default" : "t2.small",
+        "Default" : "m3.medium",
         "AllowedValues" : ["t2.small", "t2.medium", "m3.medium" ],
         "Description" : "Enter t2.small, t2.medium, m3.medium. Default is t2.small."
     },
