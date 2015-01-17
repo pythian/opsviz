@@ -14,11 +14,13 @@
     "CookbooksSshKey": {
       "Description": "The ssh key needed to clone the cookbooks repo",
       "Type": "String",
-      "NoEcho": "true"
+      "NoEcho": "true",
+      "Default": ""
     },
     "Version": {
       "Description": "Just a place holder for version",
-      "Type": "String"
+      "Type": "String",
+      "Default": "0.1"
     },
     "RabbitMQCertificateARN": {
       "Description": "ARN of hte certificate to use for rabbitmq",
@@ -26,34 +28,92 @@
     },
     "GithubOauthAppId": {
       "Description": "Github Oauth App Id to use for doorman authentication. Leave empty for none.",
-      "Type": "String"
+      "Type": "String",
+      "Default": ""
     },
     "GithubOauthSecret": {
       "Description": "Github Oauth App Secret to use for doorman authentication. Leave empty for none.",
       "Type": "String",
-      "NoEcho": "true"
+      "NoEcho": "true",
+      "Default": ""
     },
     "GithubOauthOrganization": {
       "Description": "Github Organization to allow through doorman",
-      "Type": "String"
+      "Type": "String",
+      "Default": ""
+    },
+    "DoormanEnable": {
+        "Description": "Protect all internal resources through Doorman? If you are not deploying this privately through a VPN, this is recommended",
+        "Type": "String",
+        "Default": "true",
+        "AllowedValues": ["true","false"]
+    },
+    "DoormanSessionSecret": {
+      "Description": "A Secret Salt used to encrypt cookies for doorman",
+      "Type": "String",
+      "NoEcho": "true",
+      "Default": ""
     },
     "DoormanPassword": {
       "Description": "Password to use for alternate authentication through doorman. Leave empty for none",
-      "Type": "String"
+      "Type": "String",
+      "Default": ""
     },
     "OpsWorksStackColor": {
       "Description": "RGB Color to use for OpsWorks Stack",
       "Type": "String",
       "Default": "rgb(45, 114, 184)"
     },
+    "BastionInstanceType":{
+        "Type" : "String",
+        "Default" : "m3.medium",
+        "AllowedValues" : ["t2.small", "t2.medium", "m3.medium" ],
+        "Description" : "Enter t2.small, t2.medium, m3.medium. Default is t2.small."
+    },
+    "RabbitMQInstanceType":{
+        "Type" : "String",
+        "Default" : "r3.large",
+        "AllowedValues" : ["m3.large", "c3.large", "r3.large"],
+        "Description" : "Enter m3.large, c3.large, or r3.large. Default is r3.large."
+    },
+    "GraphiteInstanceType":{
+        "Type" : "String",
+        "Default" : "c3.large",
+        "AllowedValues" : ["m3.medium", "m3.large", "c3.large", "r3.large"],
+        "Description" : "Enter m3.medium, m3.large, c3.large, or r3.large. Default is c3.large."
+    },
+    "ElasticSearchInstanceType":{
+        "Type" : "String",
+        "Default" : "r3.large",
+        "AllowedValues" : ["m3.medium", "m3.large", "c3.large", "r3.large"],
+        "Description" : "Enter m3.medium, m3.large, c3.large, or r3.large. Default is r3.large."
+    },
+    "LogstashInstanceType":{
+        "Type" : "String",
+        "Default" : "c3.large",
+        "AllowedValues" : ["m3.medium", "m3.large", "c3.large", "r3.large"],
+        "Description" : "Enter m3.medium, m3.large, c3.large, or r3.large. Default is c3.large."
+    },
+    "DashboardInstanceType":{
+        "Type" : "String",
+        "Default" : "c3.large",
+        "AllowedValues" : ["m3.medium", "m3.large", "c3.large", "r3.large"],
+        "Description" : "Enter m3.medium, m3.large, c3.large, or r3.large. Default is c3.large."
+    },
     "RabbitMQUser": {
       "Description": "RabbitMQ User",
       "Type": "String",
       "Default": "logger"
     },
+    "RabbitMQErlangCookie": {
+      "Description": "RabbitMQ Erlang Cookie. This should be unique per stack",
+      "Type": "String",
+      "NoEcho": "true"
+    },
     "RabbitMQPassword": {
       "Description": "RabbitMQ Password",
-      "Type": "String"
+      "Type": "String",
+      "Default": "hunter2"
     },
     "RabbitMQLogstashInternalUser": {
       "Description": "RabbitMQ User",
@@ -101,15 +161,18 @@
     },
     "Route53ZoneId": {
       "Description": "The zone id to add dns records to on instance setup. If empty updates won't happen",
-      "Type": "String"
+      "Type": "String",
+      "Default": ""
     },
     "Route53DomainName": {
       "Description": "The domain name to append to dns records",
-      "Type": "String"
+      "Type": "String",
+      "Default": ""
     },
     "PagerDutyAPIKey": {
       "Description": "The pagerduty api key if you want sensu alerts forwarded to pagerduty",
-      "Type": "String"
+      "Type": "String",
+      "Default": ""
     }
   },
   "Mappings": {
@@ -138,13 +201,13 @@
     },
     "SubnetConfig": {
       "VPC": {
-        "CIDR": "10.0.0.0/16"
+        "CIDR": "10.133.0.0/16"
       },
       "Public": {
-        "CIDR": "10.0.0.0/24"
+        "CIDR": "10.133.0.0/24"
       },
       "Private": {
-        "CIDR": "10.0.1.0/24"
+        "CIDR": "10.133.1.0/24"
       }
     }
   },
@@ -293,7 +356,9 @@
           },
           "rabbitmq": {
             "cluster": true,
-            "erlang_cookie": "v9wb1ju@)#lur)tch9p1!0g@hnpwp(@!gb3h9y2v0)o#h*bopm"
+            "erlang_cookie": {
+                "Ref": "RabbitMQErlangCookie"
+            }
           },
           "rabbitmq_cluster": {
             "users": [
@@ -334,7 +399,13 @@
             }
           },
           "doorman": {
-            "session_secret": "Jo9blyEg3jap0Juc2Ecs6iC1bAb4muC0jOrk1iaS0yaRc9oth3",
+            "password": {
+              "Ref": "DoormanEnable"
+            },
+            "session_secret": 
+            { 
+             "Ref": "DoormanSessionSecret"
+            },
             "app_id": {
               "Ref": "GithubOauthAppId"
             },
@@ -422,7 +493,7 @@
             "Ref": "OpsWorksBastionLayer"
           }
         ],
-        "InstanceType": "c3.large",
+        "InstanceType": { "Ref":"BastionInstanceType"} ,
         "SubnetId": {
           "Ref": "PublicSubnet"
         }
@@ -491,7 +562,7 @@
             "Ref": "OpsWorksDashboardLayer"
           }
         ],
-        "InstanceType": "c3.large"
+        "InstanceType": { "Ref" : "DashboardInstanceType" }
       }
     },
     "OpsWorksGraphiteLayer": {
@@ -561,7 +632,7 @@
             "Ref": "OpsWorksGraphiteLayer"
           }
         ],
-        "InstanceType": "c3.large"
+        "InstanceType": { "Ref" : "GraphiteInstanceType" }
       }
     },
     "OpsWorksElasticSearchLayer": {
@@ -631,7 +702,7 @@
             "Ref": "OpsWorksElasticSearchLayer"
           }
         ],
-        "InstanceType": "c3.large"
+        "InstanceType": { "Ref" : "ElasticSearchInstanceType" }
       }
     },
     "ElasticSearchInstance2": {
@@ -648,7 +719,7 @@
             "Ref": "OpsWorksElasticSearchLayer"
           }
         ],
-        "InstanceType": "c3.large"
+        "InstanceType": { "Ref" : "ElasticSearchInstanceType" }
       }
     },
     "ElasticSearchInstance3": {
@@ -665,7 +736,7 @@
             "Ref": "OpsWorksElasticSearchLayer"
           }
         ],
-        "InstanceType": "c3.large"
+        "InstanceType": { "Ref" : "ElasticSearchInstanceType" }
       }
     },
     "OpsWorksRabbitMQLayer": {
@@ -735,7 +806,7 @@
             "Ref": "OpsWorksRabbitMQLayer"
           }
         ],
-        "InstanceType": "c3.large"
+        "InstanceType": { "Ref" : "RabbitMQInstanceType" }
       }
     },
     "OpsWorksLogstashLayer": {
@@ -801,7 +872,7 @@
             "Ref": "OpsWorksLogstashLayer"
           }
         ],
-        "InstanceType": "c3.large"
+        "InstanceType": { "Ref" : "LogstashInstanceType" }
       }
     },
     "OpsWorksServiceRole": {

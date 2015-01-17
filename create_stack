@@ -1,0 +1,165 @@
+#!/usr/bin/env python
+
+import argparse
+import subprocess
+import sys
+import os
+import boto.cloudformation
+import boto.iam
+import time
+from gen_secrets import gen_password
+
+class KeyValueArgs(argparse.Action):
+    def __call__(self, parser, namespace, values, option_string=None):
+        if not hasattr(namespace, self.dest):
+            setattr(namespace, self.dest, {})
+
+        key, value = values.split('=')
+        getattr(namespace, self.dest)[key] = value
+
+class OpsVizStackCreator(object):
+    def __init__(self, opts):
+        self.opts = opts
+        self.iam  = boto.iam.connect_to_region(opts.region)
+        self.cf   = boto.cloudformation.connect_to_region(opts.region)
+
+    def gen_certificate(self):
+        '''Generates a self-signed cert to be used by
+        RabbitMQ'''
+        # TODO: provide a way to not have to enter the interactive
+        # openssl prompts
+        proc = subprocess.Popen(['openssl', 'req', '-new',
+                                 '-nodes', '-newkey', 'rsa:2048',
+                                 '-x509'], stdout=subprocess.PIPE)
+
+        if proc.wait() != 0:
+            raise SystemExit("Failed to generate self-signed OpenSSL")
+
+        return (self.get_privkey(),  proc.stdout.read())
+
+    def get_privkey(self):
+        '''When the -newkey option is given to req, it writes the key
+        to a file named "privkey.pem". We want to read the key from
+        that file and the clean it up'''
+        # this is required to make the java library on the
+        # recieving end happy
+        privkey = subprocess.check_output([
+            'openssl', 'rsa', '-in', 'privkey.pem'])
+
+        try:
+            os.unlink('privkey.pem')
+        except OSError:
+            sys.stderr.write("WARNING: failed to delete privkey.pem\n")
+
+        return privkey
+
+    def upload_cert(self):
+        '''Uploads a cert and key to IAM and return the ARN of the
+        uploaded cert'''
+        
+        resp = self.iam.upload_server_cert(
+            cert_name="{}_cert".format(self.opts.stack_name),
+            cert_body=self.ssl_cert,
+            private_key=self.ssl_key)
+
+        try:
+            return resp['upload_server_certificate_response']['upload_server_certificate_result']['server_certificate_metadata']['arn']
+        except KeyError:
+            raise SystemExit("Failed to get ARN from cert upload. Resp: {}".format(resp))
+
+    def prepare_cert(self):
+        self.ssl_key, self.ssl_cert = self.gen_certificate()
+        self.cert_arn = self.upload_cert()
+
+        return self.cert_arn
+
+    def gen_cf_params(self):
+        params = {
+            'RabbitMQSensuPassword': gen_password(),
+            'RabbitMQStatsdPassword': gen_password(),
+            'RabbitMQLogstashExternalPassword': gen_password(),
+            'RabbitMQLogstashInternalPassword': gen_password(),
+            'RabbitMQErlangCookie': gen_password(50),
+            'RabbitMQCertificateARN': self.cert_arn,
+            'DoormanSessionSecret': gen_password(50)
+        }
+
+        #user provided params override whatever we generate or set
+        #as a default
+        params.update(self.opts.params)
+        
+        return params
+
+    def read_template(self):
+        with open('cloudformation.json', 'r') as fh:
+            return fh.read()
+
+    def spin_up(self, params):
+        print "Creating stack with params: "
+        print params
+        
+        stack_id = self.cf.create_stack(
+            stack_name=self.opts.stack_name,
+            template_body=self.read_template(),
+            capabilities=['CAPABILITY_IAM'],
+            parameters=params.items()
+        )
+
+        #events we have already printed out
+        reported_events = set()
+        stack = self.cf.describe_stacks(stack_id)[0]
+
+        while stack.stack_status == 'CREATE_IN_PROGRESS':
+            all_events = set(stack.describe_events())
+            for event in reported_events - all_events:
+                print event
+
+            reported_events = all_events
+            time.sleep(5)
+            stack.update()
+
+        if not stack.stack_status == 'CREATE_COMPLETE':
+            raise SystemExit("Stack creation failed")
+        else:
+            print "Stack creation completed"
+
+    def create_stack(self):        
+        self.prepare_cert()
+        self.spin_up(self.gen_cf_params())
+
+def get_args():
+    parser = argparse.ArgumentParser(description='Create an OpsViz stack')
+    parser.add_argument('--region', default='us-east-1',
+                        help='AWS region. Default: us-east-1')
+    parser.add_argument('stack_name',
+                        help='CloudFormation stack name. Must be unique')
+    parser.add_argument('--dry-run', action='store_true',
+                        help='Generate params and display them,' +
+                        'but does not spin up the stack')
+    parser.add_argument('--cookbook-repo', '-c',
+                        help="The git url for your custom cookbooks")
+    parser.add_argument('--param', dest='params', action=KeyValueArgs,
+                        default={},
+                        help="Override additional params in the form of key=value. Can be specified multiple times")
+
+    args = parser.parse_args()
+
+    if not args.cookbook_repo:
+        raise SystemExit("A cookbook repo is required")
+    
+    if not args.stack_name:
+        raise SystemExit("A stack name is required")
+
+    #Add the cookbook to the list of user params. The cookbook
+    #is only provided stand-alone because it is required
+    args.params['CookbooksRepo'] = args.cookbook_repo
+
+    return args
+
+def main():
+    args = get_args()
+    stack_creator = OpsVizStackCreator(args)
+    stack_creator.create_stack()
+    
+if __name__ == '__main__':
+    main()
