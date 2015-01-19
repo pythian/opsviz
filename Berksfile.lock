@@ -158,7 +158,7 @@ GRAPH
   python (1.4.6)
     build-essential (>= 0.0.0)
     yum-epel (>= 0.0.0)
-  rabbitmq (3.8.0)
+  rabbitmq (3.3.0)
     erlang (>= 0.9)
   rabbitmq_cluster (0.0.0)
     bb_monitor (>= 0.0.0)
