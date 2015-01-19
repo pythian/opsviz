@@ -97,7 +97,7 @@
     "DashboardInstanceType":{
         "Type" : "String",
         "Default" : "c3.large",
-        "AllowedValues" : ["m3.medium", "m3.large", "c3.large", "r3.large"],
+        "AllowedValues" : ["m3.medium", "m3.large", "c3.large", "r3.large", "m3.2xlarge"],
         "Description" : "Enter m3.medium, m3.large, c3.large, or r3.large. Default is c3.large."
     },
     "RabbitMQUser": {
@@ -402,8 +402,8 @@
             "password": {
               "Ref": "DoormanEnable"
             },
-            "session_secret": 
-            { 
+            "session_secret":
+            {
              "Ref": "DoormanSessionSecret"
             },
             "app_id": {
