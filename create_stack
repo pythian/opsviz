@@ -56,7 +56,7 @@ class OpsVizStackCreator(object):
     def upload_cert(self):
         '''Uploads a cert and key to IAM and return the ARN of the
         uploaded cert'''
-        
+
         resp = self.iam.upload_server_cert(
             cert_name="{}_cert".format(self.opts.stack_name),
             cert_body=self.ssl_cert,
@@ -87,7 +87,7 @@ class OpsVizStackCreator(object):
         #user provided params override whatever we generate or set
         #as a default
         params.update(self.opts.params)
-        
+
         return params
 
     def read_template(self):
@@ -97,12 +97,13 @@ class OpsVizStackCreator(object):
     def spin_up(self, params):
         print "Creating stack with params: "
         print params
-        
+
         stack_id = self.cf.create_stack(
             stack_name=self.opts.stack_name,
             template_body=self.read_template(),
             capabilities=['CAPABILITY_IAM'],
-            parameters=params.items()
+            parameters=params.items(),
+            disable_rollback=True
         )
 
         #events we have already printed out
@@ -123,7 +124,7 @@ class OpsVizStackCreator(object):
         else:
             print "Stack creation completed"
 
-    def create_stack(self):        
+    def create_stack(self):
         self.prepare_cert()
         self.spin_up(self.gen_cf_params())
 
@@ -146,7 +147,7 @@ def get_args():
 
     if not args.cookbook_repo:
         raise SystemExit("A cookbook repo is required")
-    
+
     if not args.stack_name:
         raise SystemExit("A stack name is required")
 
@@ -160,6 +161,6 @@ def main():
     args = get_args()
     stack_creator = OpsVizStackCreator(args)
     stack_creator.create_stack()
-    
+
 if __name__ == '__main__':
     main()
