@@ -10,6 +10,7 @@ end
   check-cpu.rb
   check-disk.rb
   check-elb-health.rb
+  check-elb-nodes.rb
   check-http.rb
   check-load.rb
   check-ram.rb
