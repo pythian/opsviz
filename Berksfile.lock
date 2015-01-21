@@ -10,7 +10,6 @@ DEPENDENCIES
   elasticsearch
   grafana
   graphite
-
   kibana
   logstash
     git: https://github.com/foxycoder/chef-logstash.git
