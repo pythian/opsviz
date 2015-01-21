@@ -41,3 +41,8 @@ end
     mode 0755
   end
 end
+
+# needed by some community aws plugins
+gem_package 'aws-sdk' do
+  action :install
+end
