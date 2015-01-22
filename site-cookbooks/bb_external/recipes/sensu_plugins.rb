@@ -1,5 +1,6 @@
 %w[
   sensu-plugin
+  aws-sdk
 ].each do |package|
   gem_package package do
     action :install
@@ -19,6 +20,8 @@ end
   check-rabbitmq-messages.rb
   check-rabbitmq-queue.rb
   check-ram.rb
+  check-rds.rb
+  check-rds-events.rb
   check-snmp.rb
   cpu-metrics.rb
   cpu-pcnt-usage-metrics.rb
