@@ -17,6 +17,7 @@ end
   check-es-heap.rb
   check-http.rb
   check-load.rb
+  check_mongodb.py
   check-rabbitmq-messages.rb
   check-rabbitmq-queue.rb
   check-ram.rb
@@ -35,6 +36,7 @@ end
   memory-metrics.rb
   metrics-curl.rb
   metrics-splunk.rb
+  monogdb-metrics.rb
   nginx-metrics.rb
   rabbitmq-cluster-health.rb
   rabbitmq-overview-metrics.rb

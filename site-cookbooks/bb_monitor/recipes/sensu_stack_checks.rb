@@ -4,7 +4,6 @@
   right_aws
   array_stats
   rest-client
-  aws-sdk
 ].each do |package|
   gem_package package do
     action :install
