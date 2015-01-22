@@ -12,7 +12,7 @@ DEPENDENCIES
   graphite
   iMatchative
     git: git@bitbucket.org:/imatchative/imatchative_deploy.git
-    revision: 7c735a90772485ec57bedb7e2ce14e2e6a74bc9c
+    revision: 22dd2b8c328bf7c37e722e5c837235f937fe7c7a
     branch: master
     rel: site-cookbooks/imatchative/
   kibana
