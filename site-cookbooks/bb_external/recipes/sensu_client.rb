@@ -28,6 +28,20 @@ else
   end
 end
 
+# Update the path sensu uses to find the OpsWorks installed Ruby. This is
+# required because plugin dependencies are installed to the OpsWorks ruby,
+# not the normal system ruby.
+ruby_block 'Add OpsWorks Ruby path to Sensu' do
+  block do
+    fn = '/etc/default/sensu'
+    if File.exists?(fn)
+      f = Chef::Util::FileEdit.new(fn)
+      f.insert_line_if_no_match(/^\s*PATH=/, 'PATH=/usr/local/bin:$PATH')
+      f.write_file
+    end
+  end
+end
+
 include_recipe "bb_external::sensu_plugins"
 
 unless platform_family?("windows")
