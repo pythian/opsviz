@@ -10,6 +10,7 @@ end
   check-cpu.rb
   check-disk.rb
   check-elb-health.rb
+  check-elb-nodes.rb
   check-http.rb
   check-load.rb
   check-ram.rb
@@ -39,4 +40,9 @@ end
     source "sensu_plugins/#{plugin}"
     mode 0755
   end
+end
+
+# needed by some community aws plugins
+gem_package 'aws-sdk' do
+  action :install
 end

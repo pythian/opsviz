@@ -10,6 +10,11 @@ DEPENDENCIES
   elasticsearch
   grafana
   graphite
+  iMatchative
+    git: git@bitbucket.org:/imatchative/imatchative_deploy.git
+    revision: 22dd2b8c328bf7c37e722e5c837235f937fe7c7a
+    branch: master
+    rel: site-cookbooks/imatchative/
   kibana
   logstash
     git: https://github.com/foxycoder/chef-logstash.git

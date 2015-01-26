@@ -9,8 +9,8 @@ normal['nginx']['install_method'] = 'source'
 
 ##Sensu
 normal[:sensu][:use_ssl] = false
-normal[:sensu][:rabbitmq][:host] = node[:bb_monitor][:sensu][:rabbitmq_server]
-normal[:sensu][:rabbitmq][:password] = node[:bb_monitor][:sensu][:rabbitmq_password]
+normal[:sensu][:rabbitmq][:host] = node[:bb_monitor][:sensu][:rabbitmq][:server]
+normal[:sensu][:rabbitmq][:password] = node[:bb_monitor][:sensu][:rabbitmq][:password]
 normal[:sensu][:redis][:host] = node[:bb_monitor][:sensu][:server_url]
 normal[:sensu][:api][:host] = node[:bb_monitor][:sensu][:server_url]
 normal[:sensu][:log_level] = "warn"

@@ -24,7 +24,7 @@ graphite_carbon_cache "default" do
             log_cache_hits: false,
             whisper_autoflush: false,
             enable_amqp: true,
-            amqp_host: node[:bb_monitor][:sensu][:rabbitmq_server],
+            amqp_host: node[:bb_monitor][:sensu][:rabbitmq][:server],
             amqp_port: 5672,
             amqp_vhost: node["statsd"]["rabbitmq"]["vhost"],
             amqp_user: node["statsd"]["rabbitmq"]["user"],
