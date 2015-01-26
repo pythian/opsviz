@@ -17,13 +17,14 @@ end
   check-es-heap.rb
   check-http.rb
   check-load.rb
-  check_mongodb.py
   check-rabbitmq-messages.rb
   check-rabbitmq-queue.rb
   check-ram.rb
-  check-rds.rb
   check-rds-events.rb
+  check-rds.rb
   check-snmp.rb
+  check_mongodb.py
+  cloudwatch-mysql-sensu.rb
   cpu-metrics.rb
   cpu-pcnt-usage-metrics.rb
   disk-metrics.rb
@@ -37,12 +38,19 @@ end
   metrics-curl.rb
   metrics-splunk.rb
   mongodb-metrics.rb
+  mysql-alive.rb
+  mysql-connections.rb
+  mysql-disk.rb
+  mysql-graphite.rb
+  mysql-innodb-lock.rb
+  mysql-replication-status.rb
   nginx-metrics.rb
   rabbitmq-cluster-health.rb
   rabbitmq-overview-metrics.rb
   rds-metrics.rb
-  snmp-metrics.rb
+  snmp-bulk-metrics.rb
   snmp-if-metrics.rb
+  snmp-metrics.rb
 ].each do |plugin|
   cookbook_file ::File.join(node.sensu.directory, "plugins", plugin) do
     source "sensu_plugins/#{plugin}"
