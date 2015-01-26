@@ -17,7 +17,6 @@ cookbook 'rabbitmq_cluster', path: './site-cookbooks/rabbitmq_cluster'
 cookbook 'bb_elasticsearch', path: './site-cookbooks/bb_elasticsearch'
 cookbook 'bb_monitor', path: './site-cookbooks/bb_monitor'
 cookbook 'bb_external', path: './site-cookbooks/bb_external'
-cookbook 'iMatchative', git: 'git@bitbucket.org:/imatchative/imatchative_deploy.git', rel: 'site-cookbooks/imatchative/', branch: 'master'
 
 # Override opsworks to use community apache2
 cookbook 'apache2', path: './apache2'
