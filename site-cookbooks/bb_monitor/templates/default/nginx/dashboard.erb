@@ -4,7 +4,7 @@ listen <% if node[:doorman][:enabled]=='true' -%>8080<% else -%>80<% end -%>;
   port_in_redirect off;
 
   location / {
-    proxy_pass            http://<%= node['graphite']['host'] %>:<%= node['graphite']['listen_port'] %>/;
+    proxy_pass            http://<%= node['graphite']['host'] %>:<%= node['graphite']['uwsgi']['port'] %>/;
   }
 
   location /flapjack {
