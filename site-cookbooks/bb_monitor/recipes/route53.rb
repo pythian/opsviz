@@ -1,3 +1,9 @@
+=begin
+#<
+Wrapper around the upstream route53 module for nodes to register their hostnames with route53
+#>
+=end
+
 if node[:route53][:zone_id] && !node[:route53][:zone_id].empty?
   include_recipe "route53"
 

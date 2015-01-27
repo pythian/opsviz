@@ -1,3 +1,9 @@
+=begin
+#<
+Compiles lua cjson library
+#>
+=end
+
 %w(liblua5.1-0-dev liblua50-dev liblualib50-dev).each do |package|
   package package do
    action :install

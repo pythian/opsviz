@@ -1,3 +1,9 @@
+=begin
+#<
+Adds mutators to sensu metrics so that stack names are included in the metrics
+#>
+=end
+
 %w[
   graphite.rb
 ].each do |mutator|
