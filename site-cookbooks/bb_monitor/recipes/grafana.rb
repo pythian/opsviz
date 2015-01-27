@@ -1,3 +1,9 @@
+=begin
+#<
+Wrapper around upstream grafana recipe to provide a custom default configuration
+#>
+=end
+
 include_recipe 'grafana'
 
 template "#{node['grafana']['install_dir']}/app/dashboards/default.json" do

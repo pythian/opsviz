@@ -1,3 +1,8 @@
+=begin
+#<
+Installs elasticsearch with the http-basic authentication plugin
+#>
+=end
 #
 # Cookbook Name:: bb-elasticsearch
 # Recipe:: default

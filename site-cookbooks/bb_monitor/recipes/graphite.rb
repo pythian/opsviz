@@ -1,3 +1,9 @@
+=begin
+#>
+Installs and configures graphite, carbon, and graphite-web. Carbon is configured to use AMQP
+#<
+=end
+
 include_recipe 'python'
 
 include_recipe "runit"

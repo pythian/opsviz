@@ -1,3 +1,9 @@
+=begin
+#<
+Adds users required for monitoring RabbitMQ
+#>
+=end
+
 rabbitmq_user "sensu_monitor" do
   password node["sensu"]["rabbitmq"]["password"]
   action :add
