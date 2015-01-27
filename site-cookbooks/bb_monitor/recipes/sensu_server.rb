@@ -1,3 +1,9 @@
+=begin
+#<
+Installs sensu, uchiwa and it's dependencies
+#>
+=end
+
 include_recipe "sensu::redis"
 
 include_recipe "sensu::default"

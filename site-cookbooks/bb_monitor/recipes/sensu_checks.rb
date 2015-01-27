@@ -1,3 +1,9 @@
+=begin
+#<
+Adds standard host-based checks and metrics to sensu for all nodes to be subscibbed to
+#>
+=end
+
 include_recipe "bb_monitor::sensu_stack_checks"
 include_recipe "bb_monitor::sensu_custom_checks"
 

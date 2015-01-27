@@ -1,3 +1,9 @@
+=begin
+#<
+Allows the creation of custom checks via the node[:bb_monitor][:sensu][:custom_checks] attribute
+#>
+=end
+
 node[:bb_monitor][:sensu][:custom_checks].each do |name, attributes|
   if attributes[:command].nil?
     Chef::Log.warn "Skipping custom sensu check #{name} as command is not set"

@@ -1,3 +1,9 @@
+=begin
+#<
+Wrapper around upstream logstash module to provide a custom logstash.conf
+#>
+=end
+
 include_recipe "logstash::default"
 
 template '/etc/init/logstash.conf' do

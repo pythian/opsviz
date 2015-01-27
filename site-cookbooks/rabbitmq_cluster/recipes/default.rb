@@ -1,3 +1,9 @@
+=begin
+#<
+Recipe to to cluster RabbitMQ servers from within an opsworks layer
+#>
+=end
+
 # Add all rabbitmq nodes to the hosts file with their short name.
 instances = node[:opsworks][:layers][:rabbitmq][:instances]
 

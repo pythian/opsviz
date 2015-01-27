@@ -1,3 +1,9 @@
+=begin
+#<
+Adds sensu checks to monitor the opsviz stack
+#>
+=end
+
 %w[
   fog
   unf
