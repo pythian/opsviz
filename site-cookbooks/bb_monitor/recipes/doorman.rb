@@ -1,3 +1,9 @@
+=begin
+#<
+Configures and installs doorman
+#>
+=end
+
 include_recipe 'nodejs'
 
 git '/opt/doorman' do

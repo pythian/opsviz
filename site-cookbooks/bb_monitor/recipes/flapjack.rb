@@ -1,3 +1,9 @@
+=begin
+#<
+Installs and configures flapjack
+#>
+=end
+
 execute 'name' do
   command  <<-EOF
   echo "deb http://packages.flapjack.io/deb/v1 trusty main" | sudo tee /etc/apt/sources.list.d/flapjack.list

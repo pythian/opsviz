@@ -38,7 +38,7 @@ It also builds everything with private-only ip addresses and restricts all exter
 ### Cloudformation Paramaters
 All of these will need to be filled in, for secure passwords and a secure erlang cookie you can use [gen_secrets.py](/gen_secrets.py)
 - `CookbooksRef` - *The git reference to checkout for custom cookbooks*
-- `CookbooksRepo` - *The github url for your custom cookbooks*
+- `CookbooksRepo` - *The git url for your custom cookbooks*
 - `CookbooksSshKey` - *The ssh key needed to clone the cookbooks repo*
 - `DoormanPassword` - *Password to use for alternate authentication through doorman. Leave empty for none*
 - `ElasticSearchVolumeSize` - *Size of disk in GB to use for elasticsearch ebs volumes*
@@ -177,3 +177,21 @@ don't update the Cloud Formation stack as it will overwrite the custom OpsWork's
 
 *Todo: At some point it would be nice to allow a user to inject their own custom json into the cloud formation processes without having to manually make changes
 to the monolithic cloudromation.json file*
+
+### Using create_stack
+
+There is a provided script called create_stack that can be used for launching an opsviz stack. It creates random passwords and generates a self signed certificate. Basic usage:
+
+```
+./create_stack -c 'https://github.com/pythian/opsviz.git' --region us-west-2 teststack
+```
+
+You can also provide custom parameters. For example, if you want to use your own password for RabbitMQ:
+
+```
+./create_stack -c 'https://github.com/pythian/opsviz.git' --region us-west-2 --param RabbitMQPassword=hunter3 teststack
+```
+
+Multiple `--param` options can be specified.
+
+In order to use the script, you must setup access keys. See the [boto configuration doc](http://boto.readthedocs.org/en/latest/boto_config_tut.html) for more information.

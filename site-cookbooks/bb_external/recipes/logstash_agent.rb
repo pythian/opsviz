@@ -4,6 +4,12 @@
   end
 end
 
+# Add the logstash user to the adm group so they can get the logs
+group "adm" do
+  action :modify
+  members "logstash"
+  append true
+end
 
 file_inputs = []
 

@@ -1,3 +1,9 @@
+=begin
+#<
+Adds attributes for logstash to prevent agent configuration
+#>
+=end
+
 node.normal[:logstash][:server][:enabled] = true
 
 # We don't want to have the server have an input and output to rabbitmq
