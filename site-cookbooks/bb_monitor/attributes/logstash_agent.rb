@@ -2,14 +2,17 @@ normal[:logstash][:version] = "1.4"
 #TODO: Don't run as root but rather make sure logstash user has access to all logs
 default[:bb_monitor][:logstash][:root] = true
 
-default[:bb_monitor][:logstash][:rabbitmq][:server] = ""
-default[:bb_monitor][:logstash][:rabbitmq][:password] = ""
+default[:bb_monitor][:logstash][:rabbitmq][:server] = "10.10.3.10"
+default[:bb_monitor][:logstash][:rabbitmq][:password] = "c=7OX728eNEB"
 default[:bb_monitor][:logstash][:rabbitmq][:user] = "logstash_internal"
 default[:bb_monitor][:logstash][:rabbitmq][:queue] = "incoming_logs"
 default[:bb_monitor][:logstash][:rabbitmq][:exchange] = "logstash"
 default[:bb_monitor][:logstash][:rabbitmq][:exchange_type] = "direct"
 
-default[:bb_monitor][:logstash][:tags] = [node[:opsworks][:stack][:name].downcase.gsub(' ','_')]
+# 4-Feb-15 08:27:27 damonp remove Opsworks
+#default[:bb_monitor][:logstash][:tags] = [node[:opsworks][:stack][:name].downcase.gsub(' ','_')]
+default[:bb_monitor][:logstash][:tags] = "set-tags-here"
+
 # Forward attributes on to logstash recipe
 normal[:logstash][:agent][:inputs]  = [
   {
@@ -104,8 +107,8 @@ normal[:logstash][:agent][:filters] = [
     },
     "mutate" => {
       "add_field" => {
-        "opsworks_stack"=> node[:opsworks][:stack][:name].downcase.gsub(' ','_'),
-        "opsworks_layers"=> node[:opsworks][:instance][:layers].join(',')
+        "opsworks_stack"=> "", #node[:opsworks][:stack][:name].downcase.gsub(' ','_'),
+        "opsworks_layers"=> "", #node[:opsworks][:instance][:layers].join(',')
       }
     }
   },

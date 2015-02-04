@@ -1,16 +1,23 @@
 include_recipe "sensu::default"
 
-sensu_client "#{node[:opsworks][:instance][:hostname]}.#{node[:opsworks][:instance][:layers][0]}.#{node[:opsworks][:stack][:name].downcase.gsub(' ','_')}" do
-  address "#{node['opsworks']['instance']['private_ip']}"
+# 4-Feb-15 08:28:27 damonp removing opsworks
+#sensu_client "#{node[:opsworks][:instance][:hostname]}.#{node[:opsworks][:instance][:layers][0]}.#{node[:opsworks][:stack][:name].downcase.gsub(' ','_')}" do
+#sensu_client "#{node[:nodes][:node]}" do
+sensu_client "dashboard" do
+  #address "#{node['opsworks']['instance']['private_ip']}"
+  address "#{node[:ip]}"
   subscriptions node[:bb_monitor][:sensu][:subscriptions]
-  additional ({
-    :stack => node[:opsworks][:stack][:name],
-    :layer => node[:opsworks][:instance][:layers][0],
-    :availability_zone => node[:opsworks][:instance][:availability_zone],
-    :aws_instance_id => node[:opsworks][:instance][:aws_instance_id],
-    :region => node[:opsworks][:instance][:region],
-    :keepalive => {:handlers => node[:bb_monitor][:sensu][:default_check_handlers]}
-  })
+  #if node[:opsworks].Array?
+  if false
+    additional ({
+      #:stack => node[:opsworks][:stack][:name],
+      #:layer => node[:opsworks][:instance][:layers][0],
+      #:availability_zone => node[:opsworks][:instance][:availability_zone],
+      #:aws_instance_id => node[:opsworks][:instance][:aws_instance_id],
+      #:region => node[:opsworks][:instance][:region],
+      :keepalive => {:handlers => node[:bb_monitor][:sensu][:default_check_handlers]}
+    })
+  end
 end
 
 include_recipe "bb_external::sensu_plugins"
