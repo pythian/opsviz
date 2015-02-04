@@ -29,8 +29,6 @@ Vagrant.configure(2) do |config|
       #     id:    port[":id"]
       # end
 
-      #node[:opsworks][:instance][:hostname] = node_values[":host"]
-
       config.hostmanager.aliases = %w( "#{node_values[:node]}.opsvis.dev" )
       config.vm.hostname = node_values[":host"]
       config.vm.network :private_network, ip: node_values[":ip"]
@@ -70,12 +68,14 @@ Vagrant.configure(2) do |config|
         }
         chef.json.merge!(JSON.parse(File.read("node.json")))
         # chef.json.merge!(JSON.parse(File.read("nodes.json")))
+        chef.json.merge!( { :instance => { :hostname => node_values[":host"], :ip => node_values[":ip"] } } )
 
         chef.cookbooks_path = "site-cookbooks"
         chef.roles_path     = "roles"
 
         #chef.add_recipe "bb_external"
 
+        # TODO: convert to roles once this works
         # if node_values[:tags].include?("dashboard")
         if node_name =~ /^dashboard*/
           #chef.add_role "dashboard"
@@ -86,15 +86,19 @@ Vagrant.configure(2) do |config|
           chef.add_recipe "bb_monitor::nginx"
 
           chef.run_list = [
-#            "recipe[bb_monitor::kibana]",
+            "recipe[bb_monitor::kibana]",
             "recipe[bb_monitor::grafana]",
             "recipe[bb_monitor::graphite]",
             "recipe[bb_monitor::sensu_server]",
+            #"recipe[bb_monitor::flapjack]",
             "recipe[nginx]",
             "recipe[bb_monitor::nginx]",
 
             #"recipe[bb_monitor::logstash_server]",
             "recipe[bb_monitor::logstash_agent]",
+            "recipe[bb_monitor::sensu_checks]",
+            "recipe[bb_monitor::sensu_custom_checks]",
+            "recipe[bb_monitor::sensu_stack_checks]",
             "recipe[bb_monitor::sensu_client]"
           ]
         else if node_name =~ /^elastic*/
@@ -103,9 +107,12 @@ Vagrant.configure(2) do |config|
 
           chef.run_list = [
             "recipe[bb_elasticsearch]",
+            "recipe[bb_monitor::logstash_agent]",
+
+            # for logstash
             "recipe[statsd]",
             "recipe[bb_monitor::logstash_server]",
-            "recipe[bb_monitor::logstash_agent]",
+
             "recipe[bb_monitor::sensu_client]"
 
           ]

@@ -2,14 +2,14 @@ include_recipe "sensu::default"
 
 # 4-Feb-15 08:28:27 damonp removing opsworks
 #sensu_client "#{node[:opsworks][:instance][:hostname]}.#{node[:opsworks][:instance][:layers][0]}.#{node[:opsworks][:stack][:name].downcase.gsub(' ','_')}" do
-#sensu_client "#{node[:nodes][:node]}" do
-sensu_client "dashboard" do
+sensu_client "#{node[:instance][:hostname]}" do
   #address "#{node['opsworks']['instance']['private_ip']}"
-  address "#{node[:ip]}"
+  address "#{node[:instance][:ip]}"
   subscriptions node[:bb_monitor][:sensu][:subscriptions]
   #if node[:opsworks].Array?
   if false
     additional ({
+      :stack => "opsvis",
       #:stack => node[:opsworks][:stack][:name],
       #:layer => node[:opsworks][:instance][:layers][0],
       #:availability_zone => node[:opsworks][:instance][:availability_zone],

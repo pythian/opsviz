@@ -2,40 +2,43 @@
   "aws_region": "us-west-2",
   "bb_monitor": {
     "sensu": {
-      "rabbitmq_password": "c=7OX728eNEB",
-      "rabbitmq_server": "10.10.3.30",
+      "rabbitmq": {
+        "password": "2bankBREAD#amped",
+        "server": "10.10.3.30"
+      },
       "server_url": "dashboard.opsvis.dev",
-      "pagerduty_api": "b3fa80818998437ab32c53f639a440e2",
+      "pagerduty_api": "pagerdutyapihere",
       "pagerduty_warn": false,
       "default_check_handlers": [
         "pagerduty",
         "slack"
       ],
       "custom_checks": {
-        "metric-mongodb": {
-          "type": "metric",
-          "command": "mongodb-metrics.rb --user \"siteRootAdmin\" --password \"MrJYRw(9H9cN@V\" -s \"stats.:::name:::\"",
+
+        "check-blog": {
+          "command": "check-http.rb -u http://damonparker.org/",
           "subscribers": [
-            "mongodb_rs0"
-          ],
-          "interval": 60
+            "dashboard"
+          ]
         },
-        "check-mongodb": {
-          "command": "check_mongodb.py -d \"invision\"",
+        "metric-blog-curl": {
+          "type": "metric",
+          "command": "metrics-curl.rb -u http://damonparker.org/",
           "subscribers": [
-            "mongodb_rs0"
+            "dashboard"
           ],
-          "interval": 30,
+          "interval": 150,
           "additional": {
             "occurrences": 2
           }
         }
+
       }
     },
     "logstash": {
       "rabbitmq": {
         "server": "10.10.3.30",
-        "password": "Uv2wan1afT"
+        "password": "5mazelFOWL]amply"
       },
       "server": {
         "elasticsearch_server": "10.10.3.20",
@@ -81,7 +84,7 @@
     "app_secret": "70ec8ac998158e06e797568e93f0b39dd852b020",
     "org_name": "siliconsys",
     "password": "opsvis",
-    "session_secret": "Jo9blyEg3jap0Juc2Ecs6iC1bAb4muC0jOrk1iaS0yaRc9oth3"
+    "session_secret": "$1o$9BxoAx)jemx8@mMrPmlg%+s)Ew2FuYwjrzKBjFXpLuKzHl"
   },
   "elasticsearch": {
     "cloud": {
@@ -116,33 +119,33 @@
   },
   "rabbitmq": {
     "cluster": "true",
-    "erlang_cookie": "v9wb1ju@)#lur)tch9p1!0g@hnpwp(@!gb3h9y2v0)o#h*bopm"
+    "erlang_cookie": "FV%gpcg0w+gT&kVViW6Lgl4dkmjei7X1YV8XVsv&$+lUGl)hZr"
   },
   "rabbitmq_cluster": {
     "users": [
       {
-        "password": "asH2bomsH3",
+        "password": "3goopyLEFT=chess",
         "user": "logger"
       },
       {
-        "password": "zKN3l3r_9KA3",
+        "password": "3primoSWELL}idol",
         "user": "logstash_external"
       },
       {
-        "password": "Uv2wan1afT",
+        "password": "4tonedYOUUU/thug",
         "user": "logstash_internal"
       }
     ]
   },
   "route53": {
-    "domain_name": "invision.works",
-    "zone_id": "Z3JR1NZUSJY5YM"
+    "domain_name": "opsvis.dev",
+    "zone_id": "R53ZONEID"
   },
   "statsd": {
     "graphite_host": "10.10.3.10",
     "nodejs_bin": "/usr/local/bin/node",
     "rabbitmq": {
-      "password": "T3QMG180DtY",
+      "password": "1makinPUTTY@harv",
       "user": "statsd",
       "vhost": "/statsd"
     }
