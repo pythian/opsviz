@@ -72,7 +72,6 @@ sensu_check "check-es-file-descriptors" do
 end
 
 stack_name = node[:opsworks][:stack][:name].downcase.gsub(' ','_')
-
 # Metrics
 sensu_check "metric-cluster-elasticsearch" do
   type "metric"
