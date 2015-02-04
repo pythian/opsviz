@@ -1,0 +1,11 @@
+# Ignore the box
+.vagrant
+# Ignore the CF installer
+
+# Ignore VagrantConfig
+VagrantConfig.json
+.kitchen/
+.kitchen.local.yml
+.project
+VagrantBerksfile.lock
+berks-cookbooks/*
