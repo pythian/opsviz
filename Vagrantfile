@@ -3,7 +3,7 @@
 
 # read vm and chef configurations from JSON files
 nodes_config = (JSON.parse(File.read("nodes.json")))["nodes"]
-#chef_config  = (JSON.parse(File.read("chef.json")))["chef"]
+# chef_config  = (JSON.parse(File.read("chef.json")))["chef"]
 
 VAGRANTFILE_API_VERSION = "2"
 Vagrant.require_version ">= 1.5.0"
@@ -29,7 +29,7 @@ Vagrant.configure(2) do |config|
       #     id:    port[":id"]
       # end
 
-      config.hostmanager.aliases = %w( "#{node_values[:node]}.opsvis.dev" )
+      config.hostmanager.aliases = %w( node_name.dev )
       config.vm.hostname = node_values[":host"]
       config.vm.network :private_network, ip: node_values[":ip"]
 
@@ -73,28 +73,25 @@ Vagrant.configure(2) do |config|
         chef.cookbooks_path = "site-cookbooks"
         chef.roles_path     = "roles"
 
-        #chef.add_recipe "bb_external"
-
-        # TODO: convert to roles once this works
-        # if node_values[:tags].include?("dashboard")
+        # TODO: Roles
         if node_name =~ /^dashboard*/
-          #chef.add_role "dashboard"
+          # chef.add_role "dashboard"
 
-          #chef.add_recipe "apache2"
+          chef.add_recipe "apache2"
           chef.add_recipe "nginx"
           chef.add_recipe "bb_monitor"
           chef.add_recipe "bb_monitor::nginx"
 
           chef.run_list = [
-            "recipe[bb_monitor::kibana]",
+#            "recipe[bb_monitor::kibana]",
             "recipe[bb_monitor::grafana]",
             "recipe[bb_monitor::graphite]",
             "recipe[bb_monitor::sensu_server]",
-            #"recipe[bb_monitor::flapjack]",
+            "recipe[bb_monitor::flapjack]",
             "recipe[nginx]",
             "recipe[bb_monitor::nginx]",
 
-            #"recipe[bb_monitor::logstash_server]",
+            # "recipe[bb_monitor::logstash_server]",
             "recipe[bb_monitor::logstash_agent]",
             "recipe[bb_monitor::sensu_checks]",
             "recipe[bb_monitor::sensu_custom_checks]",
