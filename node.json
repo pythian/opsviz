@@ -80,6 +80,7 @@
   },
   "chef_environment": "production",
   "doorman": {
+    "enabled": "true",
     "app_id": "cee40138f1c595b04859",
     "app_secret": "70ec8ac998158e06e797568e93f0b39dd852b020",
     "org_name": "siliconsys",
@@ -115,6 +116,7 @@
   "kibana": {
     "elasticsearch_server": "10.10.3.20",
     "kibana3_version": "3.1.1",
+    "checksum": "ab5c32786d683fa7a2f6d983843751cb627427f8c6eea904a4d6849ef037bda4",
     "version": "3"
   },
   "rabbitmq": {
