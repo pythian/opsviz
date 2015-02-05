@@ -15,6 +15,7 @@ Vagrant.configure(2) do |config|
   # config.omnibus.chef_version = "latest"
   # config.omnibus.chef_version = '11.16.4'
   # config.omnibus.chef_version = '11.8.2'
+  #  config.omnibus.chef_version = '11.10.0'
   config.omnibus.chef_version = '12.0.1'
 
   config.berkshelf.enabled = true
@@ -73,7 +74,7 @@ Vagrant.configure(2) do |config|
                               :layers => [ node_values[":roles"] ],
                               :ip => node_values[":ip"],
                               :private_ip => node_values[":ip"],
-                              :region => "", # node[:aws_region]
+                              :region => "local",
                             },
                             :stack => {
                               :name => "Opsvis"
@@ -82,8 +83,8 @@ Vagrant.configure(2) do |config|
                         }
 
         chef.json.merge!( opsworks_json )
-        chef.cookbooks_path = "site-cookbooks"
-        chef.roles_path     = "roles"
+        chef.cookbooks_path = ["site-cookbooks", "ops/opsworks-cookbooks"]
+        chef.roles_path     = ["roles", "ops/opsworks-roles" ]
 
         # todo: Create Roles
         if node_name =~ /^dashboard*/
@@ -104,9 +105,9 @@ Vagrant.configure(2) do |config|
             "recipe[bb_monitor::nginx]",
 
             "recipe[bb_monitor::sensu_server]",
-            #"recipe[bb_monitor::sensu_checks]",
-            #"recipe[bb_monitor::sensu_custom_checks]",
-            #"recipe[bb_monitor::sensu_stack_checks]",
+            "recipe[bb_monitor::sensu_checks]",
+            "recipe[bb_monitor::sensu_custom_checks]",
+            "recipe[bb_monitor::sensu_stack_checks]",
 
             "recipe[bb_monitor::logstash_agent]",
             "recipe[bb_monitor::sensu_client]"
