@@ -30,9 +30,7 @@ end
 
 default[:bb_monitor][:sensu][:default_metric_handlers] = ["graphite"]
 
-# 3-Feb-15 08:47:25 damonp remove Opsworks
-# default[:bb_monitor][:sensu][:subscriptions] = ["all"] + node[:opsworks][:instance][:layers]
-default[:bb_monitor][:sensu][:subscriptions] = ["all"]
+default[:bb_monitor][:sensu][:subscriptions] = ["all"] + node[:opsworks][:instance][:layers]
 
 # Disable sensu dashboard user/pass since we have nginx in front
 normal["uchiwa"]["settings"]["user"] = ""

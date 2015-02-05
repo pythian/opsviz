@@ -5,9 +5,7 @@ Recipe to to cluster RabbitMQ servers from within an opsworks layer
 =end
 
 # Add all rabbitmq nodes to the hosts file with their short name.
-# 4-Feb-15 08:29:21 damonp remove opsworks
-#instances = node[:opsworks][:layers][:rabbitmq][:instances]
-instances = [ 'rabbitmq' ]
+instances = node[:opsworks][:layers][:rabbitmq][:instances]
 
 rabbit_nodes = instances.map{ |name, attrs| "rabbit@#{name}" }
 node.set['rabbitmq']['cluster_disk_nodes'] = rabbit_nodes

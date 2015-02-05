@@ -79,6 +79,11 @@ Vagrant.configure(2) do |config|
                               :aws_instance_id => node_name,
                               :availability_zone => "vagrant"
                             },
+                            :layers => {
+                              :rabbitmq   =>  {
+                                :instances  =>  [ "rabbitmq" ]
+                                }
+                              },
                             :stack => {
                               :name => "Opsvis"
                             }

@@ -3,7 +3,6 @@ include_recipe "sensu::default"
 # 4-Feb-15 08:28:27 damonp removing opsworks
 # sensu_client "#{node[:opsworks][:instance][:hostname]}.#{node[:opsworks][:instance][:layers][0]}.#{node[:opsworks][:stack][:name].downcase.gsub(' ','_')}" do
 sensu_client "#{node[:opsworks][:instance][:node]}.#{node[:opsworks][:stack][:name].downcase.gsub(' ','_')}" do#
-#sensu_client node[:opsworks][:instance][:node] do
   address node[:opsworks][:instance][:private_ip]
   subscriptions node[:bb_monitor][:sensu][:subscriptions]
 

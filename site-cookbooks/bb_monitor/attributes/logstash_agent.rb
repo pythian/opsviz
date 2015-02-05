@@ -9,9 +9,7 @@ default[:bb_monitor][:logstash][:rabbitmq][:queue] = "incoming_logs"
 default[:bb_monitor][:logstash][:rabbitmq][:exchange] = "logstash"
 default[:bb_monitor][:logstash][:rabbitmq][:exchange_type] = "direct"
 
-# 4-Feb-15 08:27:27 damonp remove Opsworks
 default[:bb_monitor][:logstash][:tags] = [node[:opsworks][:stack][:name].downcase.gsub(' ','_')]
-#default[:bb_monitor][:logstash][:tags] = "set-tags-here"
 
 # Forward attributes on to logstash recipe
 normal[:logstash][:agent][:inputs]  = [
