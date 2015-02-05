@@ -67,6 +67,7 @@ Vagrant.configure(2) do |config|
         # chef.json.merge!( { :instance => { :node => node_name, :host => node_values[":host"], :ip => node_values[":ip"] } } )
         opsworks_json = {
                           :name => node_values[":node"].to_s,
+                          :provider => "vagrant",
                           :opsworks => {
                             :instance => {
                               :node => node_name,
@@ -75,6 +76,8 @@ Vagrant.configure(2) do |config|
                               :ip => node_values[":ip"],
                               :private_ip => node_values[":ip"],
                               :region => "local",
+                              :aws_instance_id => node_name,
+                              :availability_zone => "vagrant"
                             },
                             :stack => {
                               :name => "Opsvis"
@@ -93,9 +96,15 @@ Vagrant.configure(2) do |config|
           chef.add_recipe "apache2"
           chef.add_recipe "nginx"
           chef.add_recipe "bb_monitor"
-          chef.add_recipe "bb_monitor::nginx"
+          #chef.add_recipe "bb_monitor::nginx"
 
           chef.run_list = [
+            #"recipe[opsworks_initial_setup]",
+            #"recipe[dependencies]",
+            #"recipe[opsworks_ganglia::client]",
+            #"recipe[deploy::default]",
+            #"recipe[opsworks_ganglia::configure-client]",
+
             "recipe[bb_monitor::kibana]",
             "recipe[bb_monitor::grafana]",
             "recipe[bb_monitor::graphite]",

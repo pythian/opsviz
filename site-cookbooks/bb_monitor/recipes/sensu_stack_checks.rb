@@ -16,8 +16,7 @@ Adds sensu checks to monitor the opsviz stack
   end
 end
 
-#if node[:opsworks][:layers].kind_of?(Array)
-if false
+if node[:provider] != "vagrant"
   node[:opsworks][:layers].each do |key, value|
     value["elb-load-balancers"].each do |elb|
       sensu_check "metric-sensu-elb-#{elb[:name]}" do
@@ -72,9 +71,8 @@ sensu_check "check-es-file-descriptors" do
   additional(:occurrences => 2)
 end
 
-# 4-Feb-15 08:28:57 damonp removing opsworks
-#stack_name = node[:opsworks][:stack][:name].downcase.gsub(' ','_')
-stack_name = "opsvis"
+stack_name = node[:opsworks][:stack][:name].downcase.gsub(' ','_')
+
 # Metrics
 sensu_check "metric-cluster-elasticsearch" do
   type "metric"
