@@ -1,33 +1,6 @@
 {
   "nodes": {
 
-    "dashboard": {
-      ":node": "Dashboard",
-      ":ip": "10.10.3.10",
-      ":host": "dashboard.opsvis.dev",
-      ":tags": [
-        "dashboard",
-        "graphite"
-      ],
-      ":roles": [
-        "dashboard"
-      ],
-      "ports": [
-        {
-          ":host": 2201,
-          ":guest": 22,
-          ":id": "ssh"
-        },
-        {
-          ":host": 8090,
-          ":guest": 80,
-          ":id": "httpd"
-        }
-      ],
-      ":memory": 2048,
-      ":cpus": 2
-    },
-
     "elastic-1": {
       ":node": "Elastic-1",
       ":ip": "10.10.3.20",
@@ -92,6 +65,34 @@
       ],
       ":memory": 1024,
       ":cpus": 1
+    },
+
+    "dashboard": {
+      ":node": "Dashboard",
+      ":ip": "10.10.3.10",
+      ":host": "dashboard.opsvis.dev",
+      ":tags": [
+        "dashboard",
+        "graphite"
+      ],
+      ":roles": [
+        "dashboard"
+      ],
+      "ports": [
+        {
+          ":host": 2201,
+          ":guest": 22,
+          ":id": "ssh"
+        },
+        {
+          ":host": 8090,
+          ":guest": 80,
+          ":id": "httpd"
+        }
+      ],
+      ":memory": 2048,
+      ":cpus": 2
     }
+
   }
 }

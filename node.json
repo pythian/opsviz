@@ -21,6 +21,7 @@
             "dashboard"
           ]
         },
+
         "metric-blog-curl": {
           "type": "metric",
           "command": "metrics-curl.rb -u http://damonparker.org/",
@@ -37,8 +38,8 @@
     },
     "logstash": {
       "rabbitmq": {
-        "server": "10.10.3.30",
-        "password": "5mazelFOWL]amply"
+        "server": "10.10.3.40",
+        "password": "4tonedYOUUU/thug"
       },
       "server": {
         "elasticsearch_server": "10.10.3.20",
@@ -147,7 +148,7 @@
     "graphite_host": "10.10.3.10",
     "nodejs_bin": "/usr/local/bin/node",
     "rabbitmq": {
-      "password": "1makinPUTTY@harv",
+      "password": "2bankBREAD#amped",
       "user": "statsd",
       "vhost": "/statsd"
     }

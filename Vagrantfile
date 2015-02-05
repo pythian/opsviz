@@ -72,7 +72,7 @@ Vagrant.configure(2) do |config|
                             :instance => {
                               :node => node_name,
                               :hostname => node_values[":host"],
-                              :layers => [ node_values[":roles"] ],
+                              :layers => node_values[":roles"],
                               :ip => node_values[":ip"],
                               :private_ip => node_values[":ip"],
                               :region => "local",
@@ -110,7 +110,7 @@ Vagrant.configure(2) do |config|
             "recipe[bb_monitor::graphite]",
             "recipe[bb_monitor::flapjack]",
 
-            #"recipe[bb_monitor::doorman]",
+            "recipe[bb_monitor::doorman]",
             "recipe[bb_monitor::sensu_server]",
             "recipe[bb_monitor::sensu_checks]",
             "recipe[bb_monitor::sensu_custom_checks]",
