@@ -9,6 +9,9 @@
         "dashboard",
         "graphite"
       ],
+      ":roles": [
+        "dashboard"
+      ],
       "ports": [
         {
           ":host": 2201,
@@ -16,7 +19,7 @@
           ":id": "ssh"
         },
         {
-          ":host": 8080,
+          ":host": 8090,
           ":guest": 80,
           ":id": "httpd"
         }
@@ -30,8 +33,10 @@
       ":ip": "10.10.3.20",
       ":host": "elastic-1.opsvis.dev",
       ":tags": [
-        "elasticsearch",
-        "logstash"
+        "elasticsearch"
+      ],
+      ":roles": [
+        "elasticsearch"
       ],
 
       "ports": [
@@ -45,16 +50,42 @@
       ":cpus": 2
     },
 
-    "rabbitmq": {
-      ":node": "Rabbitmq",
+    "logstash": {
+      ":node": "Logstash",
       ":ip": "10.10.3.30",
-      ":host": "rabbitmq.opsvis.dev",
+      ":host": "logstash.opsvis.dev",
       ":tags": [
-        "rabbitmq"
+        "logstash"
+      ],
+      ":roles": [
+        "logstash"
       ],
       "ports": [
         {
           ":host": 2203,
+          ":guest": 22,
+          ":id": "ssh"
+        }
+      ],
+      ":memory": 1024,
+      ":cpus": 1
+    },
+
+    "rabbitmq": {
+      ":node": "Rabbitmq",
+      ":ip": "10.10.3.40",
+      ":host": "rabbitmq.opsvis.dev",
+      ":tags": [
+        "rabbitmq"
+      ],
+      ":roles": [
+        "rabbitmq",
+        "logstash"
+      ],
+
+      "ports": [
+        {
+          ":host": 2204,
           ":guest": 22,
           ":id": "ssh"
         }

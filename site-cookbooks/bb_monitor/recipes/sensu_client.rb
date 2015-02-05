@@ -1,23 +1,23 @@
 include_recipe "sensu::default"
 
 # 4-Feb-15 08:28:27 damonp removing opsworks
-#sensu_client "#{node[:opsworks][:instance][:hostname]}.#{node[:opsworks][:instance][:layers][0]}.#{node[:opsworks][:stack][:name].downcase.gsub(' ','_')}" do
-sensu_client "#{node[:instance][:hostname]}" do
-  #address "#{node['opsworks']['instance']['private_ip']}"
-  address "#{node[:instance][:ip]}"
+# sensu_client "#{node[:opsworks][:instance][:hostname]}.#{node[:opsworks][:instance][:layers][0]}.#{node[:opsworks][:stack][:name].downcase.gsub(' ','_')}" do
+# sensu_client node[:instance][:node] do
+sensu_client node[:opsworks][:instance][:node] do
+  address node[:opsworks][:instance][:private_ip]
+
   subscriptions node[:bb_monitor][:sensu][:subscriptions]
-  #if node[:opsworks].Array?
-  if false
-    additional ({
-      :stack => "opsvis",
-      #:stack => node[:opsworks][:stack][:name],
-      #:layer => node[:opsworks][:instance][:layers][0],
-      #:availability_zone => node[:opsworks][:instance][:availability_zone],
-      #:aws_instance_id => node[:opsworks][:instance][:aws_instance_id],
-      #:region => node[:opsworks][:instance][:region],
-      :keepalive => {:handlers => node[:bb_monitor][:sensu][:default_check_handlers]}
-    })
-  end
+
+  additional ({
+    :stack => "opsvis",
+    #:layer => node[:opsworks][:instance][:node].to_s,
+    :stack => node[:opsworks][:stack][:name],
+    :layer => node[:opsworks][:instance][:layers][0],
+    #:availability_zone => node[:opsworks][:instance][:availability_zone],
+    #:aws_instance_id => node[:opsworks][:instance][:aws_instance_id],
+    #:region => node[:opsworks][:instance][:region],
+    :keepalive => {:handlers => node[:bb_monitor][:sensu][:default_check_handlers]}
+  })
 end
 
 include_recipe "bb_external::sensu_plugins"

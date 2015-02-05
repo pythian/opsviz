@@ -4,7 +4,7 @@
     "sensu": {
       "rabbitmq": {
         "password": "2bankBREAD#amped",
-        "server": "10.10.3.30"
+        "server": "10.10.3.40"
       },
       "server_url": "dashboard.opsvis.dev",
       "pagerduty_api": "pagerdutyapihere",
