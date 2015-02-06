@@ -198,3 +198,71 @@ You can also provide custom parameters. For example, if you want to use your own
 Multiple `--param` options can be specified.
 
 In order to use the script, you must setup access keys. See the [boto configuration doc](http://boto.readthedocs.org/en/latest/boto_config_tut.html) for more information.
+
+### Building with Vagrant
+
+The included Vagrantfile will build the Opsvis stack on four virtual machines ```rabbitmq-1, logstash-1, elastic-1 and dashboard-1```.
+
+
+```
+vagrant up
+```
+
+```
+Current machine states:
+
+rabbitmq-1                running (virtualbox)
+logstash-1                running (virtualbox)
+elastic-1                 running (virtualbox)
+dashboard-1               running (virtualbox)
+```
+
+Once complete the dashboard will be available locally at:
+
+- http://dashboard.opsvis.dev/
+- http://dashboard.opsvis.dev/sensu
+- http://dashboard.opsvis.dev/kibana
+- http://dashboard.opsvis.dev/grafana
+
+#### Vagrant Configuration
+
+###### nodes.json
+Configures each node including ip, hostnames, CPU, memory, etc.
+
+```
+... snip ...
+    "dashboard-1": {
+      ":node": "Dashboard-1",
+      ":ip": "10.10.3.10",
+      ":host": "dashboard-1.opsvis.dev",
+      ":lb": "dashboard.opsvis.dev",
+      ":tags": [
+        "dashboard",
+        "graphite"
+      ],
+      ":roles": [
+        "dashboard"
+      ],
+      "ports": [
+        {
+          ":host": 2201,
+          ":guest": 22,
+          ":id": "ssh"
+        },
+        {
+          ":host": 8090,
+          ":guest": 80,
+          ":id": "httpd"
+        }
+      ],
+      ":memory": 2048,
+      ":cpus": 1
+    }
+... snip ...
+```
+
+##### node.json
+Custom JSON to overwrite default configs.
+
+##### Roles
+```roles/``` contains specific node roles and run_list as referenced in Vagrantfile.
