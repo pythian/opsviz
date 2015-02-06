@@ -1,5 +1,5 @@
 {
-  "aws_region": "us-west-2",
+  "aws_region": "vagrant-us-west-2",
   "bb_monitor": {
     "sensu": {
       "rabbitmq": {
@@ -76,6 +76,20 @@
               "%{responseTime}"
             ]
           }
+      }
+    }
+  },
+  "bb_external": {
+    "logstash": {
+      "rabbitmq": {
+        "port": "5672", // ELB 5671 -> 5672
+        "ssl": "true"
+      }
+    },
+    "sensu":  {
+      "rabbitmq": {
+        "port": "5672", // ELB 5671 -> 5672
+        "ssl": "true"
       }
     }
   },

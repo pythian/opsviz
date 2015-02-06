@@ -11,12 +11,10 @@ Vagrant.require_version ">= 1.5.0"
 Vagrant.configure(2) do |config|
   config.vm.box = "ubuntu/trusty64"
 
-  # 4-Feb-15 14:52:12 damonp v12.0.x throws checksum errors on some packages
-  # config.omnibus.chef_version = "latest"
+  config.omnibus.chef_version = "latest"
   # config.omnibus.chef_version = '11.16.4'
-  # config.omnibus.chef_version = '11.8.2'
-#  config.omnibus.chef_version = '11.10.0'
-  config.omnibus.chef_version = '12.0.1'
+  # config.omnibus.chef_version = '11.10.0'
+  # config.omnibus.chef_version = '12.0.1'
 
   config.berkshelf.enabled = true
   config.hostmanager.manage_host = true
@@ -25,23 +23,15 @@ Vagrant.configure(2) do |config|
   nodes_config.each do |node|
     node_name   = node[0].to_s # name of node
     node_values = node[1] # content of node
+    aliases = Array.new()
 
     config.vm.define node_name do |config|
-      # configures all forwarding ports in JSON array
-      # ports = node_values["ports"]
-      # ports.each do |port|
-      #   config.vm.network :forwarded_port,
-      #     host:  port[":host"],
-      #     guest: port[":guest"],
-      #     id:    port[":id"]
-      # end
+      aliases.push(node_values[":lb"])
 
-      #config.hostmanager.aliases = %w( node_name.dev )
+      #config.hostmanager.aliases = %w(  )
+      config.hostmanager.aliases = aliases
       config.vm.hostname = node_values[":host"]
       config.vm.network :private_network, ip: node_values[":ip"]
-
-      # syncs local repository of large third-party installer files (quicker than downloading each time)
-      # config.vm.synced_folder "#{ENV["HOME"]}/chef_repo", "/vagrant"
 
       config.vm.provider :virtualbox do |vb|
         vb.name = node_values[":node"].to_s
@@ -63,15 +53,14 @@ Vagrant.configure(2) do |config|
           # },
         }
         chef.json.merge!(JSON.parse(File.read("node.json")))
-        # chef.json.merge!(JSON.parse(File.read("nodes.json")))
-        # chef.json.merge!( { :instance => { :node => node_name, :host => node_values[":host"], :ip => node_values[":ip"] } } )
         opsworks_json = {
                           :name => node_values[":node"].to_s,
                           :provider => "vagrant",
                           :opsworks => {
                             :instance => {
                               :node => node_name,
-                              :hostname => node_values[":host"],
+                              #:hostname => node_values[":host"],
+                              :hostname => node_name,
                               :layers => node_values[":roles"],
                               :ip => node_values[":ip"],
                               :private_ip => node_values[":ip"],
@@ -80,10 +69,19 @@ Vagrant.configure(2) do |config|
                               :availability_zone => "vagrant"
                             },
                             :layers => {
-                              :rabbitmq   =>  {
-                                :instances  =>  [ "rabbitmq" ]
-                                }
+                              :dashboard   =>  {
+                                :instances  =>  [ "dashboard-1" ]
                               },
+                              :elasticsearch   =>  {
+                                :instances  =>  [ "elastic-1" ]
+                              },
+                              :logstash   =>  {
+                                :instances  =>  [ "logstash-1" ]
+                              },
+                              :rabbitmq   =>  {
+                                :instances  =>  [ "rabbitmq-1" ]
+                              }
+                            },
                             :stack => {
                               :name => "Opsvis"
                             }

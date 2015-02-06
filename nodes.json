@@ -5,6 +5,7 @@
       ":node": "Elastic-1",
       ":ip": "10.10.3.20",
       ":host": "elastic-1.opsvis.dev",
+      ":lb": "elastic.opsvis.dev",
       ":tags": [
         "elasticsearch"
       ],
@@ -23,10 +24,11 @@
       ":cpus": 2
     },
 
-    "logstash": {
-      ":node": "Logstash",
+    "logstash-1": {
+      ":node": "Logstash-1",
       ":ip": "10.10.3.30",
-      ":host": "logstash.opsvis.dev",
+      ":host": "logstash-1.opsvis.dev",
+      ":lb": "logstash.opsvis.dev",
       ":tags": [
         "logstash"
       ],
@@ -44,10 +46,11 @@
       ":cpus": 1
     },
 
-    "rabbitmq": {
-      ":node": "Rabbitmq",
+    "rabbitmq-1": {
+      ":node": "Rabbitmq-1",
       ":ip": "10.10.3.40",
-      ":host": "rabbitmq.opsvis.dev",
+      ":host": "rabbitmq-1.opsvis.dev",
+      ":lb": "rabbitmq.opsvis.dev",
       ":tags": [
         "rabbitmq"
       ],
@@ -67,10 +70,11 @@
       ":cpus": 1
     },
 
-    "dashboard": {
-      ":node": "Dashboard",
+    "dashboard-1": {
+      ":node": "Dashboard-1",
       ":ip": "10.10.3.10",
-      ":host": "dashboard.opsvis.dev",
+      ":host": "dashboard-1.opsvis.dev",
+      ":lb": "dashboard.opsvis.dev",
       ":tags": [
         "dashboard",
         "graphite"
