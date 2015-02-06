@@ -4,13 +4,13 @@
     "logstash": {
       "rabbitmq": {
         "port": "5672", // ELB 5671 -> 5672
-        "ssl": "true"
+        "ssl": "false"
       }
     },
     "sensu":  {
       "rabbitmq": {
         "port": "5672", // ELB 5671 -> 5672
-        "ssl": "true"
+        "ssl": "false"
       }
     }
   },
@@ -18,7 +18,7 @@
     "sensu": {
       "rabbitmq": {
         "password": "2bankBREAD#amped",
-        "server": "10.10.3.40"
+        "server": "rabbitmq.opsvis.dev"
       },
       "server_url": "dashboard.opsvis.dev",
       "pagerduty_api": "pagerdutyapihere",
@@ -52,11 +52,11 @@
     },
     "logstash": {
       "rabbitmq": {
-        "server": "10.10.3.40",
+        "server": "rabbitmq.opsvis.dev",
         "password": "4tonedYOUUU/thug"
       },
       "server": {
-        "elasticsearch_server": "10.10.3.20",
+        "elasticsearch_server": "elastic.opsvis.dev",
         "filters": [
           {
             "geoip": {
@@ -126,10 +126,10 @@
     "version": "1.0.1"
   },
   "graphite": {
-    "host": "10.10.3.10"
+    "host": "dashboard.opsvis.dev"
   },
   "kibana": {
-    "elasticsearch_server": "10.10.3.20",
+    "elasticsearch_server": "elastic.opsvis.dev",
     "kibana3_version": "3.1.1",
     "checksum": "ab5c32786d683fa7a2f6d983843751cb627427f8c6eea904a4d6849ef037bda4",
     "version": "3"
@@ -165,7 +165,7 @@
     "zone_id": "R53ZONEID"
   },
   "statsd": {
-    "graphite_host": "10.10.3.10",
+    "graphite_host": "dashboard.opsvis.dev",
     "nodejs_bin": "/usr/local/bin/node",
     "rabbitmq": {
       "password": "2bankBREAD#amped",
