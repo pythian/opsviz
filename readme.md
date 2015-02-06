@@ -224,10 +224,13 @@ Once complete the dashboard will be available locally at:
 - http://dashboard.opsvis.dev/kibana
 - http://dashboard.opsvis.dev/grafana
 
+Default doorman password is ```opsvis```.
+
+
 #### Vagrant Configuration
 
 ###### nodes.json
-Configures each node including ip, hostnames, CPU, memory, etc.
+Configures each node including roles, ip, hostnames, CPU, memory, etc.
 
 ```
 ... snip ...
