@@ -1,5 +1,5 @@
 name "dashboard"
-description "Dashboard Role"
+description "Dashboard Role. Includes: kibana, grafana, graphite, flapjack, doorman, sensu_server and nginx."
 run_list(
   "recipe[bb_monitor::kibana]",
   "recipe[bb_monitor::grafana]",

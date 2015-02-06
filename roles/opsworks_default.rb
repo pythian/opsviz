@@ -1,5 +1,5 @@
 name "Opsworks Default"
-description "Opsworks Default Node Role"
+description "Opsworks Default Node Role.  Installs basic Opsworks recipes and dependencies."
 run_list(
   "recipe[opsworks_initial_setup]",
   "recipe[dependencies]",

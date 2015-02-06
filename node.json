@@ -4,13 +4,13 @@
     "logstash": {
       "rabbitmq": {
         "port": "5672", // ELB 5671 -> 5672
-        "ssl": "false"
+        "ssl": "true"
       }
     },
     "sensu":  {
       "rabbitmq": {
         "port": "5672", // ELB 5671 -> 5672
-        "ssl": "false"
+        "ssl": "true"
       }
     }
   },
