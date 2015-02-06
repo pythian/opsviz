@@ -4,13 +4,13 @@
     "logstash": {
       "rabbitmq": {
         "port": "5672", // ELB 5671 -> 5672
-        "ssl": "true"
+        "ssl": "false"
       }
     },
     "sensu":  {
       "rabbitmq": {
         "port": "5672", // ELB 5671 -> 5672
-        "ssl": "true"
+        "ssl": "false"
       }
     }
   },
@@ -29,24 +29,7 @@
       ],
       "custom_checks": {
 
-        "check-blog": {
-          "command": "check-http.rb -u http://damonparker.org/",
-          "subscribers": [
-            "dashboard"
-          ]
-        },
 
-        "metric-blog-curl": {
-          "type": "metric",
-          "command": "metrics-curl.rb -u http://damonparker.org/",
-          "subscribers": [
-            "dashboard"
-          ],
-          "interval": 150,
-          "additional": {
-            "occurrences": 2
-          }
-        }
 
       }
     },
@@ -96,9 +79,9 @@
   "chef_environment": "production",
   "doorman": {
     "enabled": "true",
-    "app_id": "cee40138f1c595b04859",
-    "app_secret": "70ec8ac998158e06e797568e93f0b39dd852b020",
-    "org_name": "siliconsys",
+    "app_id": "",
+    "app_secret": "",
+    "org_name": "pythian",
     "password": "opsvis",
     "session_secret": "$1o$9BxoAx)jemx8@mMrPmlg%+s)Ew2FuYwjrzKBjFXpLuKzHl"
   },

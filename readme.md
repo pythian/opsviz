@@ -105,12 +105,14 @@ A separate cookbook has been created that contains recipes for installing extern
 See [bb_external](site-cookbooks/bb_external) for more documentation
 
 ### External Logstash Clients
-To setup an external logstash client
+To setup an external logstash client.
+
 1. Install logstash according to [documentation](http://logstash.net/docs/1.4.2/tutorials/getting-started-with-logstash)
 2. Update the config to push logs to the rabbitmq ELB
 
 ### External Statsd Clients
-Setup statsd to push metrics rabbitmq where graphite will pull out of
+Setup statsd to push metrics rabbitmq where graphite will pull out of.
+
 1. Install statsd client according to [documentation](https://github.com/etsy/statsd/)
 2. Install rabbitmq backend `npm install git+https://github.com/mrtazz/statsd-amqp-backend.git`
 3. Setup config as follows
@@ -138,7 +140,8 @@ Setup statsd to push metrics rabbitmq where graphite will pull out of
         }
 
 ### External Sensu Clients
-We use the public facing RabbitMQ as the transport layer for external sensu clients
+We use the public facing RabbitMQ as the transport layer for external sensu clients.
+
 1. Install sensu client according to [documentation](http://sensuapp.org/docs/0.16/guide)
 2. Update client config `/etc/sensu/conf.d/client.json`
 3. Update rabbitmq config `/etc/sensu/conf.d/rabbitmq.json`
