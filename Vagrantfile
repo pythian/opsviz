@@ -88,75 +88,82 @@ Vagrant.configure(2) do |config|
         chef.cookbooks_path = ["site-cookbooks", "ops/opsworks-cookbooks"]
         chef.roles_path     = ["roles", "ops/opsworks-roles" ]
 
-        # todo: Create Roles
         if node_name =~ /^dashboard*/
-          # chef.add_role "dashboard"
+          #chef.add_role "opworks_default"
+          chef.add_role "dashboard"
+          chef.add_role "opsvis_client"
 
-          chef.add_recipe "apache2"
-          chef.add_recipe "nginx"
-          chef.add_recipe "bb_monitor"
-          #chef.add_recipe "bb_monitor::nginx"
+          #chef.add_recipe "apache2"
+          #chef.add_recipe "nginx"
+          ##chef.add_recipe "bb_monitor"
+          ##chef.add_recipe "bb_monitor::nginx"
 
-          chef.run_list = [
-            #"recipe[opsworks_initial_setup]",
-            #"recipe[dependencies]",
-            #"recipe[opsworks_ganglia::client]",
-            #"recipe[deploy::default]",
-            #"recipe[opsworks_ganglia::configure-client]",
+          #chef.run_list = [
+          #  #"recipe[opsworks_initial_setup]",
+          #  #"recipe[dependencies]",
+          #  #"recipe[opsworks_ganglia::client]",
+          #  #"recipe[deploy::default]",
+          #  #"recipe[opsworks_ganglia::configure-client]",
 
-            "recipe[bb_monitor::kibana]",
-            "recipe[bb_monitor::grafana]",
-            "recipe[bb_monitor::graphite]",
-            "recipe[bb_monitor::flapjack]",
+          #  "recipe[bb_monitor::kibana]",
+          #  "recipe[bb_monitor::grafana]",
+          #  "recipe[bb_monitor::graphite]",
+          #  "recipe[bb_monitor::flapjack]",
 
-            "recipe[bb_monitor::doorman]",
-            "recipe[bb_monitor::sensu_server]",
-            "recipe[bb_monitor::sensu_checks]",
-            "recipe[bb_monitor::sensu_custom_checks]",
-            "recipe[bb_monitor::sensu_stack_checks]",
+          #  "recipe[bb_monitor::doorman]",
+          #  "recipe[bb_monitor::sensu_server]",
+          #  "recipe[bb_monitor::sensu_checks]",
+          #  "recipe[bb_monitor::sensu_custom_checks]",
+          #  "recipe[bb_monitor::sensu_stack_checks]",
 
-            "recipe[nginx]",
-            "recipe[bb_monitor::nginx]",
+          #  "recipe[nginx]",
+          #  "recipe[bb_monitor::nginx]",
 
-            "recipe[bb_monitor::logstash_agent]",
-            "recipe[bb_monitor::sensu_client]"
-          ]
+          #  "recipe[bb_monitor::logstash_agent]",
+          #  "recipe[bb_monitor::sensu_client]"
+          #]
         else if node_name =~ /^elastic*/
-          # chef.add_role "elasticsearch"
+          #chef.add_role "opworks_default"
+          chef.add_role "elasticsearch"
+          chef.add_role "opsvis_client"
 
-          chef.add_recipe "bb_monitor"
-          chef.add_recipe "bb_elasticsearch"
+          ##chef.add_recipe "bb_monitor"
+          #chef.add_recipe "bb_elasticsearch"
 
-          chef.run_list = [
-            "recipe[bb_elasticsearch]",
+          #chef.run_list = [
+          #  "recipe[bb_elasticsearch]",
 
-            "recipe[bb_monitor::logstash_agent]",
-            "recipe[bb_monitor::sensu_client]"
+          #  "recipe[bb_monitor::logstash_agent]",
+          #  "recipe[bb_monitor::sensu_client]"
 
-          ]
+          #]
         else if node_name =~ /^logstash*/
-          # chef.add_role "logstash"
+          #chef.add_role "opworks_default"
+          chef.add_role "logstash"
+          chef.add_role "opsvis_client"
 
-          chef.add_recipe "bb_monitor"
+          ##chef.add_recipe "bb_monitor"
 
-          chef.run_list = [
-            "recipe[statsd]",
-            "recipe[bb_monitor::logstash_server]",
+          #chef.run_list = [
+          #  "recipe[statsd]",
+          #  "recipe[bb_monitor::logstash_server]",
 
-            "recipe[bb_monitor::logstash_agent]",
-            "recipe[bb_monitor::sensu_client]"
-          ]
+          #  "recipe[bb_monitor::logstash_agent]",
+          #  "recipe[bb_monitor::sensu_client]"
+          #]
         else if node_name =~ /^rabbitmq*/
-          # chef.add_role "rabbitmq"
-          chef.add_recipe "rabbitmq_cluster"
-          chef.add_recipe "bb_monitor"
+          #chef.add_role "opworks_default"
+          chef.add_role "rabbitmq"
+          chef.add_role "opsvis_client"
+          #chef.add_recipe "rabbitmq_cluster"
+          ##chef.add_recipe "bb_monitor"
 
-          chef.run_list = [
-            "recipe[rabbitmq_cluster]",
+          #chef.run_list = [
+          #  "recipe[rabbitmq_cluster]",
 
-            "recipe[bb_monitor::logstash_agent]",
-            "recipe[bb_monitor::sensu_client]"
-          ]
+          #  "recipe[bb_monitor::logstash_agent]",
+          #  "recipe[bb_monitor::sensu_client]"
+          #]
         else
           chef.run_list = []
           end
