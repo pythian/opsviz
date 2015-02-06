@@ -12,9 +12,9 @@ Vagrant.configure(2) do |config|
   config.vm.box = "ubuntu/trusty64"
 
   config.omnibus.chef_version = "latest"
+  # config.omnibus.chef_version = '12.0.1'
   # config.omnibus.chef_version = '11.16.4'
   # config.omnibus.chef_version = '11.10.0'
-  # config.omnibus.chef_version = '12.0.1'
 
   config.berkshelf.enabled = true
   config.hostmanager.manage_host = true
@@ -28,7 +28,6 @@ Vagrant.configure(2) do |config|
     config.vm.define node_name do |config|
       aliases.push(node_values[":lb"])
 
-      #config.hostmanager.aliases = %w(  )
       config.hostmanager.aliases = aliases
       config.vm.hostname = node_values[":host"]
       config.vm.network :private_network, ip: node_values[":ip"]
@@ -48,14 +47,11 @@ Vagrant.configure(2) do |config|
 
       config.vm.provision :chef_solo do |chef|
         chef.json = {
-          # "nodejs" => {
-          #   "version" => "0.10.7"
-          # },
+          :name => node_values[":node"].to_s,
+          :provider => "vagrant"
         }
         chef.json.merge!(JSON.parse(File.read("node.json")))
         opsworks_json = {
-                          :name => node_values[":node"].to_s,
-                          :provider => "vagrant",
                           :opsworks => {
                             :instance => {
                               :node => node_name,
@@ -134,10 +130,6 @@ Vagrant.configure(2) do |config|
           chef.run_list = [
             "recipe[bb_elasticsearch]",
 
-            # for logstash
-            # "recipe[statsd]",
-            # "recipe[bb_monitor::logstash_server]",
-
             "recipe[bb_monitor::logstash_agent]",
             "recipe[bb_monitor::sensu_client]"
 
@@ -161,10 +153,6 @@ Vagrant.configure(2) do |config|
 
           chef.run_list = [
             "recipe[rabbitmq_cluster]",
-
-            # for logstash
-            # "recipe[statsd]",
-            # "recipe[bb_monitor::logstash_server]",
 
             "recipe[bb_monitor::logstash_agent]",
             "recipe[bb_monitor::sensu_client]"
