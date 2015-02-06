@@ -11,7 +11,5 @@ run_list(
   "recipe[bb_monitor::sensu_custom_checks]",
   "recipe[bb_monitor::sensu_stack_checks]",
   "recipe[nginx]",
-  "recipe[bb_monitor::nginx]",
-  "recipe[bb_monitor::logstash_agent]",
-  "recipe[bb_monitor::sensu_client]"
+  "recipe[bb_monitor::nginx]"
 )
