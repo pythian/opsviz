@@ -76,7 +76,7 @@ end
 include_recipe "sensu"
 
 sensu_check "rabbitmq-messages" do
-  command "check-rabbitmq-messages.rb --user sensu_monitor --password #{node["sensu"]["rabbitmq"]["password"]} -w 600 -c 900"
+  command "check-rabbitmq-messages.rb --user sensu_monitor --password \"#{node["sensu"]["rabbitmq"]["password"]}\" -w 600 -c 900"
   handlers node[:bb_monitor][:sensu][:default_check_handlers]
   subscribers ["rabbitmq"]
   interval 60
