@@ -863,6 +863,7 @@
         "ElasticSearchInstance1",
         "ElasticSearchInstance2",
         "ElasticSearchInstance3",
+        "DashboardInstance1",
         "RabbitMQInstance1"
       ],
       "Properties": {
