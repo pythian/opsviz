@@ -10,6 +10,7 @@ Wrapper recipes for installing logstash and sensu clients on machines that are e
 |[:bb_external][:sensu][:rabbitmq][:server]|String|The public facing rabbitmq endpoint|**required**
 |[:bb_external][:sensu][:rabbitmq][:password]|String|The password for rabbitmq's sensu user|**required**
 |[:bb_external][:sensu][:rabbitmq][:user]|String|The rabbitmq user to use|sensu
+|[:bb_external][:sensu][:subscriptions]|Array|The subscriptions the client belongs to |[]
 |[:bb_external][:logstash][:root]|Boolean|Whether or not to run logstash as root|false
 |[:bb_external][:logstash][:rabbitmq][:host]|String|The public facing rabbitmq endpoint|**required**
 |[:bb_external][:logstash][:rabbitmq][:password]|String|The password for rabbitmq's logstash user|**required**
