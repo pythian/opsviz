@@ -333,15 +333,17 @@
               }
             },
             "logstash": {
-              "rabbitmq_server": {
-                "Fn::GetAtt": [
-                  "RabbitMQELB",
-                  "DNSName"
-                ]
-              },
-              "rabbitmq_password": {
-                "Ref": "RabbitMQLogstashInternalPassword"
-              },
+                "rabbitmq": { 
+                  "server": {
+                    "Fn::GetAtt": [
+                      "RabbitMQELB",
+                      "DNSName"
+                    ]
+                  },
+                  "password": {
+                    "Ref": "RabbitMQLogstashInternalPassword"
+                  }
+                },
               "server": {
                 "elasticsearch_server": {
                   "Fn::GetAtt": [
@@ -861,6 +863,7 @@
         "ElasticSearchInstance1",
         "ElasticSearchInstance2",
         "ElasticSearchInstance3",
+        "DashboardInstance1",
         "RabbitMQInstance1"
       ],
       "Properties": {

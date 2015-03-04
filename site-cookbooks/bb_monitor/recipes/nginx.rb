@@ -1,6 +1,13 @@
 include_recipe 'nginx'
-doorman_enabled = node["doorman"]["enabled"].equal? "true"
-include_recipe 'bb_monitor::doorman' if doorman_enabled
+
+begin
+  doorman_enabled = node["doorman"]["enabled"].eql? "true"
+  Chef::Log.debug("node[\"doorman\"][\"enabled\"] is #{node['doorman']['enabled']}.  Configuring doorman.")
+  Chef::Log.info("doorman_enabled is #{doorman_enabled}.  Configuring doorman.")
+  include_recipe 'bb_monitor::doorman' if doorman_enabled
+rescue
+  Chef::Log.info("Couldn't find node[\"doorman\"][\"enabled\"].  Not configuring doorman.")
+end
 
 file "/etc/nginx/sites-enabled/default" do
   action :delete

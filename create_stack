@@ -68,8 +68,15 @@ class OpsVizStackCreator(object):
             raise SystemExit("Failed to get ARN from cert upload. Resp: {}".format(resp))
 
     def prepare_cert(self):
-        self.ssl_key, self.ssl_cert = self.gen_certificate()
-        self.cert_arn = self.upload_cert()
+        certs_response = self.iam.list_server_certs()
+        cert_list = certs_response[u'list_server_certificates_response'][u'list_server_certificates_result'][u'server_certificate_metadata_list']
+        print(cert_list)
+        valid_certs =[x for x in cert_list if x[u'server_certificate_name'] == "{}_cert".format(self.opts.stack_name)]
+        if len(valid_certs) == 1:
+            self.cert_arn = valid_certs[0][u'arn']
+        else:
+            self.ssl_key, self.ssl_cert = self.gen_certificate()
+            self.cert_arn = self.upload_cert()
 
         return self.cert_arn
 
