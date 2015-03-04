@@ -13,7 +13,8 @@ This section assumes that you want to install the client(s) on a remote server f
 1. Add a Berksfile to your directory containing these two lines:
 
     source 'https://supermarket.chef.io'  
-    cookbook 'bb_external', git: 'https://github.com/pythian/opsviz.git', rel: 'site-cookbooks/bb_external'
+    cookbook 'bb_external', git: 'https://github.com/pythian/opsviz.git', rel: 'site-cookbooks/bb_external'  
+    cookbook 'logstash', git: 'https://github.com/foxycoder/chef-logstash.git'
 
 1. Use Berkshelf to vendor all the cookbooks you need.
 
