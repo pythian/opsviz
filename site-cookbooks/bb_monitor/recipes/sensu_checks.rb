@@ -73,6 +73,14 @@ sensu_check "metric-memory" do
   interval 60
 end
 
+sensu_check "metrics-net" do
+  type "metric"
+  command "metrics-net.rb --scheme stats.:::name:::.memory"
+  handlers node[:bb_monitor][:sensu][:default_metric_handlers]
+  subscribers ["all"]
+  interval 60
+end
+
 include_recipe "sensu"
 
 sensu_check "rabbitmq-messages" do
