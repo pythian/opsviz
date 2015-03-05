@@ -26,6 +26,7 @@ This section assumes that you want to install the client(s) on a remote server f
 
 1. Now, knife will have created all the files you need.  Edit the one in `nodes/` that corresponds to your host:
 
+    ```javascript
     {
       "name": "HOSTNAME GOES HERE",
       "default_attributes": {
@@ -66,6 +67,7 @@ This section assumes that you want to install the client(s) on a remote server f
         }
       }
     }
+    ```
 
 1. Use knife-zero to bootstrap your remote server
 
