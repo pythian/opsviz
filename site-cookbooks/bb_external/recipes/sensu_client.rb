@@ -1,7 +1,23 @@
 include_recipe "sensu::default"
 
+if node[:platform_family].include?("ubuntu")
+    %w(ruby ruby-dev make).each do |pkg|
+    package pkg do
+        action :install
+        end
+    end
+end
+if node[:platform_family].include?("centos")
+    %w(ruby ruby-devel make).each do |pkg|
+    package pkg do
+        action :install
+        end
+    end
+end
+
 %w(server password).each do |attribute|
   unless node[:bb_external][:sensu][:rabbitmq].has_key?(attribute)
+    Chef::Log.error("node[\"bb_external\"][\"sensu\"] is #{node['bb_external']['sensu']}.")
     raise "Missing attribute bb_external.sensu.rabbitmq.#{attribute}"
   end
 end
