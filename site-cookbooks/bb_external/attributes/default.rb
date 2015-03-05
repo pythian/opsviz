@@ -8,6 +8,9 @@ default[:bb_external][:sensu][:rabbitmq][:user] = "sensu"
 default[:bb_external][:sensu][:rabbitmq][:ssl] = true
 default[:bb_external][:sensu][:rabbitmq][:port] = 5671
 
+# Default setting for mysql user for sensu plugins
+default[:bb_external][:sensu][:mysql][:user] = "sensu"
+
 default[:bb_external][:logstash][:rabbitmq][:port] = 5671
 default[:bb_external][:logstash][:rabbitmq][:ssl] = true
 default[:bb_external][:logstash][:rabbitmq][:verify_ssl] = false
