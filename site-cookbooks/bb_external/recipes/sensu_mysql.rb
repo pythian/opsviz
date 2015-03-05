@@ -1,10 +1,12 @@
 # Add gem dependences for mysql plugins
-%w[
-  mysql2
-  inifile
-].each do |package|
+# Versions are added because CentOS can't run latest version of
+{
+  "mysql2" => {:version=>"0.3.18"},
+  "inifile" => {:version=>"2.0.2"}
+}.each do |package, attributes|
   gem_package package do
     action :install
+    version attributes[:version]
   end
 end
 
