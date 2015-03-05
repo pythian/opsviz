@@ -536,6 +536,7 @@
             "bb_monitor::kibana",
             "bb_monitor::grafana",
             "bb_monitor::sensu_server",
+            "bb_monitor::flapjack",
             "bb_monitor::nginx",
             "bb_monitor::route53",
             "bb_monitor::logstash_agent"
