@@ -47,3 +47,7 @@ end
 gem_package 'aws-sdk' do
   action :install
 end
+
+# Add mysql dependencies if check is subscribing to 'mysql' in [:bb_external][:sensu][:subscriptions]
+include_recipe "bb_external::sensu_mysql" if node[:bb_external][:sensu][:subscriptions].include? 'mysql'
+
