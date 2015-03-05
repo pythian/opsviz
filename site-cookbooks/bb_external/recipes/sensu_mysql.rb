@@ -20,7 +20,7 @@ end
 end
 
 # configure /opt/sensu/.my.cnf
-# TODO: If using 5.6 we can
+# TODO: If using 5.6 we can utilize encrypted files, but plugins will have to be modified
 template "/opt/sensu/.my.cnf" do
   source "my.cnf_sensu.erb"
   owner "sensu"
