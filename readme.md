@@ -17,7 +17,7 @@ It also builds everything with private-only ip addresses and restricts all exter
 - VPC
   - ELBs
   - Public/Private subnets
-- OpsWorks  
+- OpsWorks
   - Bastion
   - Sensu server
   - Dashboards (Grafana, Kibana, Graphite, Sensu)

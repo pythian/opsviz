@@ -13,9 +13,6 @@ end
   check-disk.rb
   check-elb-health.rb
   check-elb-nodes.rb
-  check-es-cluster-status.rb
-  check-es-file-descriptors.rb
-  check-es-heap.rb
   check-http.rb
   check-load.rb
   check_mongodb.py
@@ -24,7 +21,7 @@ end
   check-ram.rb
   check-rds.rb
   check-rds-events.rb
-  check-snmp.rb 
+  check-snmp.rb
   cpu-metrics.rb
   cpu-pcnt-usage-metrics.rb
   disk-metrics.rb
@@ -44,6 +41,12 @@ end
   rds-metrics.rb
   snmp-metrics.rb
   snmp-if-metrics.rb
+  check-es-cluster-status.rb
+  check-es-file-descriptors.rb
+  check-es-heap.rb
+  es-cluster-metrics.rb
+  es-node-metrics.rb
+  mysql-graphite.rb
 ].each do |plugin|
   cookbook_file ::File.join(node.sensu.directory, "plugins", plugin) do
     source "sensu_plugins/#{plugin}"
@@ -55,3 +58,6 @@ end
 gem_package 'aws-sdk' do
   action :install
 end
+
+# Add mysql dependencies if check is subscribing to 'mysql' in [:bb_external][:sensu][:subscriptions]
+include_recipe "bb_external::sensu_mysql" if node[:bb_external][:sensu][:subscriptions].include? 'mysql'
