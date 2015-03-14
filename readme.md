@@ -17,7 +17,7 @@ It also builds everything with private-only ip addresses and restricts all exter
 - VPC
   - ELBs
   - Public/Private subnets
-- OpsWorks  
+- OpsWorks
   - Bastion
   - Sensu server
   - Dashboards (Grafana, Kibana, Graphite, Sensu)
@@ -105,12 +105,14 @@ A separate cookbook has been created that contains recipes for installing extern
 See [bb_external](site-cookbooks/bb_external) for more documentation
 
 ### External Logstash Clients
-To setup an external logstash client
+To setup an external logstash client.
+
 1. Install logstash according to [documentation](http://logstash.net/docs/1.4.2/tutorials/getting-started-with-logstash)
 2. Update the config to push logs to the rabbitmq ELB
 
 ### External Statsd Clients
-Setup statsd to push metrics rabbitmq where graphite will pull out of
+Setup statsd to push metrics rabbitmq where graphite will pull out of.
+
 1. Install statsd client according to [documentation](https://github.com/etsy/statsd/)
 2. Install rabbitmq backend `npm install git+https://github.com/mrtazz/statsd-amqp-backend.git`
 3. Setup config as follows
@@ -138,7 +140,8 @@ Setup statsd to push metrics rabbitmq where graphite will pull out of
         }
 
 ### External Sensu Clients
-We use the public facing RabbitMQ as the transport layer for external sensu clients
+We use the public facing RabbitMQ as the transport layer for external sensu clients.
+
 1. Install sensu client according to [documentation](http://sensuapp.org/docs/0.16/guide)
 2. Update client config `/etc/sensu/conf.d/client.json`
 3. Update rabbitmq config `/etc/sensu/conf.d/rabbitmq.json`
@@ -195,3 +198,74 @@ You can also provide custom parameters. For example, if you want to use your own
 Multiple `--param` options can be specified.
 
 In order to use the script, you must setup access keys. See the [boto configuration doc](http://boto.readthedocs.org/en/latest/boto_config_tut.html) for more information.
+
+### Building with Vagrant
+
+The included Vagrantfile will build the Opsvis stack on four virtual machines ```rabbitmq-1, logstash-1, elastic-1 and dashboard-1```.
+
+
+```
+vagrant up
+```
+
+```
+Current machine states:
+
+rabbitmq-1                running (virtualbox)
+logstash-1                running (virtualbox)
+elastic-1                 running (virtualbox)
+dashboard-1               running (virtualbox)
+```
+
+Once complete the dashboard will be available locally at:
+
+- http://dashboard.opsvis.dev/
+- http://dashboard.opsvis.dev/sensu
+- http://dashboard.opsvis.dev/kibana
+- http://dashboard.opsvis.dev/grafana
+
+Default doorman password is ```opsvis```.
+
+
+#### Vagrant Configuration
+
+###### nodes.json
+Configures each node including roles, ip, hostnames, CPU, memory, etc.
+
+```
+... snip ...
+    "dashboard-1": {
+      ":node": "Dashboard-1",
+      ":ip": "10.10.3.10",
+      ":host": "dashboard-1.opsvis.dev",
+      ":lb": "dashboard.opsvis.dev",
+      ":tags": [
+        "dashboard",
+        "graphite"
+      ],
+      ":roles": [
+        "dashboard"
+      ],
+      "ports": [
+        {
+          ":host": 2201,
+          ":guest": 22,
+          ":id": "ssh"
+        },
+        {
+          ":host": 8090,
+          ":guest": 80,
+          ":id": "httpd"
+        }
+      ],
+      ":memory": 2048,
+      ":cpus": 1
+    }
+... snip ...
+```
+
+##### node.json
+Custom JSON to overwrite default configs.
+
+##### Roles
+```roles/``` contains specific node roles and run_list as referenced in Vagrantfile.

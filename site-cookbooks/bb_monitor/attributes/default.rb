@@ -1,11 +1,11 @@
-default[:kibana][:user] = 'admin'
-default[:kibana][:password] = 'changeme'
+default[:kibana][:user] = "admin"
+default[:kibana][:password] = "changeme"
 
-normal[:kibana][:config][:cookbook] = 'bb_monitor'
+normal[:kibana][:config][:cookbook] = "bb_monitor"
 
 #nginx
 # install nginx from source so we get a high enough version for websockets
-normal['nginx']['install_method'] = 'source'
+normal["nginx"]["install_method"] = "source"
 
 ##Sensu
 normal[:sensu][:use_ssl] = false
@@ -33,5 +33,5 @@ default[:bb_monitor][:sensu][:default_metric_handlers] = ["graphite"]
 default[:bb_monitor][:sensu][:subscriptions] = ["all"] + node[:opsworks][:instance][:layers]
 
 # Disable sensu dashboard user/pass since we have nginx in front
-normal['uchiwa']['settings']['user'] = ''
-normal['uchiwa']['settings']['pass'] = ''
+normal["uchiwa"]["settings"]["user"] = ""
+normal["uchiwa"]["settings"]["pass"] = ""
