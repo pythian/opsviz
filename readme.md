@@ -3,7 +3,7 @@
 
 ### Overview
 
-This repository includes the cloudformation json and opsworks cookbooks to stand up a complete ELK stack in AWS.
+This repository includes the CloudFormation json and OpsWorks cookbooks to stand up a complete ELK stack in AWS.
 
 Out of the box, it is Highly Available within one availability zone and automatically scales on load and usage.
 
@@ -13,7 +13,7 @@ It also builds everything with private-only ip addresses and restricts all exter
 1. All dashboards and elasticsearch requests are protected by doorman and hosted together on a “dashboard” host
 
 ### Components [Architecture Diagram](screenshots/architecture_diagram.png)
-- Cloud Formation Script
+- CloudFormation Script
 - VPC
   - ELBs
   - Public/Private subnets
@@ -29,10 +29,10 @@ It also builds everything with private-only ip addresses and restricts all exter
 
 ### Setup
 1. Upload an SSL Certificate to AWS for the RabbitMQ ELB - and note the generated ARN [Instructions](http://docs.aws.amazon.com/ElasticLoadBalancing/latest/DeveloperGuide/ssl-server-cert.html#upload-cert)
-2. Create a new cloud formation stack on the [Cloud Formation Dashboard](https://console.aws.amazon.com/cloudformation/home) [image](screenshots/create_stack.png)
+2. Create a new CloudFormation stack on the [CloudFormation Dashboard](https://console.aws.amazon.com/cloudformation/home) [image](screenshots/create_stack.png)
 3. Choose "Upload a template to Amazon S3" on upload cloudformation.json
 4. See Cloudformation Paramaters section on specifics for paramaters [image](screenshots/cloudformation_parameters.png)
-5. *During options I recommend disabling rollback on failture so you can see logs on opsworks boxes when recipes fail* [image](screenshots/rollback_on_failure.png)
+5. *During options I recommend disabling rollback on failture so you can see logs on OpsWorks boxes when recipes fail* [image](screenshots/rollback_on_failure.png)
 
 
 ### Cloudformation Paramaters
@@ -65,7 +65,7 @@ All of these will need to be filled in, for secure passwords and a secure erlang
   #### Additional Info
   - `CookbooksRepo`
 
-    Should Point to this repository. This will point opsworks to use the custom chef cookbooks from this repo
+    Should Point to this repository. This will point OpsWorks to use the custom chef cookbooks from this repo
     when provisioning the instances.
 
   - `DoormanPassword`, `GithubOauthAppId`, `GithubOauthOrganization`, `GithubOauthSecret`
@@ -173,13 +173,13 @@ This would make it easier to update sensu without needing to worry about making 
 
 ### Custom JSON
 [This Custom Json](custom_json.example.json) is the Custom Json block that is set as the OpsWorks custom json. It drives a lot of the custom configuration
-that chef uses to customize the boxes. Its currently embedded in the Cloud Formation script so that we can inject paramaters into the custom json.
+that chef uses to customize the boxes. Its currently embedded in the CloudFormation script so that we can inject paramaters into the custom json.
 
 If changes need to be made to the custom json you can do it from the OpsWorks stack's stack settings page. If you make changes make sure that you
-don't update the Cloud Formation stack as it will overwrite the custom OpsWork's settings you made.
+don't update the CloudFormation stack as it will overwrite the custom OpsWork's settings you made.
 
-*Todo: At some point it would be nice to allow a user to inject their own custom json into the cloud formation processes without having to manually make changes
-to the monolithic cloudromation.json file*
+*Todo: At some point it would be nice to allow a user to inject their own custom json into the CloudFormation processes without having to manually make changes
+to the monolithic CloudFormation.json file*
 
 ### Using create_stack
 
