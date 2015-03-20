@@ -83,7 +83,7 @@ Vagrant.configure(2) do |config|
                           }
                         }
 
-        chef.json.merge!( opsworks_json )
+        chef.json.merge!(opsworks_json)
         chef.cookbooks_path = ['site-cookbooks', 'ops/opsworks-cookbooks']
         chef.roles_path     = ['roles', 'ops/opsworks-roles']
 
