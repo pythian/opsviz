@@ -64,17 +64,17 @@ Vagrant.configure(2) do |config|
                               :availability_zone => 'vagrant'
                             },
                             :layers => {
-                              :dashboard   =>  {
-                                :instances  =>  [ 'dashboard-1' ]
+                              :dashboard => {
+                                :instances => ['dashboard-1']
                               },
-                              :elasticsearch   =>  {
-                                :instances  =>  [ 'elastic-1' ]
+                              :elasticsearch => {
+                                :instances => ['elastic-1']
                               },
-                              :logstash   =>  {
-                                :instances  =>  [ 'logstash-1' ]
+                              :logstash => {
+                                :instances => ['logstash-1']
                               },
-                              :rabbitmq   =>  {
-                                :instances  =>  [ 'rabbitmq-1' ]
+                              :rabbitmq => {
+                                :instances => ['rabbitmq-1']
                               }
                             },
                             :stack => {
@@ -85,8 +85,8 @@ Vagrant.configure(2) do |config|
 
         chef.json.merge!( opsworks_json )
         chef.cookbooks_path = ['site-cookbooks', 'ops/opsworks-cookbooks']
-        chef.roles_path     = ['roles', 'ops/opsworks-roles' ]
-        # chef.data_bags_path = ['data_bags' ]
+        chef.roles_path     = ['roles', 'ops/opsworks-roles']
+        # chef.data_bags_path = ['data_bags']
 
         if node_name =~ /^dashboard*/
           # chef.add_role 'opworks_default'
