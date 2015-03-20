@@ -44,41 +44,41 @@ Vagrant.configure(2) do |config|
 
       config.vm.provision :chef_solo do |chef|
         chef.json = {
-          :name => node_values[':node'].to_s,
-          :fqdn => node_values[':host'],
-          :provider => 'vagrant'
+          name: node_values[':node'].to_s,
+          fqdn: node_values[':host'],
+          provider: 'vagrant'
         }
 
         chef.json.merge!(JSON.parse(File.read('node.json')))
 
         opsworks_json = {
-                          :opsworks => {
-                            :instance => {
-                              :node => node_name,
-                              :hostname => node_name,
-                              :layers => node_values[':roles'],
-                              :ip => node_values[':ip'],
-                              :private_ip => node_values[':ip'],
-                              :region => 'local',
-                              :aws_instance_id => node_name,
-                              :availability_zone => 'vagrant'
+                          opsworks: {
+                            instance: {
+                              node: node_name,
+                              hostname: node_name,
+                              layers: node_values[':roles'],
+                              ip: node_values[':ip'],
+                              private_ip: node_values[':ip'],
+                              region: 'local',
+                              aws_instance_id: node_name,
+                              availability_zone: 'vagrant'
                             },
-                            :layers => {
-                              :dashboard => {
-                                :instances => ['dashboard-1']
+                            layers: {
+                              dashboard: {
+                                instances: ['dashboard-1']
                               },
-                              :elasticsearch => {
-                                :instances => ['elastic-1']
+                              elasticsearch: {
+                                instances: ['elastic-1']
                               },
-                              :logstash => {
-                                :instances => ['logstash-1']
+                              logstash: {
+                                instances: ['logstash-1']
                               },
-                              :rabbitmq => {
-                                :instances => ['rabbitmq-1']
+                              rabbitmq: {
+                                instances: ['rabbitmq-1']
                               }
                             },
-                            :stack => {
-                              :name => 'Opsvis'
+                            stack: {
+                              name: 'Opsvis'
                             }
                           }
                         }
