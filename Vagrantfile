@@ -1,24 +1,18 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-# read vm and chef configurations from JSON files
-nodes_config = JSON.parse(File.read('nodes.json'))['nodes']
-
 Vagrant.require_version '>= 1.5.0'
 
 Vagrant.configure(2) do |config|
   config.vm.box = 'ubuntu/trusty64'
 
   config.omnibus.chef_version = 'latest'
-  # config.omnibus.chef_version = '12.0.1'
-  # config.omnibus.chef_version = '11.16.4'
-  # config.omnibus.chef_version = '11.10.0'
 
   config.berkshelf.enabled       = true
   config.hostmanager.manage_host = true
   config.hostmanager.enabled     = true
 
-  nodes_config.each do |node|
+  JSON.parse(File.read('nodes.json'))['nodes'].each do |node|
     node_name   = node[0].to_s
     node_values = node[1]
     aliases     = []
@@ -93,11 +87,7 @@ Vagrant.configure(2) do |config|
         else
           chef.run_list = []
         end
-
       end
-    end
-  end
-end
     end
   end
 end
