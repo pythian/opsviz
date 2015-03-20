@@ -87,23 +87,25 @@ Vagrant.configure(2) do |config|
         chef.cookbooks_path = ['site-cookbooks', 'ops/opsworks-cookbooks']
         chef.roles_path     = ['roles', 'ops/opsworks-roles']
 
-        if node_name =~ /^dashboard*/
+        case node_name
+        when /^dashboard*/
           chef.add_role 'dashboard'
           chef.add_role 'opsvis_client'
-        else if node_name =~ /^elastic*/
+        when /^elastic*/
           chef.add_role 'elasticsearch'
           chef.add_role 'opsvis_client'
-        else if node_name =~ /^logstash*/
+        when /^logstash*/
           chef.add_role 'logstash'
           chef.add_role 'opsvis_client'
-        else if node_name =~ /^rabbitmq*/
+        when /^rabbitmq*/
           chef.add_role 'rabbitmq'
           chef.add_role 'opsvis_client'
         else
           chef.run_list = []
-          end
-          end
-          end
+        end
+
+        end
+        end
         end
       end
     end
