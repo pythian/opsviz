@@ -2,7 +2,7 @@
 # vi: set ft=ruby :
 
 # read vm and chef configurations from JSON files
-nodes_config = (JSON.parse(File.read('nodes.json')))['nodes']
+nodes_config = JSON.parse(File.read('nodes.json'))['nodes']
 
 Vagrant.require_version '>= 1.5.0'
 
@@ -14,14 +14,14 @@ Vagrant.configure(2) do |config|
   # config.omnibus.chef_version = '11.16.4'
   # config.omnibus.chef_version = '11.10.0'
 
-  config.berkshelf.enabled = true
+  config.berkshelf.enabled       = true
   config.hostmanager.manage_host = true
-  config.hostmanager.enabled = true
+  config.hostmanager.enabled     = true
 
   nodes_config.each do |node|
-    node_name   = node[0].to_s # name of node
-    node_values = node[1] # content of node
-    aliases = Array.new()
+    node_name   = node[0].to_s
+    node_values = node[1]
+    aliases     = []
 
     config.vm.define node_name do |config|
       aliases.push(node_values[':lb'])
@@ -86,28 +86,19 @@ Vagrant.configure(2) do |config|
         chef.json.merge!( opsworks_json )
         chef.cookbooks_path = ['site-cookbooks', 'ops/opsworks-cookbooks']
         chef.roles_path     = ['roles', 'ops/opsworks-roles']
-        # chef.data_bags_path = ['data_bags']
 
         if node_name =~ /^dashboard*/
-          # chef.add_role 'opworks_default'
           chef.add_role 'dashboard'
           chef.add_role 'opsvis_client'
-
         else if node_name =~ /^elastic*/
-          # chef.add_role 'opworks_default'
           chef.add_role 'elasticsearch'
           chef.add_role 'opsvis_client'
-
         else if node_name =~ /^logstash*/
-          # chef.add_role 'opworks_default'
           chef.add_role 'logstash'
           chef.add_role 'opsvis_client'
-
         else if node_name =~ /^rabbitmq*/
-          # chef.add_role 'opworks_default'
           chef.add_role 'rabbitmq'
           chef.add_role 'opsvis_client'
-
         else
           chef.run_list = []
           end
