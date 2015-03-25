@@ -3,7 +3,7 @@
 
 ### Overview
 
-This repository includes the cloudformation json and opsworks cookbooks to stand up a complete ELK stack in AWS.
+This repository includes the CloudFormation json and OpsWorks cookbooks to stand up a complete ELK stack in AWS.
 
 Out of the box, it is Highly Available within one availability zone and automatically scales on load and usage.
 
@@ -13,11 +13,11 @@ It also builds everything with private-only ip addresses and restricts all exter
 1. All dashboards and elasticsearch requests are protected by doorman and hosted together on a “dashboard” host
 
 ### Components [Architecture Diagram](screenshots/architecture_diagram.png)
-- Cloud Formation Script
+- CloudFormation Script
 - VPC
   - ELBs
   - Public/Private subnets
-- OpsWorks  
+- OpsWorks
   - Bastion
   - Sensu server
   - Dashboards (Grafana, Kibana, Graphite, Sensu)
@@ -29,10 +29,10 @@ It also builds everything with private-only ip addresses and restricts all exter
 
 ### Setup
 1. Upload an SSL Certificate to AWS for the RabbitMQ ELB - and note the generated ARN [Instructions](http://docs.aws.amazon.com/ElasticLoadBalancing/latest/DeveloperGuide/ssl-server-cert.html#upload-cert)
-2. Create a new cloud formation stack on the [Cloud Formation Dashboard](https://console.aws.amazon.com/cloudformation/home) [image](screenshots/create_stack.png)
+2. Create a new CloudFormation stack on the [CloudFormation Dashboard](https://console.aws.amazon.com/cloudformation/home) [image](screenshots/create_stack.png)
 3. Choose "Upload a template to Amazon S3" on upload cloudformation.json
 4. See Cloudformation Paramaters section on specifics for paramaters [image](screenshots/cloudformation_parameters.png)
-5. *During options I recommend disabling rollback on failture so you can see logs on opsworks boxes when recipes fail* [image](screenshots/rollback_on_failure.png)
+5. *During options I recommend disabling rollback on failture so you can see logs on OpsWorks boxes when recipes fail* [image](screenshots/rollback_on_failure.png)
 
 
 ### Cloudformation Paramaters
@@ -65,7 +65,7 @@ All of these will need to be filled in, for secure passwords and a secure erlang
   #### Additional Info
   - `CookbooksRepo`
 
-    Should Point to this repository. This will point opsworks to use the custom chef cookbooks from this repo
+    Should Point to this repository. This will point OpsWorks to use the custom chef cookbooks from this repo
     when provisioning the instances.
 
   - `DoormanPassword`, `GithubOauthAppId`, `GithubOauthOrganization`, `GithubOauthSecret`
@@ -89,7 +89,7 @@ All of these will need to be filled in, for secure passwords and a secure erlang
     - graphite.opsvis.example.com => Graphite ELB <Internal Only>
 
 ### External Access
-*All instances other than the NAT and Bastion hosts are within the private subent and cannot be accessed directly*
+*All instances other than the NAT and Bastion hosts are within the private subnet and cannot be accessed directly*
 
 RabbitMQ has a public facing ELB in front of it with SSL termination.
 The dashboard instance has an ELB in front of it so the dasbhoards for grafana, kibana, graphite, and sensu are publicly accessible (Authentication is still required)
@@ -105,12 +105,14 @@ A separate cookbook has been created that contains recipes for installing extern
 See [bb_external](site-cookbooks/bb_external) for more documentation
 
 ### External Logstash Clients
-To setup an external logstash client
+To setup an external logstash client.
+
 1. Install logstash according to [documentation](http://logstash.net/docs/1.4.2/tutorials/getting-started-with-logstash)
 2. Update the config to push logs to the rabbitmq ELB
 
 ### External Statsd Clients
-Setup statsd to push metrics rabbitmq where graphite will pull out of
+Setup statsd to push metrics rabbitmq where graphite will pull out of.
+
 1. Install statsd client according to [documentation](https://github.com/etsy/statsd/)
 2. Install rabbitmq backend `npm install git+https://github.com/mrtazz/statsd-amqp-backend.git`
 3. Setup config as follows
@@ -138,7 +140,8 @@ Setup statsd to push metrics rabbitmq where graphite will pull out of
         }
 
 ### External Sensu Clients
-We use the public facing RabbitMQ as the transport layer for external sensu clients
+We use the public facing RabbitMQ as the transport layer for external sensu clients.
+
 1. Install sensu client according to [documentation](http://sensuapp.org/docs/0.16/guide)
 2. Update client config `/etc/sensu/conf.d/client.json`
 3. Update rabbitmq config `/etc/sensu/conf.d/rabbitmq.json`
@@ -170,13 +173,13 @@ This would make it easier to update sensu without needing to worry about making 
 
 ### Custom JSON
 [This Custom Json](custom_json.example.json) is the Custom Json block that is set as the OpsWorks custom json. It drives a lot of the custom configuration
-that chef uses to customize the boxes. Its currently embedded in the Cloud Formation script so that we can inject paramaters into the custom json.
+that chef uses to customize the boxes. Its currently embedded in the CloudFormation script so that we can inject paramaters into the custom json.
 
 If changes need to be made to the custom json you can do it from the OpsWorks stack's stack settings page. If you make changes make sure that you
-don't update the Cloud Formation stack as it will overwrite the custom OpsWork's settings you made.
+don't update the CloudFormation stack as it will overwrite the custom OpsWork's settings you made.
 
-*Todo: At some point it would be nice to allow a user to inject their own custom json into the cloud formation processes without having to manually make changes
-to the monolithic cloudromation.json file*
+*Todo: At some point it would be nice to allow a user to inject their own custom json into the CloudFormation processes without having to manually make changes
+to the monolithic CloudFormation.json file*
 
 ### Using create_stack
 
@@ -195,3 +198,74 @@ You can also provide custom parameters. For example, if you want to use your own
 Multiple `--param` options can be specified.
 
 In order to use the script, you must setup access keys. See the [boto configuration doc](http://boto.readthedocs.org/en/latest/boto_config_tut.html) for more information.
+
+### Building with Vagrant
+
+The included Vagrantfile will build the Opsvis stack on four virtual machines ```rabbitmq-1, logstash-1, elastic-1 and dashboard-1```.
+
+
+```
+vagrant up
+```
+
+```
+Current machine states:
+
+rabbitmq-1                running (virtualbox)
+logstash-1                running (virtualbox)
+elastic-1                 running (virtualbox)
+dashboard-1               running (virtualbox)
+```
+
+Once complete the dashboard will be available locally at:
+
+- http://dashboard.opsvis.dev/
+- http://dashboard.opsvis.dev/sensu
+- http://dashboard.opsvis.dev/kibana
+- http://dashboard.opsvis.dev/grafana
+
+Default doorman password is ```opsvis```.
+
+
+#### Vagrant Configuration
+
+###### nodes.json
+Configures each node including roles, ip, hostnames, CPU, memory, etc.
+
+```
+... snip ...
+    "dashboard-1": {
+      ":node": "Dashboard-1",
+      ":ip": "10.10.3.10",
+      ":host": "dashboard-1.opsvis.dev",
+      ":lb": "dashboard.opsvis.dev",
+      ":tags": [
+        "dashboard",
+        "graphite"
+      ],
+      ":roles": [
+        "dashboard"
+      ],
+      "ports": [
+        {
+          ":host": 2201,
+          ":guest": 22,
+          ":id": "ssh"
+        },
+        {
+          ":host": 8090,
+          ":guest": 80,
+          ":id": "httpd"
+        }
+      ],
+      ":memory": 2048,
+      ":cpus": 1
+    }
+... snip ...
+```
+
+##### node.json
+Custom JSON to overwrite default configs.
+
+##### Roles
+```roles/``` contains specific node roles and run_list as referenced in Vagrantfile.

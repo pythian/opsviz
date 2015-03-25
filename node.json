@@ -1,0 +1,158 @@
+{
+  "aws_region": "vagrant-us-west-2",
+  "bb_external": {
+    "logstash": {
+      "rabbitmq": {
+        "port": "5672", // ELB 5671 -> 5672
+        "ssl": "false"
+      }
+    },
+    "sensu":  {
+      "rabbitmq": {
+        "port": "5672", // ELB 5671 -> 5672
+        "ssl": "false"
+      }
+    }
+  },
+  "bb_monitor": {
+    "sensu": {
+      "rabbitmq": {
+        "password": "2bankBREAD#amped",
+        "server": "rabbitmq.opsvis.dev"
+      },
+      "server_url": "dashboard.opsvis.dev",
+      "pagerduty_api": "pagerdutyapihere",
+      "pagerduty_warn": false,
+      "default_check_handlers": [
+        "pagerduty",
+        "slack"
+      ],
+      "custom_checks": {
+
+
+      }
+    },
+    "logstash": {
+      "rabbitmq": {
+        "server": "rabbitmq.opsvis.dev",
+        "password": "4tonedYOUUU/thug"
+      },
+      "server": {
+        "elasticsearch_server": "elastic.opsvis.dev",
+        "filters": [
+          {
+            "geoip": {
+              "source": "remote_addr"
+            }
+          },
+          {
+            "geoip": {
+              "source": "ipAddress"
+            }
+          },
+          {
+            "geoip": {
+              "source": "clientip"
+            }
+          }
+        ],
+        "statsd_output": {
+            "count": [
+              "%{type}.bytes_sent",
+              "%{body_bytes_sent}"
+            ],
+            "increment": [
+              "%{type}.status.%{status}"
+            ],
+            "namespace": "",
+            "timing": [
+              "%{type}.request_time",
+              "%{request_time}",
+              "%{type}.responseTime",
+              "%{responseTime}"
+            ]
+          }
+      }
+    }
+  },
+  "chef_environment": "production",
+  "doorman": {
+    "enabled": "true",
+    "app_id": "",
+    "app_secret": "",
+    "org_name": "pythian",
+    "password": "opsvis",
+    "session_secret": "$1o$9BxoAx)jemx8@mMrPmlg%+s)Ew2FuYwjrzKBjFXpLuKzHl"
+  },
+  "elasticsearch": {
+    "cloud": {
+      "aws": {
+        "region": "us-west-2"
+      }
+    },
+    "cluster": {
+      "name": "logstash"
+    },
+    "discovery": {
+      "type": "ec2"
+    },
+    "http_auth": "false",
+    "index.auto_expand_replicas": "2-all",
+    "index.number_of_replicas": "0",
+    "index.number_of_shards": "8",
+    "plugins": {
+      "elasticsearch/elasticsearch-cloud-aws": {
+        "version": "2.2.0"
+      }
+    },
+    "version": "1.0.1"
+  },
+  "graphite": {
+    "host": "dashboard.opsvis.dev"
+  },
+  "kibana": {
+    "elasticsearch_server": "elastic.opsvis.dev",
+    "kibana3_version": "3.1.1",
+    "checksum": "ab5c32786d683fa7a2f6d983843751cb627427f8c6eea904a4d6849ef037bda4",
+    "version": "3"
+  },
+  "nginx":  {
+    "version": "1.4.4",
+    "source": {
+      "checksum": "7c989a58e5408c9593da0bebcd0e4ffc3d892d1316ba5042ddb0be5b0b4102b9"
+    }
+  },
+  "rabbitmq": {
+    "cluster": "true",
+    "erlang_cookie": "FV%gpcg0w+gT&kVViW6Lgl4dkmjei7X1YV8XVsv&$+lUGl)hZr"
+  },
+  "rabbitmq_cluster": {
+    "users": [
+      {
+        "password": "3goopyLEFT=chess",
+        "user": "logger"
+      },
+      {
+        "password": "3primoSWELL}idol",
+        "user": "logstash_external"
+      },
+      {
+        "password": "4tonedYOUUU/thug",
+        "user": "logstash_internal"
+      }
+    ]
+  },
+  "route53": {
+    "domain_name": "opsvis.dev",
+    "zone_id": "R53ZONEID"
+  },
+  "statsd": {
+    "graphite_host": "dashboard.opsvis.dev",
+    "nodejs_bin": "/usr/local/bin/node",
+    "rabbitmq": {
+      "password": "2bankBREAD#amped",
+      "user": "statsd",
+      "vhost": "/statsd"
+    }
+  }
+}

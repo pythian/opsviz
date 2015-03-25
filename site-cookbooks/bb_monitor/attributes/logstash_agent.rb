@@ -104,8 +104,8 @@ normal[:logstash][:agent][:filters] = [
     },
     "mutate" => {
       "add_field" => {
-        "opsworks_stack"=> node[:opsworks][:stack][:name].downcase.gsub(' ','_'),
-        "opsworks_layers"=> node[:opsworks][:instance][:layers].join(',')
+        "opsworks_stack"=> "", #node[:opsworks][:stack][:name].downcase.gsub(' ','_'),
+        "opsworks_layers"=> "", #node[:opsworks][:instance][:layers].join(',')
       }
     }
   },

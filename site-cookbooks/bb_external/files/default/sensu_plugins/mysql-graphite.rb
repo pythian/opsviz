@@ -68,48 +68,48 @@ require 'inifile'
 
 class Mysql2Graphite < Sensu::Plugin::Metric::CLI::Graphite
   option :host,
-         short: '-h HOST',
-         long: '--host HOST',
-         description: 'Mysql Host to connect to',
-         required: true
+         :short => '-h HOST',
+         :long => '--host HOST',
+         :description => 'Mysql Host to connect to',
+         :default => "localhost"
 
   option :port,
-         short: '-P PORT',
-         long: '--port PORT',
-         description: 'Mysql Port to connect to',
-         proc: proc(&:to_i),
-         default: 3306
+         :short => '-P PORT',
+         :long => '--port PORT',
+         :description => 'Mysql Port to connect to',
+         :proc => proc(&:to_i),
+         :default => 3306
 
   option :username,
-         short: '-u USERNAME',
-         long: '--user USERNAME',
-         description: 'Mysql Username'
+         :short => '-u USERNAME',
+         :long => '--user USERNAME',
+         :description => 'Mysql Username'
 
   option :password,
-         short: '-p PASSWORD',
-         long: '--pass PASSWORD',
-         description: 'Mysql password',
-         default: ''
+         :short => '-p PASSWORD',
+         :long => '--pass PASSWORD',
+         :description => 'Mysql password',
+         :default => ''
 
   option :ini,
-         short: '-i',
-         long: '--ini VALUE',
-         description: 'My.cnf ini file'
+         :short => '-i',
+         :long => '--ini VALUE',
+         :description => 'My.cnf ini file'
 
   option :scheme,
-         description: 'Metric naming scheme, text to prepend to metric',
-         short: '-s SCHEME',
-         long: '--scheme SCHEME',
-         default: "#{Socket.gethostname}.mysql"
+         :description => 'Metric naming scheme, text to prepend to metric',
+         :short => '-s SCHEME',
+         :long => '--scheme SCHEME',
+         :default => "#{Socket.gethostname}.mysql"
 
   option :socket,
-         short: '-S SOCKET',
-         long: '--socket SOCKET'
+         :short => '-S SOCKET',
+         :long => '--socket SOCKET'
 
   option :verbose,
-         short: '-v',
-         long: '--verbose',
-         boolean: true
+         :short => '-v',
+         :long => '--verbose',
+         :boolean => true
 
   def run
     # props to https://github.com/coredump/hoardd/blob/master/scripts-available/mysql.coffee
@@ -236,11 +236,11 @@ class Mysql2Graphite < Sensu::Plugin::Metric::CLI::Graphite
       end
       begin
         mysql = Mysql2::Client.new(
-          host: mysql_host,
-          port: config[:port],
-          username: db_user,
-          password: db_pass,
-          socket: config[:socket]
+          :host => mysql_host,
+          :port => config[:port],
+          :username => db_user,
+          :password => db_pass,
+          :socket => config[:socket]
         )
 
         results = mysql.query('SHOW GLOBAL STATUS')
