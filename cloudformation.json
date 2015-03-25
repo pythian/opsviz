@@ -23,7 +23,7 @@
       "Default": "0.1"
     },
     "RabbitMQCertificateARN": {
-      "Description": "ARN of hte certificate to use for rabbitmq",
+      "Description": "ARN of the certificate to use for rabbitmq",
       "Type": "String"
     },
     "GithubOauthAppId": {
@@ -333,7 +333,7 @@
               }
             },
             "logstash": {
-                "rabbitmq": { 
+                "rabbitmq": {
                   "server": {
                     "Fn::GetAtt": [
                       "RabbitMQELB",
