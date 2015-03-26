@@ -8,7 +8,7 @@ production:
     level: INFO
     syslog_errors: yes
   redis:
-    host: 127.0.0.1
+    host: <%= node['flapjack']['redis']['host']%>
     port: 6380
     db: 0
   # Processes monitoring events off the *events* queue (a redis list) and decides

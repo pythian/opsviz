@@ -7,11 +7,16 @@ normal[:kibana][:config][:cookbook] = "bb_monitor"
 # install nginx from source so we get a high enough version for websockets
 normal["nginx"]["install_method"] = "source"
 
-##Sensu
+#Sensu
 normal[:sensu][:use_ssl] = false
 normal[:sensu][:rabbitmq][:host] = node[:bb_monitor][:sensu][:rabbitmq][:server]
 normal[:sensu][:rabbitmq][:password] = node[:bb_monitor][:sensu][:rabbitmq][:password]
-normal[:sensu][:redis][:host] = node[:bb_monitor][:sensu][:server_url]
+begin
+  normal[:sensu][:redis][:host] = node[:bb_monitor][:sensu][:redis_host]
+rescue 
+  normal[:sensu][:redis][:host] = node[:bb_monitor][:sensu][:server_url]
+end
+
 normal[:sensu][:api][:host] = node[:bb_monitor][:sensu][:server_url]
 normal[:sensu][:log_level] = "warn"
 
@@ -35,3 +40,10 @@ default[:bb_monitor][:sensu][:subscriptions] = ["all"] + node[:opsworks][:instan
 # Disable sensu dashboard user/pass since we have nginx in front
 normal["uchiwa"]["settings"]["user"] = ""
 normal["uchiwa"]["settings"]["pass"] = ""
+
+# Flapjack
+begin
+  normal[:flapjack][:redis][:host] = node[:bb_monitor][:flapjack][:redis_host]
+rescue
+  normal[:flapjack][:redis][:host] = "127.0.0.1"
+end

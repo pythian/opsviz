@@ -75,7 +75,7 @@ end
 
 sensu_check "metrics-net" do
   type "metric"
-  command "metrics-net.rb --scheme stats.:::name:::.memory"
+  command "metrics-net.rb --scheme stats.:::name:::.net"
   handlers node[:bb_monitor][:sensu][:default_metric_handlers]
   subscribers ["all"]
   interval 60
