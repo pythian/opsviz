@@ -16,7 +16,7 @@ cookbook 'statsd', '~> 1.1.10', git: 'https://github.com/hectcastro/chef-statsd.
 cookbook 'rabbitmq_cluster', '~> 0.1.0', path: './site-cookbooks/rabbitmq_cluster'
 cookbook 'bb_elasticsearch', '~> 0.1.0', path: './site-cookbooks/bb_elasticsearch'
 cookbook 'bb_monitor', '~> 0.1.0', path: './site-cookbooks/bb_monitor'
-cookbook 'bb_external', '~> 0.1.0', path: './site-cookbooks/bb_external'
+cookbook 'bb_external', path: './site-cookbooks/bb_external'
 
 # Override opsworks to use community apache2
 cookbook 'apache2', '~> 2.0.0', path: './apache2'
