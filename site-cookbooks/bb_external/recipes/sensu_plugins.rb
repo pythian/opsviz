@@ -47,6 +47,7 @@ end
   es-cluster-metrics.rb
   es-node-metrics.rb
   mysql-graphite.rb
+  metrics-net.rb
 ].each do |plugin|
   cookbook_file ::File.join(node.sensu.directory, "plugins", plugin) do
     source "sensu_plugins/#{plugin}"
