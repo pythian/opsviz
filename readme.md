@@ -204,9 +204,26 @@ In order to use the script, you must setup access keys. See the [boto configurat
 The included Vagrantfile will build the Opsvis stack on four virtual machines ```rabbitmq-1, logstash-1, elastic-1 and dashboard-1```.
 
 
-```
-vagrant up
-```
+#### Prerequisites
+
+Install [vagrant](https://www.vagrantup.com/downloads.html)
+
+Install vagrant plugins
+
+    vagrant plugin install vagrant-berkshelf
+    vagrant plugin install vagrant-hostmanager
+    vagrant plugin install vagrant-omnibus
+
+Install [Chef Development Kit](https://downloads.chef.io/chef-dk/)
+
+Add chef to your path:
+
+    export PATH=/opt/chefdk/bin:$PATH
+
+bundle and bring up the virtual machines
+
+    bundle
+    vagrant up --provider virtualbox --provision
 
 ```
 Current machine states:
