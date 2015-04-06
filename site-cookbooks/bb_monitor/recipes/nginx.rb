@@ -43,7 +43,7 @@ end
       owner 'root'
       group 'root'
       mode '0644'
-      path: basedir + webfile
+      path basedir + webfile
       action :create
     end
 end
