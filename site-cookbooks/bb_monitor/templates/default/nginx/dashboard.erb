@@ -6,6 +6,11 @@ listen <% if node[:doorman][:enabled]=='true' -%>8080<% else -%>80<% end -%>;
   root /var/www/dashboard;
   index index.html index.htm;
 
+     location /graphite {
+       proxy_pass            http://<%= node['graphite']['host'] %>:<%= node['graphite']['uwsgi']['port'] %>/;
+       rewrite /graphite/(.*) /$1 break;
+   }
+
   location /flapjack {
     proxy_pass            http://127.0.0.1:3080/;
     proxy_set_header Host $host:80;
