@@ -27,8 +27,7 @@ listen <% if node[:doorman][:enabled]=='true' -%>8080<% else -%>80<% end -%>;
     proxy_set_header Host $host:80;
   }
 
-  rewrite /sensu$ $scheme://$host:80/sensu/ permanent;
-  rewrite ^/sensu$ $host:80/sensu/ redirect;
+  rewrite ^/sensu$ $scheme://$host:80/sensu/ permanent;
   location ~ (/sensu/|/socket.io/) {
     proxy_pass            http://127.0.0.1:<%= node['uchiwa']['settings']['port']%>;
 
