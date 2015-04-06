@@ -40,6 +40,7 @@ end
 'dashboard/js/bootstrap.min.js',
 'dashboard/js/npm.js'].each do |webfile|
     cookbook_file webfile do 
+      source webfile 
       owner 'root'
       group 'root'
       mode '0644'
