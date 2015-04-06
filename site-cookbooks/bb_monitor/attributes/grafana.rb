@@ -1,7 +1,7 @@
 normal['grafana']['datasources'] = {
   'graphite' => {
     'type' => "'graphite'",
-    'url'  => 'window.location.protocol+"//"+window.location.hostname+":"+window.location.port+"/"',
+    'url'  => 'window.location.protocol+"//"+window.location.hostname+":"+window.location.port+"/graphite"',
     'default' => true
   },
   'elasticsearch' => {
