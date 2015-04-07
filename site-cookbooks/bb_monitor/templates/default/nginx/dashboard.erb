@@ -2,9 +2,14 @@ server {
 listen <% if node[:doorman][:enabled]=='true' -%>8080<% else -%>80<% end -%>;
   server_name _;
   port_in_redirect off;
+  resolver 8.8.8.8 valid=30s;
 
-  location / {
+  root /var/www/dashboard;
+  index index.html index.htm;
+
+  location /graphite {
     proxy_pass            http://<%= node['graphite']['host'] %>:<%= node['graphite']['uwsgi']['port'] %>/;
+    rewrite /graphite/(.*) /$1 break;
   }
 
   location /flapjack {
@@ -19,7 +24,13 @@ listen <% if node[:doorman][:enabled]=='true' -%>8080<% else -%>80<% end -%>;
   }
 
   location /elasticsearch {
-    proxy_pass            http://<%= node['kibana']['elasticsearch_server'] %>:9200/;
+    proxy_pass            http://<%= node['kibana']['elasticsearch_server'] %>:9200;
+    rewrite /elasticsearch/(.*) /$1 break;
+  }
+
+  location /rabbitmq {
+    proxy_pass            http://<%= node['sensu']['rabbitmq']['host'] %>:15672;
+    rewrite /rabbitmq/(.*) /$1 break;
   }
 
   location /grafana {
@@ -36,7 +47,7 @@ listen <% if node[:doorman][:enabled]=='true' -%>8080<% else -%>80<% end -%>;
     proxy_set_header Connection "upgrade";
     proxy_set_header Host $host:80;
 
-    rewrite /sensu/(.*) /$1 break;
+    rewrite sensu(.*) $1 break;
   }
 
 }

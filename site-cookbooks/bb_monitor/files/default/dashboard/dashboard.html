@@ -1,0 +1,121 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>Dashboard Template for Bootstrap</title>
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="css/dashboard.css" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">MyCompany Asbol.us Dashboard</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="/kibana">Events Dashboard</a></li>
+            <li><a href="/grafana">Metrics Dashboard</a></li>
+            <li><a href="/sensu">Host Monitoring</a></li>
+            <li><a href="/flapjack">Alerts <span class="badge">4</span></a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
+            <li><a href="#">Reports</a></li>
+            <li><a href="#">Analytics</a></li>
+            <li><a href="#">Export</a></li>
+          </ul>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          <h1 class="page-header">Service Level Agreements</h1>
+
+          <div class="row placeholders">
+            <div class="col-xs-6 col-sm-3 placeholder">
+              <img data-src="holder.js/200x200/auto/vine/text:SLA met" class="img-responsive" alt="Generic placeholder thumbnail">
+              <h4>Label</h4>
+              <span class="text-muted">Website</span>
+            </div>
+            <div class="col-xs-6 col-sm-3 placeholder">
+              <img data-src="holder.js/200x200/auto/vine/text:SLA met" class="img-responsive" alt="Generic placeholder thumbnail">
+              <h4>Label</h4>
+              <span class="text-muted">User API</span>
+            </div>
+            <div class="col-xs-6 col-sm-3 placeholder">
+              <img data-src="holder.js/200x200/auto/lava/text: SLA not met" class="img-responsive" alt="Generic placeholder thumbnail">
+              <h4>Label</h4>
+              <span class="text-muted">Payments API</span>
+            </div>
+            <div class="col-xs-6 col-sm-3 placeholder">
+              <img data-src="holder.js/200x200/auto/vine/text:SLA met" class="img-responsive" alt="Generic placeholder thumbnail">
+              <h4>Label</h4>
+              <span class="text-muted">Database replication</span>
+            </div>
+          </div>
+
+          <h2 class="sub-header">MOTD</h2>
+          <div class="panel panel-default">
+            <div class="panel-heading"><span class="text-muted">Posted on December 29th, 1971</span></div>
+            <div class="panel-body">
+             Today in cat care, we're excited to announce the addition of a fur api.  As with all of our other APIs, this is a PETful API that can be addresses manually or through Brush(tm) client.
+            </div>
+          </div>
+          <h2 class="sub-header">Last week of alerts</h2>
+          <ul class="list-group">
+              <li class="list-group-item"><b>Yesterday</b> Catbox full, Water dish icky, Food bowl empty, Scratching post hidden <span class="badge"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></span></li>
+                  <li class="list-group-item"><b>Tuesday</b> Catbox full <span class="badge"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></span></li>
+                  <li class="list-group-item"><b>Monday</b> Water dish empty<span class="badge"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></span></li>
+                  <li class="list-group-item"><b>Sunday</b> All good <span class="badge"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></span></li>
+                  <li class="list-group-item"><b>Friday</b> Catbox full <span class="badge"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></span></li>
+                <li class="list-group-item"><b>Thursday</b> Catbox full<span class="badge"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></span></li>
+                <li class="list-group-item"><b>Wednesday</b> Water dish empty <span class="badge"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></span></li>
+          </ul>
+          <h2 class="sub-header">Recent Incidents <small>Accordion?</small></h2>
+          <div class="list-group">
+              <span class="list-group-item"><h3><span contetneditable>Yesterday's Incident</span> - <span contenteditable>A short description</span></h3><p><b>Notes:</b></br><span contenteditable>This incident happened when a cat chewed through the power cable and our flux capacitor was damaged by the 1.23 gigawat surge.  Here are some links to references:<br />
+                      [Flux Capacitor](wikipedia)<br />
+                      [Cats](google images)<br />
+                      [Power Cables](Amazon.com)<br />
+[Markdown](we can update the notes in markdown)</span></p></span>
+            <a href="#" class="list-group-item"> Jan 24th, 2431 Another collapsed incident</a>
+            <a href="#" class="list-group-item"> Jan 25th, 2431 Another collapsed incident</a>
+            <a href="#" class="list-group-item"> Jan 26th, 2431 Another collapsed incident</a>
+            <a href="#" class="list-group-item"> Jan 27th, 2431 Another collapsed incident</a>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+    <script src="js/holder.min.js"></script>
+  </body>
+</html>
