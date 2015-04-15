@@ -38,6 +38,21 @@ module.exports = {
     },
     <% end %>
 
+    <% if node['doorman']['google_app_id'] && !node['doorman']['google_app_id'].empty? %>
+    google: {
+      appId: <%= node['doorman']['google_app_id'] %>
+      appSecret: <%= node['doorman']['google_app_id'] %>
+      <% if node['doorman']['google_required_domains'] && !node['doorman']['google_required_domains'].empty? %>
+      <% if node['doorman']['google_required_domains'].kind_of?(Array) %>
+      requiredDomain: [<%= node['doorman']['google_required_domains'].join(',') %>]
+      <% else %>
+      requiredDomain: <%= node['doorman']['google_required_domains'] %>
+      <% end %>
+      <% end %>
+    },
+
+    <% end %>
+
     // Register a new oauth app on Google Apps at
     // https://code.google.com/apis/console
     // google: {
