@@ -41,7 +41,7 @@ module.exports = {
     <% if node['doorman']['google_app_id'] && !node['doorman']['google_app_id'].empty? %>
     google: {
       appId: <%= node['doorman']['google_app_id'] %>
-      appSecret: <%= node['doorman']['google_app_id'] %>
+      appSecret: <%= node['doorman']['google_app_secret'] %>
       <% if node['doorman']['google_required_domains'] && !node['doorman']['google_required_domains'].empty? %>
       <% if node['doorman']['google_required_domains'].kind_of?(Array) %>
       requiredDomain: [<%= node['doorman']['google_required_domains'].join(',') %>]
