@@ -40,13 +40,13 @@ module.exports = {
 
     <% if node['doorman']['google_app_id'] && !node['doorman']['google_app_id'].empty? %>
     google: {
-      appId: <%= node['doorman']['google_app_id'] %>
-      appSecret: <%= node['doorman']['google_app_secret'] %>
+      appId: "<%= node['doorman']['google_app_id'] %>",
+      appSecret: "<%= node['doorman']['google_app_secret'] %>",
       <% if node['doorman']['google_required_domains'] && !node['doorman']['google_required_domains'].empty? %>
       <% if node['doorman']['google_required_domains'].kind_of?(Array) %>
-      requiredDomain: [<%= node['doorman']['google_required_domains'].join(',') %>]
+      requiredDomain: "[<%= node['doorman']['google_required_domains'].map { |x| "'#{x}'" }.join(',') %>]",
       <% else %>
-      requiredDomain: <%= node['doorman']['google_required_domains'] %>
+      requiredDomain: "<%= node['doorman']['google_required_domains'] %>",
       <% end %>
       <% end %>
     },
