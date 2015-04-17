@@ -22,4 +22,3 @@ if node[:elasticsearch][:http_auth] == true
   install_plugin 'http-basic', 'url' => node[:elasticsearch][:http_auth_plugin]
 end
 
-install_plugin 'elasticsearch/marvel/latest'
