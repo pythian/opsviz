@@ -1,3 +1,5 @@
+normal[:java][:install_flavor] = 'openjdk'
+normal[:java][:jdk_version] = '7'
 normal[:logstash][:version] = "1.5"
 #TODO: Don't run as root but rather make sure logstash user has access to all logs
 default[:bb_monitor][:logstash][:root] = true
