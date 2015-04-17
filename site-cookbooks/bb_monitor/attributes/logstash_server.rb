@@ -21,7 +21,12 @@ normal[:logstash][:server][:inputs] = [
       "exchange"=> node[:bb_monitor][:logstash][:rabbitmq][:exchange],
       "queue"=> node[:bb_monitor][:logstash][:rabbitmq][:queue],
       "threads"=> node[:bb_monitor][:logstash][:server][:threads],
+    },
+    "kinesis" => {
+        "kinesis_stream_name" => node[:bb_monitor][:logstash][:kinesis_stream_name],
+        "region" => node[:bb_monitor][:logstash][:kinesis_stream_region]
     }
+
   }
 ]
 
