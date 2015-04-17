@@ -1,4 +1,4 @@
-normal[:logstash][:version] = "1.4"
+normal[:logstash][:version] = "1.5"
 #TODO: Don't run as root but rather make sure logstash user has access to all logs
 default[:bb_monitor][:logstash][:root] = true
 
