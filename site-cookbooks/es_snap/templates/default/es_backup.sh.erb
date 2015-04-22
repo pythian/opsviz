@@ -1,0 +1,32 @@
+#!/bin/bash
+
+repo='backup0'
+snap='$snap'
+
+r=`/usr/bin/curl -s -XPOST 'http://localhost:9200/_snapshot/$repo/_verify?pretty' | grep name | wc -l`
+if (( $r == 0 )); then
+    # create snapshot repo
+    /usr/bin/curl -XPUT 'http://localhost:9200/_snapshot/$repo?pretty' -d '
+    {
+     "type": "fs",
+     "settings": {
+     "location": "/opt/nfs/es_snap",
+     "compress": "true"
+     }
+    }'
+else
+    echo "repo already exists, moving on to actual snapshot"
+    # take snapshot
+    /usr/bin/curl -XPUT "http://localhost:9200/_snapshot/$repo/$snap?wait_for_completion=true&pretty"
+
+    # verify
+    v=`/usr/bin/curl -s -XPOST 'http://localhost:9200/_snapshot/$repo/_verify?pretty' | grep name | wc -l`
+    if (( $v == 0 )); then
+        echo "Something went wrong, snapshot did NOT succeed!"
+        echo `date` >> /var/log/es_fail.log
+        /usr/bin/curl -s -XPOST 'http://localhost:9200/_snapshot/$repo/_verify?pretty' >> /var/log/es_fail.log
+        exit 1
+    else
+        echo "Snapshot succeeded!"
+    fi
+fi
