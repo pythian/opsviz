@@ -4,7 +4,14 @@ Installs sensu, uchiwa and it's dependencies
 #>
 =end
 
-include_recipe "sensu::redis"
+[Chef::Recipe, Chef::Resource].each { |l| l.send :include, ::OpsVizExtensions }
+
+if node[:sensu][:redis_cluster_id]
+  chef_gem "fog-aws"
+  node[:sensu][:redis][:host] = get_elasticache_redis_endpoint(node[:sensu][:redis_cluster_id])
+else
+  include_recipe "sensu::redis"
+end
 
 include_recipe "sensu::default"
 
