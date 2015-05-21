@@ -18,7 +18,7 @@ if node[:bb_monitor][:sensu][:redis_cluster_id]
     action :install
   end
 
-  node[:sensu][:redis][:host] = get_elasticache_redis_endpoint(node[:bb_monitor][:sensu][:redis_cluster_id])
+  node.override[:sensu][:redis][:host] = get_elasticache_redis_endpoint(node[:bb_monitor][:sensu][:redis_cluster_id])
 else
   include_recipe "sensu::redis"
 end
