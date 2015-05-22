@@ -81,16 +81,16 @@
   #   have perfect forward secrecy - if the server's key is
   #   compromised, captures of past or future traffic must be
   #   considered compromised, too.
-  #SSLCipherSuite RC4-SHA:AES128-SHA:HIGH:MEDIUM:!aNULL:!MD5
+  SSLCipherSuite AES:!kRSA:!aNULL
   SSLHonorCipherOrder On
 
   #   The protocols to enable.
   #   Available values: all, SSLv3, TLSv1, TLSv1.1, TLSv1.2
-  #   SSL v2  is no longer supported
+  #   SSL is no longer supported
 <% if node['apache']['version'] == '2.4' -%>
   SSLProtocol all
 <% else -%>
-  SSLProtocol all -SSLv2
+  SSLProtocol all -SSLv2 -SSLv3
 <% end -%>
 
   #   Allow insecure renegotiation with clients which do not yet support the

@@ -173,6 +173,13 @@
       "Description": "The pagerduty api key if you want sensu alerts forwarded to pagerduty",
       "Type": "String",
       "Default": ""
+    },
+    "RedisNodeType" : {
+      "Default" : "cache.m1.small",
+      "Description" : "The compute and memory capacity of the nodes in the Redis Cluster",
+      "Type" : "String",
+      "AllowedValues" : [ "cache.m1.small", "cache.m1.large", "cache.m1.xlarge", "cache.m2.xlarge", "cache.m2.2xlarge", "cache.m2.4xlarge", "cache.c1.xlarge" ],
+      "ConstraintDescription" : "must select a valid Cache Node type."
     }
   },
   "Mappings": {
@@ -317,7 +324,10 @@
                   "DNSName"
                 ]
               },
-            "rabbitmq": {
+              "redis_cluster_id": {
+                "Ref": "RedisCluster"
+              },
+              "rabbitmq": {
                 "server": {
                   "Fn::GetAtt": [
                     "RabbitMQELB",
@@ -511,7 +521,8 @@
         "PublicRoute",
         "PublicSubnetRouteTableAssociation",
         "PrivateRoute",
-        "PrivateSubnetRouteTableAssociation"
+        "PrivateSubnetRouteTableAssociation",
+        "RedisCluster"
       ],
       "Properties": {
         "StackId": {
@@ -1044,6 +1055,18 @@
                 }
               ]
             }
+          },
+          {
+            "PolicyName" : "opsworks-instance-elasticache",
+            "PolicyDocument" : {
+              "Statement"  : [
+                {
+                  "Effect"   : "Allow",
+                  "Action"   : "elasticache:DescribeCacheClusters",
+                  "Resource" : "*"
+                }
+              ]
+            }
           }
         ]
       }
@@ -1382,6 +1405,51 @@
             "CidrIp": "0.0.0.0/0"
           }
         ]
+      }
+    },
+    "RedisCluster": {
+      "Type": "AWS::ElastiCache::CacheCluster",
+      "Properties": {
+        "CacheNodeType"           : { "Ref" : "RedisNodeType" },
+        "VpcSecurityGroupIds"     : [ {"Fn::GetAtt": ["RedisSecurityGroup", "GroupId"]} ],
+        "CacheSubnetGroupName"    : { "Ref" : "RedisSubnetGroup" },
+        "Engine"                  : "redis",
+        "NumCacheNodes"           : 1
+      }
+    },
+    "RedisSubnetGroup": {
+      "Type": "AWS::ElastiCache::SubnetGroup",
+      "Properties": {
+        "Description": "Subnet Group for redis",
+        "SubnetIds": [ {"Ref": "PrivateSubnet" } ]
+      }
+    },
+    "RedisSecurityGroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription"  : "Lock redis down to Web Server access only",
+        "VpcId": { "Ref": "VPC" }
+      }
+    },
+
+    "RedisSecurityGroupIngressCluster": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "IpProtocol": "tcp",
+        "FromPort": "6379",
+        "ToPort": "6379",
+        "GroupId": { "Fn::GetAtt": ["RedisSecurityGroup", "GroupId"] },
+        "SourceSecurityGroupId": { "Fn::GetAtt": ["RedisSecurityGroup", "GroupId"] }
+      }
+    },
+    "RedisSecurityGroupIngressStack": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "IpProtocol": "tcp",
+        "FromPort": "6379",
+        "ToPort": "6379",
+        "GroupId": { "Fn::GetAtt": ["RedisSecurityGroup", "GroupId"] },
+        "SourceSecurityGroupId": { "Fn::GetAtt": ["OpsWorksSecurityGroup", "GroupId"] }
       }
     },
     "VPC": {
