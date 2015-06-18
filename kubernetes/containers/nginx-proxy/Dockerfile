@@ -12,12 +12,26 @@ CMD ["/sbin/my_init"]
 RUN apt-get update
 
 # Install nginx
-RUN apt-get install -y nginx-extras
+RUN apt-get install -y nginx-extras curl git wget
 
+# Add our dashboard config to nginx
 COPY dashboard.conf /etc/nginx/sites-enabled/dashboard.conf
 
 # Make nginx start up
 COPY runit.nginx.sh /etc/service/nginx/run
+
+# Install dependencies for confd
+RUN apt-get install -y curl git wget
+
+# Install confd
+RUN curl -sqL https://github.com/kelseyhightower/confd/releases/download/v0.9.0/confd-0.9.0-linux-amd64 -o /confd && chmod +x /confd
+
+COPY nginx.toml /etc/confd/conf.d/nginx.toml
+COPY dashboard.tmpl /etc/confd/templates/dashboard.tmpl
+
+# Make confd start up
+COPY runit.confd.sh /etc/service/confd/run
+
 
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

@@ -1,0 +1,78 @@
+server {
+  listen 8080;
+  server_name _;
+  port_in_redirect off;
+
+  root /var/www/dashboard;
+  index index.html index.htm;
+
+{{if exists "/graphite/host"}}
+  location /graphite {
+    proxy_pass            http://{{getv "/graphite/host"}}:{{getv "/graphite/port"}};
+    rewrite /graphite/(.*) /$1 break;
+  }
+{{end}}
+
+{{if exists "/flapjack/host"}}
+  location /flapjack {
+    proxy_pass            http://{{getv "/flapjack/host"}}:{{getv "/flapjack/port"}};
+    proxy_set_header Host $host:80;
+    rewrite /flapjack/(.*) /$1 break;
+  }
+{{end}}
+
+{{if exists "/kibana/host"}}
+  location /kibana {
+    proxy_pass            http://{{getv "/kibana/host"}}:{{getv "/kibana/port"}};
+    proxy_set_header Host $host:80;
+    rewrite /kibana/(.*) /$1 break;
+  }
+{{end}}
+
+{{if exists "/grafana/host"}}
+  location /grafana {
+    proxy_pass            http://{{getv "/grafana/host"}}:{{getv "/grafana/port"}};
+    proxy_set_header Host $host:80;
+    rewrite /grafana/(.*) /$1 break;
+  }
+{{end}}
+
+{{if exists "/uchiwa/host"}}
+  rewrite ^/sensu$ $scheme://$host:80/sensu/ permanent;
+  location ~ (/sensu/|/socket.io/) {
+    proxy_pass            http://{{getv "/uchiwa/host"}}:3000;
+
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection "upgrade";
+    proxy_set_header Host $host:80;
+
+    rewrite sensu(.*) $1 break;
+  }
+{{end}}
+
+  location /elasticsearch {
+    proxy_pass            http://elasticsearch-lb:9200;
+    rewrite /elasticsearch/(.*) /$1 break;
+  }
+
+  location /rabbitmq {
+    proxy_pass            http://rabbitmq:15672;
+    rewrite /rabbitmq/(.*) /$1 break;
+  }
+
+}
+
+{{if exists "/graphite/host"}}
+
+server {
+  listen 8080;
+  server_name graphite;
+  port_in_redirect off;
+
+  location /{
+    proxy_pass            http://{{getv "/graphite/host"}}:{{getv "/graphite/port"}};
+  }
+}
+
+{{end}}

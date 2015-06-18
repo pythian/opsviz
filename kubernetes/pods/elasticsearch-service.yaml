@@ -1,8 +1,14 @@
-id: elasticsearch
+apiVersion: v1
 kind: Service
-apiVersion: v1beta1
-port: 9200
-containerPort: 9200
-selector:
-  component: elasticsearch
-  role: load-balancer
+metadata:
+  labels:
+    name: elasticsearch
+  name: elasticsearch-service
+spec:
+  ports:
+  - port: 9200
+    protocol: TCP
+    targetPort: 9200
+  selector:
+    app: povs
+    component: elasticsearch

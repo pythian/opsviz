@@ -1,0 +1,31 @@
+[template]
+
+# The name of the template that will be used to render the application's configuration file
+# Confd will look in `/etc/conf.d/templates` for these files by default
+src = "dashboard.tmpl"
+
+# The location to place the rendered configuration file
+dest = "/etc/nginx/conf.d/dashboard.conf"
+
+# The etcd keys or directory to watch.  This is where the information to fill in
+# the template will come from.
+keys = [ "/graphite/host",
+         "/graphite/port",
+         "/grafana/host",
+         "/grafana/port",
+         "/kibana/host",
+         "/kibana/port",
+         "/uchiwa/host",
+         "/uchiwa/port",
+         "/flapjack/host",
+         "/flapjack/port",
+         "/kibana/elasticsearch_server" ]
+
+# File ownership and mode information
+owner = "root"
+mode = "0644"
+
+# These are the commands that will be used to check whether the rendered config is
+# valid and to reload the actual service once the new config is in place
+check_cmd = "/usr/sbin/service nginx configtest"
+reload_cmd = "/usr/sbin/service nginx reload"
