@@ -1,0 +1,22 @@
+id: dashboard-nginx
+kind: ReplicationController
+apiVersion: v1beta1
+desiredState:
+  replicas: 1
+  replicaSelector:
+    component: dashboard
+    role: nginx
+  podTemplate:
+    desiredState:
+      manifest:
+        version: v1beta1
+        id: dashboard-nginx
+        containers:
+          - name: dashboard-nginx
+            image: alexlovelltroy/opsviz-dashboard
+            ports:
+              - name: transport
+                containerPort: 8080
+    labels:
+      component: dashboard
+      role: nginx

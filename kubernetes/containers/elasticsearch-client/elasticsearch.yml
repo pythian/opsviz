@@ -1,0 +1,53 @@
+cluster:
+  name: logstash
+
+# You want this node to never become a master node, only to hold data.
+# This will be the "workhorse" of your cluster.
+node:
+  master: false
+  data: false
+#  max_local_storage_nodes: 1
+#
+#index:
+#  number_of_shards: 8
+#  number_of_replicas: 2
+#  auto_expand_replicas: 2-all
+#  mapper.dynamic: true
+#
+#action:
+#  auto_create_index: true
+#  disable_delete_all_indices: true
+
+plugin.mandatory: cloud-aws
+
+cloud:
+  k8s:
+    selector: component=elasticsearch
+  aws:
+    region: us-west-2
+
+discovery:
+  type: io.fabric8.elasticsearch.discovery.k8s.K8sDiscoveryModule
+  zen:
+    ping:
+      multicast:
+        enabled: false
+
+path:
+  data: /data/data
+  logs: /data/log
+  plugins: /elasticsearch/plugins
+  work: /data/work
+
+bootstrap:
+  mlockall: true
+
+http:
+  enabled: true
+  port: 9200
+
+#gateway:
+#  expected_nodes: 1
+#
+#
+#indices.fielddata.cache.size: 40%
