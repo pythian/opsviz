@@ -1,16 +1,25 @@
-id: elasticsearch-data
 kind: ReplicationController
-apiVersion: v1beta1
-desiredState:
-  replicas: 1
-  replicaSelector:
-    component: elasticsearch
+apiVersion: v1beta3
+metadata:
+  labels:
+    app: povs
+    name: elasticsearch
     role: data
-  podTemplate:
-    desiredState:
-      manifest:
-        version: v1beta1
-        id: elasticsearch-data
+  name: elasticsearch-data
+spec:
+  replicas: 1
+  selector:
+    name: elasticsearch
+    role: data
+  template:
+    metadata:
+      labels:
+        name: elasticsearch
+        role: data
+    spec:
+        volumes:
+          - name: data
+            emptyDir: {}
         containers:
           - name: elasticsearch-data
             image: alexlovelltroy/elasticsearch-data
@@ -18,12 +27,5 @@ desiredState:
               - name: transport
                 containerPort: 9300
             volumeMounts:
-              - name: es-persistent-storage
+              - name: data
                 mountPath: /data
-        volumes:
-          - name: es-persistent-storage
-            source:
-              emptyDir: {}
-    labels:
-      component: elasticsearch
-      role: data

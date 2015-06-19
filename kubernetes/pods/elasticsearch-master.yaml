@@ -1,16 +1,25 @@
-id: elasticsearch-master
 kind: ReplicationController
-apiVersion: v1beta1
-desiredState:
-  replicas: 1
-  replicaSelector:
-    component: elasticsearch
+apiVersion: v1beta3
+metadata:
+  labels:
+    app: povs
+    name: elasticsearch
     role: master
-  podTemplate:
-    desiredState:
-      manifest:
-        version: v1beta1
-        id: elasticsearch-master
+  name: elasticsearch-master
+spec:
+  replicas: 1
+  selector:
+    name: elasticsearch
+    role: master
+  template:
+    metadata:
+      labels:
+        name: elasticsearch
+        role: master
+    spec:
+        volumes:
+          - name: data
+            emptyDir: {}
         containers:
           - name: elasticsearch-master
             image: alexlovelltroy/elasticsearch-master
@@ -18,12 +27,5 @@ desiredState:
               - name: transport
                 containerPort: 9300
             volumeMounts:
-              - name: es-persistent-storage
+              - name: data
                 mountPath: /data
-        volumes:
-          - name: es-persistent-storage
-            source:
-              emptyDir: {}
-    labels:
-      component: elasticsearch
-      role: master

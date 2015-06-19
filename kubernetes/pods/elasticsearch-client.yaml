@@ -1,16 +1,24 @@
-id: elasticsearch-lb
 kind: ReplicationController
-apiVersion: v1beta1
-desiredState:
+apiVersion: v1beta3
+metadata:
+  labels:
+    app: povs
+    name: elasticsearch
+    role: client
+  name: elasticsearch-client
+spec:
   replicas: 1
-  replicaSelector:
-    component: elasticsearch
-    role: load-balancer
-  podTemplate:
-    desiredState:
-      manifest:
-        version: v1beta1
-        id: elasticsearch-lb
+  selector:
+    app: povs
+    name: elasticsearch
+    role: client
+  template:
+    metadata:
+      labels:
+        app: povs
+        name: elasticsearch
+        role: client
+    spec:
         containers:
           - name: elasticsearch-client
             image: alexlovelltroy/elasticsearch-client
@@ -19,13 +27,3 @@ desiredState:
                 containerPort: 9200
               - name: transport
                 containerPort: 9300
-            volumeMounts:
-              - name: es-persistent-storage
-                mountPath: /data
-        volumes:
-          - name: es-persistent-storage
-            source:
-              emptyDir: {}
-    labels:
-      component: elasticsearch
-      role: load-balancer

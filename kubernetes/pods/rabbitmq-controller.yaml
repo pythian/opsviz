@@ -2,7 +2,7 @@ apiVersion: v1beta3
 kind: ReplicationController
 metadata:
   labels:
-    name: rabbitmq:3.5.3-management
+    name: rabbitmq
   name: rabbitmq-controller
 spec:
   replicas: 1
@@ -15,7 +15,7 @@ spec:
         component: rabbitmq
     spec:
       containers:
-      - image: rabbitmq
+      - image: rabbitmq:3.5.3-management
         name: rabbitmq
         ports:
         - containerPort: 5672
