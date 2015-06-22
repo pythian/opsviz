@@ -16,7 +16,7 @@ It also builds everything with private-only ip addresses and restricts all exter
 - CloudFormation Script
 - VPC
   - ELBs
-  - Public/Private subnets
+  - 1 Public and 4 Private subnets
 - OpsWorks
   - Bastion
   - Sensu server
@@ -89,7 +89,7 @@ All of these will need to be filled in, for secure passwords and a secure erlang
     - graphite.opsvis.example.com => Graphite ELB <Internal Only>
 
 ### External Access
-*All instances other than the NAT and Bastion hosts are within the private subnet and cannot be accessed directly*
+*All instances other than the NAT and Bastion hosts are within the private subnets and cannot be accessed directly*
 
 RabbitMQ has a public facing ELB in front of it with SSL termination.
 The dashboard instance has an ELB in front of it so the dasbhoards for grafana, kibana, graphite, and sensu are publicly accessible (Authentication is still required)
