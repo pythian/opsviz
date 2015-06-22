@@ -1471,8 +1471,8 @@
             }
           },
           {
-            "Key": "Network",
-            "Value": "Public"
+            "Key": "Name",
+            "Value": "opsviz"
           }
         ]
       }
