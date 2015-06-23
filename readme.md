@@ -16,7 +16,7 @@ It also builds everything with private-only ip addresses and restricts all exter
 - CloudFormation Script
 - VPC
   - ELBs
-  - Public/Private subnets
+  - 1 Public and 4 Private subnets
 - OpsWorks
   - Bastion
   - Sensu server
@@ -30,7 +30,7 @@ It also builds everything with private-only ip addresses and restricts all exter
 ### Setup
 1. Upload an SSL Certificate to AWS for the RabbitMQ ELB - and note the generated ARN [Instructions](http://docs.aws.amazon.com/ElasticLoadBalancing/latest/DeveloperGuide/ssl-server-cert.html#upload-cert)
 2. Create a new CloudFormation stack on the [CloudFormation Dashboard](https://console.aws.amazon.com/cloudformation/home) [image](screenshots/create_stack.png)
-3. Choose "Upload a template to Amazon S3" on upload cloudformation.json
+3. Choose "Upload a template to Amazon S3" on upload cloudformation.json (the template is larger than 51000 bytes, so it needs to be uploaded to S3)
 4. See Cloudformation parameters section on specifics for parameters [image](screenshots/cloudformation_parameters.png)
 5. *During options I recommend disabling rollback on failture so you can see logs on OpsWorks boxes when recipes fail* [image](screenshots/rollback_on_failure.png)
 
@@ -89,7 +89,7 @@ All of these will need to be filled in, for secure passwords and a secure erlang
     - graphite.opsvis.example.com => Graphite ELB <Internal Only>
 
 ### External Access
-*All instances other than the NAT and Bastion hosts are within the private subnet and cannot be accessed directly*
+*All instances other than the NAT and Bastion hosts are within the private subnets and cannot be accessed directly*
 
 RabbitMQ has a public facing ELB in front of it with SSL termination.
 The dashboard instance has an ELB in front of it so the dasbhoards for grafana, kibana, graphite, and sensu are publicly accessible (Authentication is still required)
