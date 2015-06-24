@@ -10,6 +10,12 @@ include_recipe "runit"
 
 include_recipe "graphite::carbon"
 
+instances = node[:opsworks][:layers][:carbonrelayrep][:instances]
+carbonrelay_nodes = instances.map{ |name, attrs| "carbonrelayrep@#{name}" }
+
+#node.set['rabbitmq']['cluster_disk_nodes'] = rabbit_nodes
+
+
 graphite_carbon_relay "rep" do
   config ({
             max_cache_size: "inf",
@@ -20,13 +26,13 @@ graphite_carbon_relay "rep" do
             udp_receiver_port: 2003,
             pickle_receiver_interface: "0.0.0.0",
             pickle_receiver_port: 2004,
-            relay_method: consistent-hashing,
+            relay_method: "consistent-hashing",
             replication_factor: 2,
             destinations: [ "thisnode:2414:fan", "theothernode:2414:fan" ],
             enable_udp_listener: true,
             max_datapoints_per_message: 500,
-            max_queue_size: 100000
-            use_flow_control: true,
+            max_queue_size: 100000,
+            use_flow_control: true
           })
 end
 
