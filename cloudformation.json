@@ -612,65 +612,6 @@
         "InstanceType": { "Ref" : "DashboardInstanceType" }
       }
     },
-    "OpsWorksGraphiteLayer": {
-      "Type": "AWS::OpsWorks::Layer",
-      "Metadata": {
-        "Comment": ""
-      },
-      "DependsOn": [
-        "NATIPAddress",
-        "PublicRoute",
-        "PublicSubnetRouteTableAssociation",
-        "PrivateRoute",
-        "PrivateSubnet0RouteTableAssociation",
-        "PrivateSubnet1RouteTableAssociation",
-        "PrivateSubnet2RouteTableAssociation",
-        "PrivateSubnet3RouteTableAssociation"
-      ],
-      "Properties": {
-        "StackId": {
-          "Ref": "OpsWorksStack"
-        },
-        "Name": "Graphite",
-        "Type": "custom",
-        "Shortname": "graphite",
-        "EnableAutoHealing": "true",
-        "AutoAssignElasticIps": "false",
-        "AutoAssignPublicIps": "false",
-        "CustomSecurityGroupIds": [
-          {
-            "Ref": "OpsWorksSecurityGroup"
-          },
-          {
-            "Ref": "InternalSecurityGroup"
-          }
-        ],
-        "CustomRecipes": {
-          "Setup": [
-            "bb_monitor::graphite",
-            "bb_monitor::route53",
-            "bb_monitor::logstash_agent"
-          ],
-          "Configure": [
-            "bb_monitor::sensu_client"
-          ],
-          "Deploy": [],
-          "Undeploy": [],
-          "Shutdown": [
-            "bb_monitor::sensu_client_remove"
-          ]
-        },
-        "VolumeConfigurations": [
-          {
-            "MountPoint": "/opt/graphite/storage",
-            "NumberOfDisks": 1,
-            "Size": {
-              "Ref": "GraphiteVolumeSize"
-            }
-          }
-        ]
-      }
-    },
     "OpsWorksCarbonRelayRepLayer": {
       "Type": "AWS::OpsWorks::Layer",
       "Metadata": {
@@ -706,6 +647,7 @@
         ],
         "CustomRecipes": {
           "Setup": [
+            "bb_monitor::carbon-relay-rep",
             "bb_monitor::route53",
             "bb_monitor::logstash_agent"
           ],
@@ -755,6 +697,7 @@
         ],
         "CustomRecipes": {
           "Setup": [
+            "bb_monitor::carbon-relay-fan",
             "bb_monitor::route53",
             "bb_monitor::logstash_agent"
           ],
@@ -884,74 +827,24 @@
           "Ref": "OpsWorksStack"
         },
         "LayerIds": [
-          {
-            "Ref": "OpsWorksGraphiteLayer"
-          }
-        ],
-        "InstanceType": { "Ref" : "GraphiteInstanceType" }
-      }
-    },
-    "CarbonRelayInstance1": {
-      "Type": "AWS::OpsWorks::Instance",
-      "Properties": {
-        "StackId": {
-          "Ref": "OpsWorksStack"
-        },
-        "LayerIds": [
-          { "Ref": "OpsWorksCarbonRelayRepLayer" }, { "Ref": "OpsWorksCarbonRelayFanLayer" }
-        ],
-        "InstanceType": { "Ref" : "CarbonRelayInstanceType" },
-        "SubnetId": { "Ref" : "PrivateSubnet0" }
-      }
-    },
-    "CarbonRelayInstance2": {
-      "Type": "AWS::OpsWorks::Instance",
-      "DependsOn": [
-        "CarbonRelayInstance1"
-      ],
-      "Properties": {
-        "StackId": {
-          "Ref": "OpsWorksStack"
-        },
-        "LayerIds": [
-          { "Ref": "OpsWorksCarbonRelayRepLayer" }, { "Ref": "OpsWorksCarbonRelayFanLayer" }
-        ],
-        "InstanceType": { "Ref" : "CarbonRelayInstanceType" },
-        "SubnetId": { "Ref" : "PrivateSubnet1" }
-      }
-    },
-    "CarbonCacheInstance1": {
-      "Type": "AWS::OpsWorks::Instance",
-      "DependsOn": [
-        "CarbonRelayInstance1"
-      ],
-      "Properties": {
-        "StackId": {
-          "Ref": "OpsWorksStack"
-        },
-        "LayerIds": [
-          {
-            "Ref": "OpsWorksCarbonCacheLayer"
-          }
+          { "Ref": "OpsWorksCarbonRelayRepLayer" }, { "Ref": "OpsWorksCarbonRelayFanLayer" }, { "Ref": "OpsWorksCarbonCacheLayer" }, { "Ref": "OpsWorksGraphiteWebLayer" }
         ],
         "InstanceType": { "Ref" : "CarbonCacheInstanceType" },
         "SubnetId": { "Ref" : "PrivateSubnet0" },
         "AutoScalingType": "load"
       }
     },
-    "CarbonCacheInstance2": {
+    "GraphiteInstance2": {
       "Type": "AWS::OpsWorks::Instance",
       "DependsOn": [
-        "CarbonRelayInstance2"
+        "GraphiteInstance1"
       ],
       "Properties": {
         "StackId": {
           "Ref": "OpsWorksStack"
         },
         "LayerIds": [
-          {
-            "Ref": "OpsWorksCarbonCacheLayer"
-          }
+          { "Ref": "OpsWorksCarbonRelayRepLayer" }, { "Ref": "OpsWorksCarbonRelayFanLayer" }, { "Ref": "OpsWorksCarbonCacheLayer" }, { "Ref": "OpsWorksGraphiteWebLayer" }
         ],
         "InstanceType": { "Ref" : "CarbonCacheInstanceType" },
         "SubnetId": { "Ref" : "PrivateSubnet1" },
@@ -1625,7 +1518,7 @@
         }
       }
     },
-    "GraphiteELB": {
+    "GraphiteWebELB": {
       "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
       "Properties": {
         "SecurityGroups": [
@@ -1642,93 +1535,10 @@
             "LoadBalancerPort": "8081",
             "InstancePort": "8081",
             "Protocol": "TCP"
-          },
-          {
-            "LoadBalancerPort": "2003",
-            "InstancePort": "2003",
-            "Protocol": "TCP"
           }
         ],
         "HealthCheck": {
-          "Target": "TCP:2003",
-          "HealthyThreshold": "3",
-          "UnhealthyThreshold": "5",
-          "Interval": "90",
-          "Timeout": "60"
-        }
-      }
-    },
-    "GraphiteELBAttachment": {
-      "Type": "AWS::OpsWorks::ElasticLoadBalancerAttachment",
-      "Properties": {
-        "ElasticLoadBalancerName": {
-          "Ref": "GraphiteELB"
-        },
-        "LayerId": {
-          "Ref": "OpsWorksGraphiteLayer"
-        }
-      }
-    },
-    "CarbonRelayELB": {
-      "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
-      "Properties": {
-        "SecurityGroups": [
-          {
-            "Ref": "InternalSecurityGroup"
-          }
-        ],
-        "Subnets": [
-          { "Ref": "PrivateSubnet0" }, { "Ref": "PrivateSubnet1" }, { "Ref": "PrivateSubnet2" }, { "Ref": "PrivateSubnet3" }
-        ],
-        "Scheme": "internal",
-        "Listeners": [
-          {
-            "LoadBalancerPort": "2003",
-            "InstancePort": "2003",
-            "Protocol": "TCP"
-          }
-        ],
-        "HealthCheck": {
-          "Target": "TCP:2003",
-          "HealthyThreshold": "3",
-          "UnhealthyThreshold": "5",
-          "Interval": "90",
-          "Timeout": "60"
-        }
-      }
-    },
-    "CarbonRelayELBAttachment": {
-      "Type": "AWS::OpsWorks::ElasticLoadBalancerAttachment",
-      "Properties": {
-        "ElasticLoadBalancerName": {
-          "Ref": "CarbonRelayELB"
-        },
-        "LayerId": {
-          "Ref": "OpsWorksCarbonRelayRepLayer"
-        }
-      }
-    },
-    "GraphiteWebELB": {
-      "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
-      "Properties": {
-        "SecurityGroups": [
-          {
-            "Ref": "InternalSecurityGroup"
-          }
-        ],
-        "Subnets": [
-          { "Ref": "PrivateSubnet0" }, { "Ref": "PrivateSubnet1" }, { "Ref": "PrivateSubnet2" }, { "Ref": "PrivateSubnet3" }
-        ],
-        "Scheme": "internal",
-        "Listeners": [
-          {
-            "LoadBalancerPort": "80",
-            "InstancePort": "80",
-            "Protocol": "HTTP"
-          }
-        ],
-        "HealthCheck": {
-          "Target": "HTTP:80/",
+          "Target": "TCP:8001",
           "HealthyThreshold": "3",
           "UnhealthyThreshold": "5",
           "Interval": "90",
@@ -1744,6 +1554,45 @@
         },
         "LayerId": {
           "Ref": "OpsWorksGraphiteWebLayer"
+        }
+      }
+    },
+    "CarbonRelayRepELB": {
+      "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
+      "Properties": {
+        "SecurityGroups": [
+          {
+            "Ref": "InternalSecurityGroup"
+          }
+        ],
+        "Subnets": [
+          { "Ref": "PrivateSubnet0" }, { "Ref": "PrivateSubnet1" }, { "Ref": "PrivateSubnet2" }, { "Ref": "PrivateSubnet3" }
+        ],
+        "Scheme": "internal",
+        "Listeners": [
+          {
+            "LoadBalancerPort": "2003",
+            "InstancePort": "2003",
+            "Protocol": "TCP"
+          }
+        ],
+        "HealthCheck": {
+          "Target": "TCP:2003",
+          "HealthyThreshold": "3",
+          "UnhealthyThreshold": "5",
+          "Interval": "90",
+          "Timeout": "60"
+        }
+      }
+    },
+    "CarbonRelayRepELBAttachment": {
+      "Type": "AWS::OpsWorks::ElasticLoadBalancerAttachment",
+      "Properties": {
+        "ElasticLoadBalancerName": {
+          "Ref": "CarbonRelayRepELB"
+        },
+        "LayerId": {
+          "Ref": "OpsWorksCarbonRelayRepLayer"
         }
       }
     },

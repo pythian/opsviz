@@ -10,33 +10,60 @@ include_recipe "runit"
 
 include_recipe "graphite::carbon"
 
-graphite_carbon_cache "default" do
+graphite_carbon_cache "a" do
   config ({
-            enable_logrotation: true,
-            user: "graphite",
-            max_cache_size: "inf",
-            max_updates_per_second: 500,
-            max_creates_per_minute: 50,
-            line_receiver_interface: "0.0.0.0",
-            line_receiver_port: 2003,
-            udp_receiver_port: 2003,
-            pickle_receiver_port: 2004,
-            enable_udp_listener: true,
-            cache_query_port: "7002",
             cache_write_strategy: "sorted",
+            max_cache_size: "inf",
             use_flow_control: true,
-            log_updates: false,
+            whisper_fallocate_create: true,
+            max_creates_per_minute: 3000,
+            max_updates_per_second: 10000,
+            line_receiver_interface: "0.0.0.0"
+            line_receiver_port: 2103,
+            pickle_receiver_interface: "0.0.0.0"
+            pickle_receiver_port: 2104,
+            use_insecure_unpickler: false
+            cache_query_interface: "0.0.0.0"
+            cache_query_port: 7102,
             log_cache_hits: false,
-            whisper_autoflush: false,
-            enable_amqp: true,
-            amqp_host: node[:bb_monitor][:sensu][:rabbitmq][:server],
-            amqp_port: 5672,
-            amqp_vhost: node["statsd"]["rabbitmq"]["vhost"],
-            amqp_user: node["statsd"]["rabbitmq"]["user"],
-            amqp_password: node["statsd"]["rabbitmq"]["password"],
-            amqp_exchange: "statsd",
-            amqp_metric_name_in_body: true
+            log_cache_queue_sorts: true,
+            log_listener_connections: true,
+            log_updates: false,
+            enable_logrotation: true,
+            whisper_autoflush: false
           })
+end
+
+graphite_carbon_cache "b" do
+  config ({
+            cache_write_strategy: "sorted",
+            max_cache_size: "inf",
+            use_flow_control: true,
+            whisper_fallocate_create: true,
+            max_creates_per_minute: 3000,
+            max_updates_per_second: 10000,
+            line_receiver_interface: "0.0.0.0"
+            line_receiver_port: 2203,
+            pickle_receiver_interface: "0.0.0.0"
+            pickle_receiver_port: 2204,
+            use_insecure_unpickler: false
+            cache_query_interface: "0.0.0.0"
+            cache_query_port: 7202,
+            log_cache_hits: false,
+            log_cache_queue_sorts: true,
+            log_listener_connections: true,
+            log_updates: false,
+            enable_logrotation: true,
+            whisper_autoflush: false
+          })
+end
+
+
+graphite_storage_schema "carbon" do
+  config ({
+      pattern: "^carbon\.",
+      retentions: "60:90d"
+    })
 end
 
 graphite_storage_schema "default" do
@@ -46,14 +73,7 @@ graphite_storage_schema "default" do
           })
 end
 
-graphite_service "cache"
+graphite_service "cache:a"
+graphite_service "cache:b"
 
-base_dir = "#{node['graphite']['base_dir']}"
-
-execute "python manage.py syncdb --noinput" do
-  user node['graphite']['user']
-  group node['graphite']['group']
-  cwd "#{base_dir}/webapp/graphite"
-  creates "#{base_dir}/storage/graphite.db"
-end
 
