@@ -21,8 +21,8 @@ graphite_carbon_relay "rep" do
             pickle_receiver_interface: "0.0.0.0",
             pickle_receiver_port: 2004,
             relay_method: consistent-hashing,
-            replication_factor: 2
-            destinations: [ "thisnode:2414:fan", "theothernode:2414:fan" ]
+            replication_factor: 2,
+            destinations: [ "thisnode:2414:fan", "theothernode:2414:fan" ],
             enable_udp_listener: true,
             max_datapoints_per_message: 500,
             max_queue_size: 100000

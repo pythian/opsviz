@@ -18,12 +18,12 @@ graphite_carbon_cache "a" do
             whisper_fallocate_create: true,
             max_creates_per_minute: 3000,
             max_updates_per_second: 10000,
-            line_receiver_interface: "0.0.0.0"
+            line_receiver_interface: "0.0.0.0",
             line_receiver_port: 2103,
-            pickle_receiver_interface: "0.0.0.0"
+            pickle_receiver_interface: "0.0.0.0",
             pickle_receiver_port: 2104,
-            use_insecure_unpickler: false
-            cache_query_interface: "0.0.0.0"
+            use_insecure_unpickler: false,
+            cache_query_interface: "0.0.0.0",
             cache_query_port: 7102,
             log_cache_hits: false,
             log_cache_queue_sorts: true,
@@ -42,12 +42,12 @@ graphite_carbon_cache "b" do
             whisper_fallocate_create: true,
             max_creates_per_minute: 3000,
             max_updates_per_second: 10000,
-            line_receiver_interface: "0.0.0.0"
+            line_receiver_interface: "0.0.0.0",
             line_receiver_port: 2203,
-            pickle_receiver_interface: "0.0.0.0"
+            pickle_receiver_interface: "0.0.0.0",
             pickle_receiver_port: 2204,
-            use_insecure_unpickler: false
-            cache_query_interface: "0.0.0.0"
+            use_insecure_unpickler: false,
+            cache_query_interface: "0.0.0.0",
             cache_query_port: 7202,
             log_cache_hits: false,
             log_cache_queue_sorts: true,
