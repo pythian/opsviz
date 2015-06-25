@@ -7,7 +7,7 @@ source "https://supermarket.getchef.com"
 cookbook 'elasticsearch', '~> 0.3.13'
 cookbook 'grafana', '~> 1.5.4'
 cookbook 'graphite', '~> 1.0.2'
-cookbook 'kibana', '~> 0.1.8'
+cookbook 'kibana', git: 'git@github.com:realityforge/chef-kibana.git'
 cookbook 'logstash', '~> 0.1.0', git: 'https://github.com/foxycoder/chef-logstash.git'
 cookbook 'sensu', '~> 2.6.0'
 cookbook 'statsd', '~> 1.1.10', git: 'https://github.com/hectcastro/chef-statsd.git'
