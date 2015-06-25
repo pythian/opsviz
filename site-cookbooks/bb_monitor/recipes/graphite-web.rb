@@ -35,7 +35,7 @@ graphite_web_config "#{base_dir}/webapp/graphite/local_settings.py" do
                PORT: nil
              }
            },
-           cluster_servers: [ graphiteweb_nodes ],
+           cluster_servers: graphiteweb_nodes,
            carbonlink_hosts: [ "127.0.0.1:7102:a", "127.0.0.1:7202:b" ]
          })
   notifies :restart, 'service[graphite-web]', :delayed
