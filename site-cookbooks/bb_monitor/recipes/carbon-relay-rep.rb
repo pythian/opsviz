@@ -12,7 +12,7 @@ include_recipe "graphite::carbon"
 
 graphite_storage 'default'
 
-instances = node[:opsworks][:layers][:carbonrelayrep][:instances]
+instances = node[:opsworks][:layers][:carbonrelay][:instances]
 carbonrelay_nodes = instances.map{ |name, attrs| "#{name}:2414:fan" }
 
 graphite_carbon_relay "rep" do

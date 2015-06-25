@@ -313,7 +313,7 @@
           "graphite": {
             "host": {
               "Fn::GetAtt": [
-                "GraphiteELB",
+                "GraphiteWebELB",
                 "DNSName"
               ]
             }
@@ -461,7 +461,7 @@
           "statsd": {
             "graphite_host": {
               "Fn::GetAtt": [
-                "GraphiteELB",
+                "CarbonRelayELB",
                 "DNSName"
               ]
             },
@@ -598,7 +598,8 @@
       "Type": "AWS::OpsWorks::Instance",
       "DependsOn": [
         "RabbitMQInstance1",
-        "GraphiteInstance1"
+        "CarbonCacheInstance1",
+        "CarbonCacheInstance2"
       ],
       "Properties": {
         "StackId": {
@@ -612,7 +613,7 @@
         "InstanceType": { "Ref" : "DashboardInstanceType" }
       }
     },
-    "OpsWorksCarbonRelayRepLayer": {
+    "OpsWorksCarbonRelayLayer": {
       "Type": "AWS::OpsWorks::Layer",
       "Metadata": {
         "Comment": ""
@@ -647,62 +648,12 @@
         ],
         "CustomRecipes": {
           "Setup": [
-            "bb_monitor::carbon-relay-rep",
             "bb_monitor::route53",
             "bb_monitor::logstash_agent"
           ],
           "Configure": [
-            "bb_monitor::sensu_client"
-          ],
-          "Deploy": [],
-          "Undeploy": [],
-          "Shutdown": [
-            "bb_monitor::sensu_client_remove"
-          ]
-        }
-      }
-    },
-    "OpsWorksCarbonRelayFanLayer": {
-      "Type": "AWS::OpsWorks::Layer",
-      "Metadata": {
-        "Comment": ""
-      },
-      "DependsOn": [
-        "NATIPAddress",
-        "PublicRoute",
-        "PublicSubnetRouteTableAssociation",
-        "PrivateRoute",
-        "PrivateSubnet0RouteTableAssociation",
-        "PrivateSubnet1RouteTableAssociation",
-        "PrivateSubnet2RouteTableAssociation",
-        "PrivateSubnet3RouteTableAssociation"
-      ],
-      "Properties": {
-        "StackId": {
-          "Ref": "OpsWorksStack"
-        },
-        "Name": "CarbonRelayFan",
-        "Type": "custom",
-        "Shortname": "carbonrelayfan",
-        "EnableAutoHealing": "true",
-        "AutoAssignElasticIps": "false",
-        "AutoAssignPublicIps": "false",
-        "CustomSecurityGroupIds": [
-          {
-            "Ref": "OpsWorksSecurityGroup"
-          },
-          {
-            "Ref": "InternalSecurityGroup"
-          }
-        ],
-        "CustomRecipes": {
-          "Setup": [
-            "bb_monitor::carbon-relay-fan",
-            "bb_monitor::route53",
-            "bb_monitor::logstash_agent"
-          ],
-          "Configure": [
-            "bb_monitor::sensu_client"
+            "bb_monitor::sensu_client",
+            "bb_monitor::carbon-relay-rep"
           ],
           "Deploy": [],
           "Undeploy": [],
@@ -771,84 +722,62 @@
         ]
       }
     },
-    "OpsWorksGraphiteWebLayer": {
-      "Type": "AWS::OpsWorks::Layer",
-      "Metadata": {
-        "Comment": ""
-      },
-      "DependsOn": [
-        "NATIPAddress",
-        "PublicRoute",
-        "PublicSubnetRouteTableAssociation",
-        "PrivateRoute",
-        "PrivateSubnet0RouteTableAssociation",
-        "PrivateSubnet1RouteTableAssociation",
-        "PrivateSubnet2RouteTableAssociation",
-        "PrivateSubnet3RouteTableAssociation"
-      ],
-      "Properties": {
-        "StackId": {
-          "Ref": "OpsWorksStack"
-        },
-        "Name": "GraphiteWeb",
-        "Type": "custom",
-        "Shortname": "graphiteweb",
-        "EnableAutoHealing": "true",
-        "AutoAssignElasticIps": "false",
-        "AutoAssignPublicIps": "false",
-        "CustomSecurityGroupIds": [
-          {
-            "Ref": "OpsWorksSecurityGroup"
-          },
-          {
-            "Ref": "InternalSecurityGroup"
-          }
-        ],
-        "CustomRecipes": {
-          "Setup": [
-            "bb_monitor::route53",
-            "bb_monitor::logstash_agent"
-          ],
-          "Configure": [
-            "bb_monitor::sensu_client"
-          ],
-          "Deploy": [],
-          "Undeploy": [],
-          "Shutdown": [
-            "bb_monitor::sensu_client_remove"
-          ]
-        }
-      }
-    },
-    "GraphiteInstance1": {
+    "CarbonRelayInstance1": {
       "Type": "AWS::OpsWorks::Instance",
       "Properties": {
         "StackId": {
           "Ref": "OpsWorksStack"
         },
         "LayerIds": [
-          { "Ref": "OpsWorksCarbonRelayRepLayer" }, { "Ref": "OpsWorksCarbonRelayFanLayer" }, { "Ref": "OpsWorksCarbonCacheLayer" }, { "Ref": "OpsWorksGraphiteWebLayer" }
+          { "Ref": "OpsWorksCarbonRelayLayer" }
         ],
-        "InstanceType": { "Ref" : "CarbonCacheInstanceType" },
-        "SubnetId": { "Ref" : "PrivateSubnet0" },
-        "AutoScalingType": "load"
+        "InstanceType": { "Ref" : "CarbonRelayInstanceType" },
+        "SubnetId": { "Ref" : "PrivateSubnet0" }
       }
     },
-    "GraphiteInstance2": {
+    "CarbonRelayInstance2": {
       "Type": "AWS::OpsWorks::Instance",
       "DependsOn": [
-        "GraphiteInstance1"
+        "CarbonRelayInstance1"
       ],
       "Properties": {
         "StackId": {
           "Ref": "OpsWorksStack"
         },
         "LayerIds": [
-          { "Ref": "OpsWorksCarbonRelayRepLayer" }, { "Ref": "OpsWorksCarbonRelayFanLayer" }, { "Ref": "OpsWorksCarbonCacheLayer" }, { "Ref": "OpsWorksGraphiteWebLayer" }
+          { "Ref": "OpsWorksCarbonRelayLayer" }
+        ],
+        "InstanceType": { "Ref" : "CarbonRelayInstanceType" },
+        "SubnetId": { "Ref" : "PrivateSubnet1" }
+      }
+    },
+    "CarbonCacheInstance1": {
+      "Type": "AWS::OpsWorks::Instance",
+      "Properties": {
+        "StackId": {
+          "Ref": "OpsWorksStack"
+        },
+        "LayerIds": [
+          { "Ref": "OpsWorksCarbonCacheLayer" }
         ],
         "InstanceType": { "Ref" : "CarbonCacheInstanceType" },
-        "SubnetId": { "Ref" : "PrivateSubnet1" },
-        "AutoScalingType": "load"
+        "SubnetId": { "Ref" : "PrivateSubnet0" }
+      }
+    },
+    "CarbonCacheInstance2": {
+      "Type": "AWS::OpsWorks::Instance",
+      "DependsOn": [
+        "CarbonCacheInstance1"
+      ],
+      "Properties": {
+        "StackId": {
+          "Ref": "OpsWorksStack"
+        },
+        "LayerIds": [
+          { "Ref": "OpsWorksCarbonCacheLayer" }
+        ],
+        "InstanceType": { "Ref" : "CarbonCacheInstanceType" },
+        "SubnetId": { "Ref" : "PrivateSubnet1" }
       }
     },
     "OpsWorksElasticSearchLayer": {
@@ -1557,7 +1486,7 @@
         }
       }
     },
-    "CarbonRelayRepELB": {
+    "CarbonRelayELB": {
       "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
       "Properties": {
         "SecurityGroups": [
@@ -1585,14 +1514,14 @@
         }
       }
     },
-    "CarbonRelayRepELBAttachment": {
+    "CarbonRelayELBAttachment": {
       "Type": "AWS::OpsWorks::ElasticLoadBalancerAttachment",
       "Properties": {
         "ElasticLoadBalancerName": {
-          "Ref": "CarbonRelayRepELB"
+          "Ref": "CarbonRelayELB"
         },
         "LayerId": {
-          "Ref": "OpsWorksCarbonRelayRepLayer"
+          "Ref": "OpsWorksCarbonRelayLayer"
         }
       }
     },
