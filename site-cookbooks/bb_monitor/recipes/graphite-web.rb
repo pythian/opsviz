@@ -12,6 +12,9 @@ include_recipe "graphite::web"
 
 base_dir = "#{node['graphite']['base_dir']}"
 
+instances = node[:opsworks][:layers][:carboncache][:instances]
+graphiteweb_nodes = instances.map{ |name, attrs| "#{name}:80" }
+
 graphite_web_config "#{base_dir}/webapp/graphite/local_settings.py" do
   config({
            secret_key: node['graphite']['password'],
@@ -29,7 +32,7 @@ graphite_web_config "#{base_dir}/webapp/graphite/local_settings.py" do
                PORT: nil
              }
            },
-           cluster_servers: [ "graphite1:80", "graphite2:80" ],
+           cluster_servers: [ graphiteweb_nodes ],
            carbonlink_hosts: [ "127.0.0.1:7102:a", "127.0.0.1:7202:a" ]
          })
   notifies :restart, 'service[graphite-web]', :delayed
