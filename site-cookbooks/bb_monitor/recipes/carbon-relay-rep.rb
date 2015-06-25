@@ -31,7 +31,15 @@ graphite_carbon_relay "rep" do
             enable_udp_listener: true,
             max_datapoints_per_message: 500,
             max_queue_size: 100000,
-            use_flow_control: true
+            use_flow_control: true,
+            enable_amqp: true,
+            amqp_host: node[:bb_monitor][:sensu][:rabbitmq][:server],
+            amqp_port: 5672,
+            amqp_vhost: node["statsd"]["rabbitmq"]["vhost"],
+            amqp_user: node["statsd"]["rabbitmq"]["user"],
+            amqp_password: node["statsd"]["rabbitmq"]["password"],
+            amqp_exchange: "statsd",
+            amqp_metric_name_in_body: true
           })
 end
 
