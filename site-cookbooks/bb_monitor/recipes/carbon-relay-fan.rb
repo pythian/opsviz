@@ -13,7 +13,10 @@ include_recipe "graphite::carbon"
 graphite_storage 'default'
 
 instances = node[:opsworks][:layers][:carboncache][:instances]
-carboncache_nodes = instances.map{ |name, attrs| "#{name}:2104:a, #{name}:2204:b" }
+this_az = node[:opsworks][:instance][:availability_zone]
+all_carboncache_instances = node[:opsworks][:layers][:carboncache][:instances]
+carboncache_instances_in_this_az = all_carboncache_instances.select{ |name, attrs| attrs[:availability_zone] == this_az }
+carboncache_nodes = carboncache_instances_in_this_az.map{ |name, attrs| "#{name}:2104:a, #{name}:2204:b" }
 
 graphite_carbon_relay "fan" do
   config ({
