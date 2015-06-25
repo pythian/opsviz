@@ -15,7 +15,8 @@ base_dir = "#{node['graphite']['base_dir']}"
 instances = node[:opsworks][:layers][:carboncache][:instances]
 graphiteweb_nodes = instances.map{ |name, attrs| "#{name}:80" }
 
-default['graphite']['uwsgi']['carbon'] = '127.0.0.1:2103:a'
+#needs to be fixed for uwsgi metrics
+#default['graphite']['uwsgi']['carbon'] = '127.0.0.1:2103:a'
 
 graphite_web_config "#{base_dir}/webapp/graphite/local_settings.py" do
   config({
