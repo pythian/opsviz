@@ -632,9 +632,9 @@
         "StackId": {
           "Ref": "OpsWorksStack"
         },
-        "Name": "CarbonRelayRep",
+        "Name": "CarbonRelay",
         "Type": "custom",
-        "Shortname": "carbonrelayrep",
+        "Shortname": "carbonrelay",
         "EnableAutoHealing": "true",
         "AutoAssignElasticIps": "false",
         "AutoAssignPublicIps": "false",
@@ -653,7 +653,8 @@
           ],
           "Configure": [
             "bb_monitor::sensu_client",
-            "bb_monitor::carbon-relay-rep"
+            "bb_monitor::carbon-relay-rep",
+            "bb_monitor::carbon-relay-fan"
           ],
           "Deploy": [],
           "Undeploy": [],
@@ -698,12 +699,13 @@
         ],
         "CustomRecipes": {
           "Setup": [
-            "bb_monitor::carbon-cache",
             "bb_monitor::route53",
             "bb_monitor::logstash_agent"
           ],
           "Configure": [
-            "bb_monitor::sensu_client"
+            "bb_monitor::sensu_client",
+            "bb_monitor::carbon-cache",
+            "bb_monitor::graphite-web"
           ],
           "Deploy": [],
           "Undeploy": [],
@@ -724,6 +726,9 @@
     },
     "CarbonRelayInstance1": {
       "Type": "AWS::OpsWorks::Instance",
+      "DependsOn": [
+        "CarbonCacheInstance1"
+      ],
       "Properties": {
         "StackId": {
           "Ref": "OpsWorksStack"
@@ -738,7 +743,8 @@
     "CarbonRelayInstance2": {
       "Type": "AWS::OpsWorks::Instance",
       "DependsOn": [
-        "CarbonRelayInstance1"
+        "CarbonRelayInstance1",
+        "CarbonCacheInstance2"
       ],
       "Properties": {
         "StackId": {
@@ -1482,7 +1488,7 @@
           "Ref": "GraphiteWebELB"
         },
         "LayerId": {
-          "Ref": "OpsWorksGraphiteWebLayer"
+          "Ref": "OpsWorksCarbonCacheLayer"
         }
       }
     },
@@ -1509,8 +1515,8 @@
           "Target": "TCP:2003",
           "HealthyThreshold": "3",
           "UnhealthyThreshold": "5",
-          "Interval": "90",
-          "Timeout": "60"
+          "Interval": "5",
+          "Timeout": "2"
         }
       }
     },
