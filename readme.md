@@ -22,7 +22,7 @@ It also builds everything with private-only ip addresses and restricts all exter
   - Sensu server
   - Dashboards (Grafana, Kibana, Graphite, Sensu)
   - CarbonRelay (both replication and fanout)
-  - CarbonCache (two carbon caches per instance along with the graphite webapp)
+  - CarbonCache (two carbon caches per instance along with the graphite webapp) [image](drawings/OpsViz_Graphite_Cluster.pdf)
   - Elasticsearch
   - Logstash
   - Rabbitmq
