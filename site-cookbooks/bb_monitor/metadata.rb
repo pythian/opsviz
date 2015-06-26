@@ -6,7 +6,7 @@ description      'Installs/Configures bb-monitor'
 long_description 'Installs/Configures bb-monitor'
 version          '0.1.0'
 
-depends 'kibana'
+depends 'simple-kibana'
 depends 'htpasswd'
 depends 'graphite'
 depends 'python'
