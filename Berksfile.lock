@@ -10,7 +10,7 @@ DEPENDENCIES
   elasticsearch (~> 0.3.13)
   grafana (~> 1.5.4)
   graphite (~> 1.0.2)
-  simple-kibana (~> 0.4.1')
+  simple-kibana (~> 0.4.1)
   logstash
     git: https://github.com/foxycoder/chef-logstash.git
     revision: 71b3aa2cf4116d04f9fb5272b664e08cf2b1c407
