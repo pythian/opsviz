@@ -76,12 +76,6 @@
         "AllowedValues" : ["m3.large", "c3.large", "r3.large"],
         "Description" : "Enter m3.large, c3.large, or r3.large. Default is r3.large."
     },
-    "GraphiteInstanceType":{
-        "Type" : "String",
-        "Default" : "c3.large",
-        "AllowedValues" : ["m3.medium", "m3.large", "c3.large", "r3.large"],
-        "Description" : "Enter m3.medium, m3.large, c3.large, or r3.large. Default is c3.large."
-    },
     "CarbonRelayInstanceType":{
         "Type" : "String",
         "Default" : "m3.medium",
