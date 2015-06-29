@@ -1,0 +1,19 @@
+apiVersion: v1beta3
+kind: ReplicationController
+metadata:
+  labels:
+    name: logstash
+  name: logstash-controller
+spec:
+  replicas: 2
+  selector:
+    component: logstash
+  template:
+    metadata:
+      labels:
+        app: povs
+        component: logstash
+    spec:
+      containers:
+      - image: alexlovelltroy/logstash-server
+        name: logstash
