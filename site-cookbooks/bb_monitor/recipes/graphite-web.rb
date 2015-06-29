@@ -8,48 +8,15 @@ include_recipe 'python'
 
 include_recipe "runit"
 
-include_recipe "graphite::carbon"
 include_recipe "graphite::web"
 
-graphite_carbon_cache "default" do
-  config ({
-            enable_logrotation: true,
-            user: "graphite",
-            max_cache_size: "inf",
-            max_updates_per_second: 500,
-            max_creates_per_minute: 50,
-            line_receiver_interface: "0.0.0.0",
-            line_receiver_port: 2003,
-            udp_receiver_port: 2003,
-            pickle_receiver_port: 2004,
-            enable_udp_listener: true,
-            cache_query_port: "7002",
-            cache_write_strategy: "sorted",
-            use_flow_control: true,
-            log_updates: false,
-            log_cache_hits: false,
-            whisper_autoflush: false,
-            enable_amqp: true,
-            amqp_host: node[:bb_monitor][:sensu][:rabbitmq][:server],
-            amqp_port: 5672,
-            amqp_vhost: node["statsd"]["rabbitmq"]["vhost"],
-            amqp_user: node["statsd"]["rabbitmq"]["user"],
-            amqp_password: node["statsd"]["rabbitmq"]["password"],
-            amqp_exchange: "statsd",
-            amqp_metric_name_in_body: true
-          })
-end
-
-graphite_storage_schema "default" do
-  config ({
-            pattern: ".*",
-            retentions: "1m:30d,5m:1y,1h:5y"
-          })
-end
-
-graphite_service "cache"
-
 base_dir = "#{node['graphite']['base_dir']}"
+
+instances = node[:opsworks][:layers][:carboncache][:instances]
+graphiteweb_nodes = instances.map{ |name, attrs| "#{name}:8081" }
+
+#needs to be fixed for uwsgi metrics
+#default['graphite']['uwsgi']['carbon'] = '127.0.0.1:2103:a'
 
 graphite_web_config "#{base_dir}/webapp/graphite/local_settings.py" do
   config({
@@ -67,7 +34,9 @@ graphite_web_config "#{base_dir}/webapp/graphite/local_settings.py" do
                HOST: nil,
                PORT: nil
              }
-           }
+           },
+           cluster_servers: graphiteweb_nodes,
+           carbonlink_hosts: [ "127.0.0.1:7102:a", "127.0.0.1:7202:b" ]
          })
   notifies :restart, 'service[graphite-web]', :delayed
 end

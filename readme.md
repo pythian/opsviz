@@ -16,12 +16,13 @@ It also builds everything with private-only ip addresses and restricts all exter
 - CloudFormation Script
 - VPC
   - ELBs
-  - Public/Private subnets
+  - 1 Public and 4 Private subnets
 - OpsWorks
   - Bastion
   - Sensu server
   - Dashboards (Grafana, Kibana, Graphite, Sensu)
-  - Graphite
+  - CarbonRelay (both replication and fanout)
+  - CarbonCache (two carbon caches per instance along with the graphite webapp) [image](drawings/OpsViz_Graphite_Cluster.pdf)
   - Elasticsearch
   - Logstash
   - Rabbitmq
@@ -30,12 +31,12 @@ It also builds everything with private-only ip addresses and restricts all exter
 ### Setup
 1. Upload an SSL Certificate to AWS for the RabbitMQ ELB - and note the generated ARN [Instructions](http://docs.aws.amazon.com/ElasticLoadBalancing/latest/DeveloperGuide/ssl-server-cert.html#upload-cert)
 2. Create a new CloudFormation stack on the [CloudFormation Dashboard](https://console.aws.amazon.com/cloudformation/home) [image](screenshots/create_stack.png)
-3. Choose "Upload a template to Amazon S3" on upload cloudformation.json
-4. See Cloudformation Paramaters section on specifics for paramaters [image](screenshots/cloudformation_parameters.png)
+3. Choose "Upload a template to Amazon S3" on upload cloudformation.json (the template is larger than 51000 bytes, so it needs to be uploaded to S3)
+4. See Cloudformation parameters section on specifics for parameters [image](screenshots/cloudformation_parameters.png)
 5. *During options I recommend disabling rollback on failture so you can see logs on OpsWorks boxes when recipes fail* [image](screenshots/rollback_on_failure.png)
 
 
-### Cloudformation Paramaters
+### Cloudformation parameters
 All of these will need to be filled in, for secure passwords and a secure erlang cookie you can use [gen_secrets.py](/gen_secrets.py)
 - `CookbooksRef` - *The git reference to checkout for custom cookbooks*
 - `CookbooksRepo` - *The git url for your custom cookbooks*
@@ -89,7 +90,7 @@ All of these will need to be filled in, for secure passwords and a secure erlang
     - graphite.opsvis.example.com => Graphite ELB <Internal Only>
 
 ### External Access
-*All instances other than the NAT and Bastion hosts are within the private subnet and cannot be accessed directly*
+*All instances other than the NAT and Bastion hosts are within the private subnets and cannot be accessed directly*
 
 RabbitMQ has a public facing ELB in front of it with SSL termination.
 The dashboard instance has an ELB in front of it so the dasbhoards for grafana, kibana, graphite, and sensu are publicly accessible (Authentication is still required)
@@ -158,7 +159,7 @@ We use the public facing RabbitMQ as the transport layer for external sensu clie
         }
 
 ### Updating Sensu Checks and Metrics
-*Todo: At this time we don't have a way to drive sensu checks or metrics directly from CloudFormation paramaters or any other external definitions.
+*Todo: At this time we don't have a way to drive sensu checks or metrics directly from CloudFormation parameters or any other external definitions.
 This would make it easier to update sensu without needing to worry about making changes directly to the sensu config without configuration management or making standalone checks on each client*
 
 - Option 1: SSH into the sensu box and make changes according to sensu [documentation](http://sensuapp.org/docs/0.11/checks)
@@ -173,7 +174,7 @@ This would make it easier to update sensu without needing to worry about making 
 
 ### Custom JSON
 [This Custom Json](custom_json.example.json) is the Custom Json block that is set as the OpsWorks custom json. It drives a lot of the custom configuration
-that chef uses to customize the boxes. Its currently embedded in the CloudFormation script so that we can inject paramaters into the custom json.
+that chef uses to customize the boxes. Its currently embedded in the CloudFormation script so that we can inject parameters into the custom json.
 
 If changes need to be made to the custom json you can do it from the OpsWorks stack's stack settings page. If you make changes make sure that you
 don't update the CloudFormation stack as it will overwrite the custom OpsWork's settings you made.
