@@ -1,3 +1,5 @@
+package "gccgo-go"
+
 directory '/opt/aws-billing' do
   owner 'root'
   group 'root'
