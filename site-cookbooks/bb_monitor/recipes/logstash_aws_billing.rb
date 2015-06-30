@@ -1,4 +1,4 @@
-tempalte '/etc/logstash/conf.d/aws-billing.conf' do
+template '/etc/logstash/conf.d/aws-billing.conf' do
   source 'aws-billing-logstash.conf.erb'
   owner 'root'
   group 'root'
@@ -6,6 +6,7 @@ tempalte '/etc/logstash/conf.d/aws-billing.conf' do
   variables({
     :elasticsearchserver => node['bb_monitor']['logstash']['server']['elasticsearch_server']
   })
+  notifies :restart, "service[logstash]"
 end
 
 # es template
