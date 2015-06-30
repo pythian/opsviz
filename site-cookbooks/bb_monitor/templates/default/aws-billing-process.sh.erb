@@ -1,0 +1,11 @@
+#!/bin/bash
+while [ `ls -t /home/rmutchler/processing/*.csv | wc -l` -ge 1 ]; do
+    NewFile=`ls -t /home/rmutchler/processing/*.csv | head -1`
+    if [ -f "${NewFile}.processed" ]
+    then
+    	mv ${NewFile} ${NewFile}.processed
+    else
+    	#/opt/aws-billing/aws-billing 
+    	mv ${NewFile} ${NewFile}.processed
+    fi
+done
