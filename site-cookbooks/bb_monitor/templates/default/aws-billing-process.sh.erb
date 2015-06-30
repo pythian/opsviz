@@ -5,7 +5,7 @@ while [ `ls -t /opt/aws-billing//processing/*.csv | wc -l` -ge 1 ]; do
     then
     	mv ${NewFile} ${NewFile}.processed
     else
-    	#/opt/aws-billing/aws-billing -accounts-file="/opt/aws-billing/aws-accounts-file.csv" -concurrency=4 -file="${NewFile}" -logstash-address="logstash1:5140"
+    	#/opt/aws-billing/aws-billing --accounts-file "/opt/aws-billing/aws-accounts-file.csv" --concurrency 1 --file "${NewFile}" --logstash-address "logstash1:5140"
     	mv ${NewFile} ${NewFile}.processed
     fi
 done
