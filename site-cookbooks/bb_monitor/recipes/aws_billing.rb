@@ -31,7 +31,7 @@ bash "Build aws-billing Go Script" do
 	code <<-EOH
 	/usr/bin/go build aws-billing.go
 	EOH
-	action: run
+	action :run
 end
 
 cron "aws-billing processing CronTab" do
