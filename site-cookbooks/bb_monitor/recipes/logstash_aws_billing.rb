@@ -43,7 +43,12 @@ ruby_block "Add AWS Billing Filters for Logstash" do
 		code << "  }"
 		code << "}"
 		code.join("\n")
-		ruby -pe 'puts code if $_ =~ /output/' < /etc/logstash/conf.d/server.conf
+		File.open("/etc/logstash/conf.d/server.conf", "r").each_line do |line|
+		  if line =~ /output/
+		     puts code
+		  end
+		  puts "#{line}"
+		end		
 	end
 	action: run
 end
