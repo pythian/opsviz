@@ -26,3 +26,12 @@ bash "Build aws-billing Go Script" do
 	EOH
 	action: run
 end
+
+cron "aws-billing processing CronTab" do
+  minute '*'
+  hour '*'
+  day '*'
+  month '*'
+  command '/opt/aws-billing/aws-billing-process.sh > /dev/null 2>&1'
+  action :create
+end
