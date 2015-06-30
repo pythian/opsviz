@@ -14,8 +14,7 @@ listen <% if node[:doorman][:enabled]=='true' -%>8080<% else -%>80<% end -%>;
   }
 
   location /kibana {
-    alias /opt/kibana/current;
-    proxy_set_header Host $host:80;
+    proxy_pass            http://<%= node['kibana']['host'] %>:<%= node['kibana']['config']['port']%>;
   }
 
   location /elasticsearch {
