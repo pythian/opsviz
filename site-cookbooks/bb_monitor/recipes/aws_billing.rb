@@ -13,7 +13,14 @@ directory '/opt/aws-billing/processing' do
 end
 
 template '/opt/aws-billing/aws-billing.go' do
-  source 'aws-billing.go'
+  source 'aws-billing.go.erb'
+  owner 'root'
+  group 'root'
+  mode '0644'
+end
+
+template '/opt/aws-billing/aws-accounts-file.csv' do
+  source 'aws-accounts-file.csv.erb'
   owner 'root'
   group 'root'
   mode '0644'
@@ -32,6 +39,6 @@ cron "aws-billing processing CronTab" do
   hour '*'
   day '*'
   month '*'
-  command '/opt/aws-billing/aws-billing-process.sh > /dev/null 2>&1'
+  command '/opt/aws-billing/aws-billing-process.sh > /dev/null 2>&1		'
   action :create
 end
