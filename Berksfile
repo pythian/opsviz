@@ -12,6 +12,7 @@ cookbook 'simple-kibana', '~> 0.4.1'
 cookbook 'logstash', '~> 0.1.0', git: 'https://github.com/foxycoder/chef-logstash.git'
 cookbook 'sensu', '~> 2.6.0'
 cookbook 'statsd', '~> 1.1.10', git: 'https://github.com/hectcastro/chef-statsd.git'
+cookbook 'awscli', '~> 1.1.1'
 
 # Our Cookbooks
 cookbook 'rabbitmq_cluster', '~> 0.1.0', path: './site-cookbooks/rabbitmq_cluster'

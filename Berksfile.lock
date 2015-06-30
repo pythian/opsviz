@@ -22,6 +22,7 @@ DEPENDENCIES
   statsd
     git: https://github.com/hectcastro/chef-statsd.git
     revision: fc5a43b6b2984c38e44d107a662701966576e94e
+  awscli (~> 1.1.1)
 
 GRAPH
   7-zip (1.0.2)
