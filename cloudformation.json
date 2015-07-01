@@ -313,16 +313,14 @@
             }
           },
           "elasticsearch": {
-            "version": "1.0.1",
+            "version": "1.6",
             "cluster": {
               "name": "logstash"
             },
-            "plugins": {
-              "elasticsearch/elasticsearch-cloud-aws": {
-                "version": "2.2.0"
-              }
-            },
             "cloud": {
+                "node" : {
+                    "auto_attributes": true
+                },
               "aws": {
                 "region": {
                   "Ref": "AWS::Region"
@@ -335,7 +333,9 @@
             "http_auth": false,
             "index.number_of_shards": 8,
             "index.number_of_replicas": 2,
-            "index.auto_expand_replicas": "2-all"
+            "index.auto_expand_replicas": "2-all",
+            "discovery.ec2.ping_timeout": "30s",
+            "discovery.ec2.groups": { "Ref": "InternalSecurityGroup" }
           },
           "bb_monitor": {
             "sensu": {
