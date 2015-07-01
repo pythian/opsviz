@@ -1,14 +1,15 @@
-#normal[:elasticsearch][:version] = '1.6.0'
-#normal[:elasticsearch][:download_url] = 'https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.6.0.tar.gz'
-#normal[:elasticsearch][:checksum] = 'cb8522f5d3daf03ef96ed533d027c0e3d494e34b'
-
-#1.5.0
-# 07987acd48c754b8e7db6829314b56e1928b5e1b
-#https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.5.0.tar.gz
-
-normal[:elasticsearch][:version] = '1.4.4'
-normal[:elasticsearch][:download_url] = 'https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.4.4.tar.gz'
-normal[:elasticsearch][:checksum] = 'a3158d474e68520664debaea304be22327fc7ee1f410e0bfd940747b413e8586'
+# 1.6.0
+normal[:elasticsearch][:version] = '1.6.0'
+normal[:elasticsearch][:download_url] = 'https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.6.0.tar.gz'
+normal[:elasticsearch][:checksum] = 'dc336c83394b2f2f72f362e0f959a4cfdec2109aa3de15668401afeab0b02d2e'
+# 1.5.2
+#normal[:elasticsearch][:version] = '1.5.2'
+#normal[:elasticsearch][:download_url] = 'https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.5.2.tar.gz'
+#normal[:elasticsearch][:checksum] = 'efae7897367ac3fa8057d02fad31c72e215b6edef599b63e373d3ce0c1049a14'
+# 1.4.4
+#normal[:elasticsearch][:version] = '1.4.4'
+#normal[:elasticsearch][:download_url] = 'https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.4.4.tar.gz'
+#normal[:elasticsearch][:checksum] = 'a3158d474e68520664debaea304be22327fc7ee1f410e0bfd940747b413e8586'
 
 default[:elasticsearch][:http_auth] = false
 #default[:elasticsearch][:http_auth_plugin] = 'https://github.com/Asquera/elasticsearch-http-basic/releases/download/1.3.2/elasticsearch-http-basic-1.3.2.jar'
