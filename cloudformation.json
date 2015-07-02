@@ -149,6 +149,10 @@
       "Description": "RabbitMQ Sensu Password",
       "Type": "String"
     },
+    "GrafanaDBPassword": {
+      "Description": "Grafana Database Password",
+      "Type": "String"
+    },
     "RabbitMQStatsdPassword": {
       "Description": "RabbitMQ Statsd Password",
       "Type": "String"
@@ -293,6 +297,18 @@
         },
         "CustomJson": {
           "chef_environment": "production",
+          "grafana": {
+              "webserver": "",
+              "ini": {
+                  "database" : {
+                      "type": "mysql",
+                      "host": { "Fn::GetAtt": ["GrafanaDB", "Endpoint.Address"]},
+                      "user": "grafana-root",
+                      "password": {"Ref": "GrafanaDBPassword"}
+                  },
+                  "auth.anonymous" : true
+              }
+          },
           "route53": {
             "zone_id": {
               "Ref": "Route53ZoneId"
@@ -1579,6 +1595,19 @@
           }
         ]
       }
+    },
+    "GrafanaDB" : {
+     "Type" : "AWS::RDS::DBInstance",
+     "Properties" : {
+         "DBSecurityGroups" : [ { "Ref": "OpsWorksSecurityGroup" }],
+         "AllocatedStorage" : "5",
+         "DBInstanceClass" : "db.m1.small",
+         "Engine" : "MySQL",
+         "MasterUsername" : "grafana-root",
+         "MasterUserPassword" : {"Ref": "GrafanaDBPassword" },
+         "MultiAz" : true
+     },
+     "DeletionPolicy" : "Snapshot"
     },
     "RedisCluster": {
       "Type": "AWS::ElastiCache::CacheCluster",

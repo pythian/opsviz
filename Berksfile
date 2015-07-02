@@ -5,7 +5,7 @@ source "https://supermarket.getchef.com"
 
 # Community Cookbooks
 cookbook 'elasticsearch', '~> 0.3.13'
-cookbook 'grafana', '~> 1.5.4'
+cookbook 'grafana', '~> 2.0.0'
 cookbook 'graphite', '~> 1.0.2', git: 'https://github.com/hw-cookbooks/graphite.git'
 cookbook 'kibana', '~> 0.1.8'
 cookbook 'logstash', '~> 0.1.0', git: 'https://github.com/foxycoder/chef-logstash.git'
