@@ -67,7 +67,7 @@ end
 
 sensu_check "metric-diskspace" do
   type "metric"
-  command "disk-capacity-metrics.rb --scheme stats.:::name:::.disk"
+  command "disk-capacity-metrics.rb --scheme stats.:::name:::"
   handlers node[:bb_monitor][:sensu][:default_metric_handlers]
   subscribers ["all"]
   interval 60
