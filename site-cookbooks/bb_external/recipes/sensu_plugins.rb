@@ -15,6 +15,7 @@ end
   check-elb-nodes.rb
   check-http.rb
   check-load.rb
+  check-data.rb
   check_mongodb.py
   check-rabbitmq-messages.rb
   check-rabbitmq-queue.rb
