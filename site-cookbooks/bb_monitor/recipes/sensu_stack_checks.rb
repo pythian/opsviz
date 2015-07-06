@@ -47,6 +47,14 @@ sensu_check "check-graphite-cache" do
   additional(:occurrences => 2)
 end
 
+sensu_check "check-elasticsearch-diskspace" do
+  command "graphite.rb -h #{node[:graphite][:host]}:8081 -t averageSeries(stats.#{node[:opsworks][:stack][:name].elasticsearch.*.diskspace.xvdi.capacity) -a 120 -w 70 -c 80"
+  handlers node[:bb_monitor][:sensu][:default_check_handlers]
+  subscribers ["dashboard"]
+  interval 300
+  additional(:occurrences => 2)
+end
+
 sensu_check "check-es-heap" do
   command "check-es-heap.rb -h #{node[:kibana][:elasticsearch_server]}"
   handlers node[:bb_monitor][:sensu][:default_check_handlers]
