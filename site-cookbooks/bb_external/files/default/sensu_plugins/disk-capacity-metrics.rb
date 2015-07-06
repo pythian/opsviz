@@ -67,7 +67,7 @@ class DiskCapacity < Sensu::Plugin::Metric::CLI::Graphite
         if fs.match('/dev')
           fs = fs.gsub('/dev/', '')
           metrics = {
-            disk: {
+            diskspace: {
               "#{fs}.used" => used,
               "#{fs}.avail" => avail,
               "#{fs}.capacity" => capacity.gsub('%', '')
@@ -93,7 +93,7 @@ class DiskCapacity < Sensu::Plugin::Metric::CLI::Graphite
         if fs.match('/dev')
           fs = fs.gsub('/dev/', '')
           metrics = {
-            disk: {
+            diskspace: {
               "#{fs}.iused" => used,
               "#{fs}.iavail" => avail,
               "#{fs}.icapacity" => capacity.gsub('%', '')
