@@ -233,9 +233,6 @@
       },
       "Private2": {
         "CIDR": "10.133.3.0/24"
-      },
-      "Private3": {
-        "CIDR": "10.133.4.0/24"
       }
     }
   },
@@ -483,8 +480,7 @@
         "PrivateRoute",
         "PrivateSubnet0RouteTableAssociation",
         "PrivateSubnet1RouteTableAssociation",
-        "PrivateSubnet2RouteTableAssociation",
-        "PrivateSubnet3RouteTableAssociation"
+        "PrivateSubnet2RouteTableAssociation"
       ],
       "Properties": {
         "StackId": {
@@ -548,7 +544,6 @@
         "PrivateSubnet0RouteTableAssociation",
         "PrivateSubnet1RouteTableAssociation",
         "PrivateSubnet2RouteTableAssociation",
-        "PrivateSubnet3RouteTableAssociation",
         "RedisCluster"
       ],
       "Properties": {
@@ -619,8 +614,7 @@
         "PrivateRoute",
         "PrivateSubnet0RouteTableAssociation",
         "PrivateSubnet1RouteTableAssociation",
-        "PrivateSubnet2RouteTableAssociation",
-        "PrivateSubnet3RouteTableAssociation"
+        "PrivateSubnet2RouteTableAssociation"
       ],
       "Properties": {
         "StackId": {
@@ -670,8 +664,7 @@
         "PrivateRoute",
         "PrivateSubnet0RouteTableAssociation",
         "PrivateSubnet1RouteTableAssociation",
-        "PrivateSubnet2RouteTableAssociation",
-        "PrivateSubnet3RouteTableAssociation"
+        "PrivateSubnet2RouteTableAssociation"
       ],
       "Properties": {
         "StackId": {
@@ -792,8 +785,7 @@
         "PrivateRoute",
         "PrivateSubnet0RouteTableAssociation",
         "PrivateSubnet1RouteTableAssociation",
-        "PrivateSubnet2RouteTableAssociation",
-        "PrivateSubnet3RouteTableAssociation"
+        "PrivateSubnet2RouteTableAssociation"
       ],
       "Properties": {
         "StackId": {
@@ -902,8 +894,7 @@
         "PrivateRoute",
         "PrivateSubnet0RouteTableAssociation",
         "PrivateSubnet1RouteTableAssociation",
-        "PrivateSubnet2RouteTableAssociation",
-        "PrivateSubnet3RouteTableAssociation"
+        "PrivateSubnet2RouteTableAssociation"
       ],
       "Properties": {
         "StackId": {
@@ -975,8 +966,7 @@
         "PrivateRoute",
         "PrivateSubnet0RouteTableAssociation",
         "PrivateSubnet1RouteTableAssociation",
-        "PrivateSubnet2RouteTableAssociation",
-        "PrivateSubnet3RouteTableAssociation"
+        "PrivateSubnet2RouteTableAssociation"
       ],
       "Properties": {
         "StackId": {
@@ -1412,7 +1402,7 @@
           }
         ],
         "Subnets": [
-          { "Ref": "PrivateSubnet0" }, { "Ref": "PrivateSubnet1" }, { "Ref": "PrivateSubnet2" }, { "Ref": "PrivateSubnet3" }
+          { "Ref": "PrivateSubnet0" }, { "Ref": "PrivateSubnet1" }, { "Ref": "PrivateSubnet2" }
         ],
         "Scheme": "internal",
         "Listeners": [
@@ -1456,7 +1446,7 @@
           }
         ],
         "Subnets": [
-          { "Ref": "PrivateSubnet0" }, { "Ref": "PrivateSubnet1" }, { "Ref": "PrivateSubnet2" }, { "Ref": "PrivateSubnet3" }
+          { "Ref": "PrivateSubnet0" }, { "Ref": "PrivateSubnet1" }, { "Ref": "PrivateSubnet2" }
         ],
         "Scheme": "internal",
         "Listeners": [
@@ -1495,7 +1485,7 @@
           }
         ],
         "Subnets": [
-          { "Ref": "PrivateSubnet0" }, { "Ref": "PrivateSubnet1" }, { "Ref": "PrivateSubnet2" }, { "Ref": "PrivateSubnet3" }
+          { "Ref": "PrivateSubnet0" }, { "Ref": "PrivateSubnet1" }, { "Ref": "PrivateSubnet2" }
         ],
         "Scheme": "internal",
         "Listeners": [
@@ -1594,7 +1584,7 @@
       "Type": "AWS::ElastiCache::SubnetGroup",
       "Properties": {
         "Description": "Subnet Group for redis",
-        "SubnetIds": [ { "Ref": "PrivateSubnet0" }, { "Ref": "PrivateSubnet1" }, { "Ref": "PrivateSubnet2" }, { "Ref": "PrivateSubnet3" } ]
+        "SubnetIds": [ { "Ref": "PrivateSubnet0" }, { "Ref": "PrivateSubnet1" }, { "Ref": "PrivateSubnet2" } ]
       }
     },
     "RedisSecurityGroup": {
@@ -1986,43 +1976,6 @@
         ]
       }
     },
-    "PrivateSubnet3": {
-      "Type": "AWS::EC2::Subnet",
-      "Properties": {
-        "VpcId": {
-          "Ref": "VPC"
-        },
-        "AvailabilityZone": {
-          "Fn::Select": [
-            "3",
-            {
-              "Fn::GetAZs": {
-                "Ref": "AWS::Region"
-              }
-            }
-          ]
-        },
-        "CidrBlock": {
-          "Fn::FindInMap": [
-            "SubnetConfig",
-            "Private3",
-            "CIDR"
-          ]
-        },
-        "Tags": [
-          {
-            "Key": "Application",
-            "Value": {
-              "Ref": "AWS::StackName"
-            }
-          },
-          {
-            "Key": "Name",
-            "Value": "opsviz-Private3"
-          }
-        ]
-      }
-    },
     "PrivateRouteTable": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
@@ -2070,17 +2023,6 @@
       "Properties": {
         "SubnetId": {
           "Ref": "PrivateSubnet2"
-        },
-        "RouteTableId": {
-          "Ref": "PrivateRouteTable"
-        }
-      }
-    },
-    "PrivateSubnet3RouteTableAssociation": {
-      "Type": "AWS::EC2::SubnetRouteTableAssociation",
-      "Properties": {
-        "SubnetId": {
-          "Ref": "PrivateSubnet3"
         },
         "RouteTableId": {
           "Ref": "PrivateRouteTable"
@@ -2180,17 +2122,6 @@
       "Properties": {
         "SubnetId": {
           "Ref": "PrivateSubnet2"
-        },
-        "NetworkAclId": {
-          "Ref": "PrivateNetworkAcl"
-        }
-      }
-    },
-    "PrivateSubnet3NetworkAclAssociation": {
-      "Type": "AWS::EC2::SubnetNetworkAclAssociation",
-      "Properties": {
-        "SubnetId": {
-          "Ref": "PrivateSubnet3"
         },
         "NetworkAclId": {
           "Ref": "PrivateNetworkAcl"
@@ -2316,11 +2247,6 @@
     "PrivateSubnet2": {
       "Value": {
         "Ref": "PrivateSubnet2"
-      }
-    },
-    "PrivateSubnet3": {
-      "Value": {
-        "Ref": "PrivateSubnet3"
       }
     },
     "DashboardUrl": {
