@@ -309,6 +309,14 @@
               ]
             }
           },
+          "carbonrelay": {
+            "host": {
+              "Fn::GetAtt": [
+                "CarbonRelayELB",
+                "DNSName"
+              ]
+            }
+          },
           "elasticsearch": {
             "version": "1.0.1",
             "cluster": {

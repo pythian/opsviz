@@ -20,7 +20,7 @@ end
 sensu_handler "graphite" do
   type "tcp"
   socket({
-    :host => node['graphite']['host'],
+    :host => node['carbonrelay']['host'],
     :port => 2003
   })
   mutator "graphite"
