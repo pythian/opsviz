@@ -35,6 +35,7 @@ end
   memory-metrics.rb
   metrics-curl.rb
   metrics-splunk.rb
+  metrics-net.rb
   mongodb-metrics.rb
   nginx-metrics.rb
   rabbitmq-cluster-health.rb
