@@ -25,6 +25,7 @@ end
   cpu-metrics.rb
   cpu-pcnt-usage-metrics.rb
   disk-metrics.rb
+  disk-capacity-metrics.rb
   elb-metrics.rb
   es-cluster-metrics.rb
   es-node-metrics.rb
