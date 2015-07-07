@@ -555,6 +555,7 @@
         "RedisCluster"
       ],
       "Properties": {
+        "CustomInstanceProfileArn": { "Fn::GetAtt" : ["OpsWorksServiceProfile", "Arn"] },
         "StackId": {
           "Ref": "OpsWorksStack"
         },
@@ -1213,6 +1214,17 @@
       }
     },
     "OpsWorksInstanceProfile": {
+      "Type": "AWS::IAM::InstanceProfile",
+      "Properties": {
+        "Path": "/",
+        "Roles": [
+          {
+            "Ref": "OpsWorksInstanceRole"
+          }
+        ]
+      }
+    },
+    "OpsWorksServiceProfile": {
       "Type": "AWS::IAM::InstanceProfile",
       "Properties": {
         "Path": "/",
