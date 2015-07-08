@@ -10,7 +10,7 @@ end
 %w[
   flowdock.rb
   pagerduty.rb
-  sensu.rb
+  remediator.rb
 ].each do |handler|
   cookbook_file ::File.join(node.sensu.directory, "handlers", handler) do
     source "sensu_handlers/#{handler}"
@@ -29,7 +29,7 @@ end
 
 sensu_handler "remediator" do
   type "pipe"
-  command "/etc/sensu/handlers/sensu.rb"
+  command "/etc/sensu/handlers/remediator.rb"
   severities([
     :ok,
     :warning,
