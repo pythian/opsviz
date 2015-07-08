@@ -52,11 +52,11 @@ sensu_check "check-elasticsearch-diskspace" do
   handlers ["remediator","debug"]
   subscribers ["dashboard"]
   interval 30
-  additional(:remediation => { :scale_up => { :occurrences => [2], :severities => [1] }} )
+  additional(:remediation => { :elasticsearch_scale_up => { :occurrences => [2], :severities => [1] }} )
 end
 
-sensu_check "scale_up" do
-  command "/bin/touch /tmp/autoscaling"
+sensu_check "elasticsearch_scale_up" do
+  command "scaleOpsworksLayer.rb -s #{node[:opsworks][:stack][:name]} -r #{node[:aws_region]} -l ElasticSearch -i 2 -m 5 -t #{node[:opsworks][:layers]['elasticsearch'][:instances]['elasticsearch1'][:instance_type]}"
   handlers [ ]
   subscribers [ ]
   publish false
