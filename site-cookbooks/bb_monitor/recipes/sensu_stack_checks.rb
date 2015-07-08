@@ -52,7 +52,7 @@ sensu_check "check-elasticsearch-diskspace" do
   handlers ["remediator","debug"]
   subscribers ["dashboard"]
   interval 30
-  additional(:remediation => { :scale_up => { :occurrences => 2, :severities => 1 }} , :scale_up => { :command => "touch /tmp/autoscaling", :publish => false, :handlers => ["debug"] } )
+  additional(:remediation => { :scale_up => { :occurrences => [2], :severities => [1] }} , :scale_up => { :command => "touch /tmp/autoscaling", :publish => false, :handlers => ["debug"] } )
 end
 
 sensu_check "check-es-heap" do
