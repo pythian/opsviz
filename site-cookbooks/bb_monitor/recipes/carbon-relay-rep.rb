@@ -57,11 +57,4 @@ graphite_carbon_relay "rep" do
           })
 end
 
-graphite_relay_rules "default" do
-  config ({
-            default: true,
-            destinations: carbonrelay_nodes
-          })
-end
-
 graphite_service "relay:rep"
