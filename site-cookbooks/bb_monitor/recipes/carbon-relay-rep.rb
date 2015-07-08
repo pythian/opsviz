@@ -25,7 +25,6 @@ graphite_carbon_relay "rep" do
             udp_receiver_port: 2003,
             pickle_receiver_interface: "0.0.0.0",
             pickle_receiver_port: 2004,
-            relay_method: "consistent-hashing",
             replication_factor: 2,
             destinations: [ carbonrelay_nodes ],
             enable_udp_listener: true,
@@ -40,6 +39,13 @@ graphite_carbon_relay "rep" do
             amqp_password: node["statsd"]["rabbitmq"]["password"],
             amqp_exchange: "statsd",
             amqp_metric_name_in_body: true
+          })
+end
+
+graphite_relay_rules "default" do
+  config ({
+            default: true,
+            destinations: carbonrelay_nodes
           })
 end
 
