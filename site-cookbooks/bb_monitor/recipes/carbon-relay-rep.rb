@@ -15,6 +15,21 @@ graphite_storage 'default'
 instances = node[:opsworks][:layers][:carbonrelay][:instances]
 carbonrelay_nodes = instances.map{ |name, attrs| "#{name}:2414:fan" }
 
+node.default['graphite']['relay_rules'] = [
+  {
+    'name' => 'default',
+    'default' => true,
+    'destinations' => [ carbonrelay_nodes ]
+  }
+]
+
+template "#{node['graphite']['base_dir']}/conf/relay-rules.conf" do
+  source 'relay-rules.conf.erb'
+  owner node['graphite']['user_account']
+  group node['graphite']['group_account']
+  variables(:relay_rules => node['graphite']['relay_rules'])
+end
+
 graphite_carbon_relay "rep" do
   config ({
             max_cache_size: "inf",
