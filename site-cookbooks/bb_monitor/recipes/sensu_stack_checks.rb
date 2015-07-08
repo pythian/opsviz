@@ -59,7 +59,7 @@ sensu_check "scale_up" do
   command "/bin/touch /tmp/autoscaling"
   handlers [ ]
   subscribers [ ]
-  publish flase
+  publish false
 end
 
 sensu_check "check-es-heap" do
