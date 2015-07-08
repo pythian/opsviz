@@ -31,10 +31,10 @@ sensu_handler "remediator" do
   type "pipe"
   command "/etc/sensu/handlers/sensu.rb"
   severities([
-    ok,
-    warning,
-    critical,
-    unknown,
+    :ok,
+    :warning,
+    :critical,
+    :unknown
   ])
 end
 
