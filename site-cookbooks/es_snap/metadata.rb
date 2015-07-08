@@ -1,0 +1,7 @@
+name             'nfs_es_snap'
+maintainer       'YOUR_NAME'
+maintainer_email 'YOUR_EMAIL'
+license          'All rights reserved'
+description      'Installs/Configures NFS and ES snapshots'
+long_description 'Installs/Configures Installs/Configures NFS, ES snapshots'
+version          '0.1.0'
