@@ -27,6 +27,10 @@ sensu_handler "graphite" do
   mutator "graphite"
 end
 
+sensu_handler "remediator" do
+  type "pipe"
+  command "/etc/sensu/handlers/remediator.rb"
+end
 
 unless node[:bb_monitor][:sensu][:pagerduty_api].empty?
   sensu_snippet "pagerduty" do
