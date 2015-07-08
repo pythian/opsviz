@@ -69,7 +69,7 @@ end
 graphite_storage_schema "default" do
   config ({
             pattern: ".*",
-            retentions: "1m:30d,5m:1y,1h:5y"
+            retentions: "30s:30d,5m:1y,1h:5y"
           })
 end
 

@@ -24,7 +24,7 @@ if node[:provider] != "vagrant"
         command "elb-metrics.rb -r #{node[:aws_region]} -n #{elb[:name]} --scheme stats.#{node[:opsworks][:stack][:name].downcase.gsub(' ','_')}.#{key}.elb"
         handlers node[:bb_monitor][:sensu][:default_metric_handlers]
         subscribers ["dashboard"]
-        interval 150
+        interval 30
       end
 
       sensu_check "check-sensu-elb-#{elb[:name]}" do
@@ -86,7 +86,7 @@ sensu_check "metric-cluster-elasticsearch" do
   command "es-cluster-metrics.rb -h #{node[:kibana][:elasticsearch_server]} -s stats.#{stack_name}.elasticsearch.cluster"
   handlers node[:bb_monitor][:sensu][:default_metric_handlers]
   subscribers ["dashboard"]
-  interval 60
+  interval 30
 end
 
 sensu_check "metric-node-elasticsearch" do
@@ -94,5 +94,5 @@ sensu_check "metric-node-elasticsearch" do
   command "es-node-metrics.rb -h #{node[:kibana][:elasticsearch_server]} -s stats.#{stack_name}.elasticsearch"
   handlers node[:bb_monitor][:sensu][:default_metric_handlers]
   subscribers ["dashboard"]
-  interval 60
+  interval 30
 end
