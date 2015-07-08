@@ -30,6 +30,12 @@ end
 sensu_handler "remediator" do
   type "pipe"
   command "/etc/sensu/handlers/sensu.rb"
+  severities([
+    ok,
+    warning,
+    critical,
+    unknown,
+  ])
 end
 
 unless node[:bb_monitor][:sensu][:pagerduty_api].empty?
