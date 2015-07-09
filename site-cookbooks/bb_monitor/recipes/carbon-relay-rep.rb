@@ -28,6 +28,7 @@ template "#{node['graphite']['base_dir']}/conf/relay-rules.conf" do
   owner node['graphite']['user_account']
   group node['graphite']['group_account']
   variables(:relay_rules => node['graphite']['relay_rules'])
+  notifies :restart, 'service[carbon-relay-rep]', :delayed
 end
 
 graphite_carbon_relay "rep" do
@@ -55,6 +56,7 @@ graphite_carbon_relay "rep" do
             amqp_exchange: "statsd",
             amqp_metric_name_in_body: true
           })
+  notifies :restart, 'service[carbon-relay-rep]', :delayed
 end
 
 graphite_service "relay:rep"
