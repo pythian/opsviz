@@ -9,6 +9,37 @@ import boto.iam
 import time
 from gen_secrets import gen_password
 
+def get_privkey():
+    '''When the -newkey option is given to req, it writes the key
+    to a file named "privkey.pem". We want to read the key from
+    that file and the clean it up'''
+    # this is required to make the java library on the
+    # recieving end happy
+    privkey = subprocess.check_output([
+        'openssl', 'rsa', '-in', 'privkey.pem'])
+
+    try:
+        os.unlink('privkey.pem')
+    except OSError:
+        sys.stderr.write("WARNING: failed to delete privkey.pem\n")
+
+    return privkey
+
+def gen_certificate():
+    '''Generates a self-signed cert to be used by
+    RabbitMQ'''
+    # TODO: provide a way to not have to enter the interactive
+    # openssl prompts
+    proc = subprocess.Popen(['openssl', 'req', '-new',
+                             '-nodes', '-newkey', 'rsa:2048',
+                             '-x509'], stdout=subprocess.PIPE)
+
+    if proc.wait() != 0:
+        raise SystemExit("Failed to generate self-signed OpenSSL")
+
+    return (get_privkey(), proc.stdout.read())
+
+
 class KeyValueArgs(argparse.Action):
     def __call__(self, parser, namespace, values, option_string=None):
         if not hasattr(namespace, self.dest):
@@ -22,36 +53,6 @@ class OpsVizStackCreator(object):
         self.opts = opts
         self.iam  = boto.iam.connect_to_region(opts.region)
         self.cf   = boto.cloudformation.connect_to_region(opts.region)
-
-    def gen_certificate(self):
-        '''Generates a self-signed cert to be used by
-        RabbitMQ'''
-        # TODO: provide a way to not have to enter the interactive
-        # openssl prompts
-        proc = subprocess.Popen(['openssl', 'req', '-new',
-                                 '-nodes', '-newkey', 'rsa:2048',
-                                 '-x509'], stdout=subprocess.PIPE)
-
-        if proc.wait() != 0:
-            raise SystemExit("Failed to generate self-signed OpenSSL")
-
-        return (self.get_privkey(),  proc.stdout.read())
-
-    def get_privkey(self):
-        '''When the -newkey option is given to req, it writes the key
-        to a file named "privkey.pem". We want to read the key from
-        that file and the clean it up'''
-        # this is required to make the java library on the
-        # recieving end happy
-        privkey = subprocess.check_output([
-            'openssl', 'rsa', '-in', 'privkey.pem'])
-
-        try:
-            os.unlink('privkey.pem')
-        except OSError:
-            sys.stderr.write("WARNING: failed to delete privkey.pem\n")
-
-        return privkey
 
     def upload_cert(self):
         '''Uploads a cert and key to IAM and return the ARN of the
@@ -70,12 +71,12 @@ class OpsVizStackCreator(object):
     def prepare_cert(self):
         certs_response = self.iam.list_server_certs()
         cert_list = certs_response[u'list_server_certificates_response'][u'list_server_certificates_result'][u'server_certificate_metadata_list']
-        print(cert_list)
-        valid_certs =[x for x in cert_list if x[u'server_certificate_name'] == "{}_cert".format(self.opts.stack_name)]
+        print cert_list
+        valid_certs = [x for x in cert_list if x[u'server_certificate_name'] == "{}_cert".format(self.opts.stack_name)]
         if len(valid_certs) == 1:
             self.cert_arn = valid_certs[0][u'arn']
         else:
-            self.ssl_key, self.ssl_cert = self.gen_certificate()
+            self.ssl_key, self.ssl_cert = gen_certificate()
             self.cert_arn = self.upload_cert()
 
         return self.cert_arn
@@ -86,6 +87,7 @@ class OpsVizStackCreator(object):
             'RabbitMQStatsdPassword': gen_password(),
             'RabbitMQLogstashExternalPassword': gen_password(),
             'RabbitMQLogstashInternalPassword': gen_password(),
+            'GrafanaDBPassword': gen_password(),
             'RabbitMQErlangCookie': gen_password(50),
             'RabbitMQCertificateARN': self.cert_arn,
             'DoormanSessionSecret': gen_password(50)
@@ -98,20 +100,25 @@ class OpsVizStackCreator(object):
         return params
 
     def read_template(self):
-        with open('cloudformation.json', 'r') as fh:
-            return fh.read()
+        with open('cloudformation.json', 'r') as filehandle:
+            return filehandle.read()
 
     def spin_up(self, params):
         print "Creating stack with params: "
         print params
 
-        stack_id = self.cf.create_stack(
-            stack_name=self.opts.stack_name,
-            template_body=self.read_template(),
-            capabilities=['CAPABILITY_IAM'],
-            parameters=params.items(),
-            disable_rollback=True
-        )
+        create_stack_kwargs = {
+            'stack_name': self.opts.stack_name,
+            'capabilities': ['CAPABILITY_IAM'],
+            'parameters': params.items(),
+            'disable_rollback': True
+        }
+        if not self.opts.template_url:
+            create_stack_kwargs['template_body'] = self.read_template()
+        else:
+            create_stack_kwargs['template_url'] = self.opts.template_url
+
+        stack_id = self.cf.create_stack(**create_stack_kwargs)
 
         #events we have already printed out
         reported_events = set()
@@ -146,6 +153,8 @@ def get_args():
                         'but does not spin up the stack')
     parser.add_argument('--cookbook-repo', '-c',
                         help="The git url for your custom cookbooks")
+    parser.add_argument('--template-url', '-t',
+                        help="The s3 url for your template")
     parser.add_argument('--param', dest='params', action=KeyValueArgs,
                         default={},
                         help="Override additional params in the form of key=value. Can be specified multiple times")

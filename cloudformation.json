@@ -303,7 +303,7 @@
                   "database" : {
                       "type": "mysql",
                       "host": { "Fn::GetAtt": ["GrafanaDB", "Endpoint.Address"]},
-                      "user": "grafana-root",
+                      "user": "grafanaroot",
                       "password": {"Ref": "GrafanaDBPassword"}
                   },
                   "auth.anonymous" : true
@@ -499,8 +499,7 @@
         "PrivateRoute",
         "PrivateSubnet0RouteTableAssociation",
         "PrivateSubnet1RouteTableAssociation",
-        "PrivateSubnet2RouteTableAssociation",
-        "PrivateSubnet3RouteTableAssociation"
+        "PrivateSubnet2RouteTableAssociation"
       ],
       "Properties": {
         "StackId": {
@@ -564,7 +563,6 @@
         "PrivateSubnet0RouteTableAssociation",
         "PrivateSubnet1RouteTableAssociation",
         "PrivateSubnet2RouteTableAssociation",
-        "PrivateSubnet3RouteTableAssociation",
         "RedisCluster"
       ],
       "Properties": {
@@ -635,8 +633,7 @@
         "PrivateRoute",
         "PrivateSubnet0RouteTableAssociation",
         "PrivateSubnet1RouteTableAssociation",
-        "PrivateSubnet2RouteTableAssociation",
-        "PrivateSubnet3RouteTableAssociation"
+        "PrivateSubnet2RouteTableAssociation"
       ],
       "Properties": {
         "StackId": {
@@ -686,8 +683,7 @@
         "PrivateRoute",
         "PrivateSubnet0RouteTableAssociation",
         "PrivateSubnet1RouteTableAssociation",
-        "PrivateSubnet2RouteTableAssociation",
-        "PrivateSubnet3RouteTableAssociation"
+        "PrivateSubnet2RouteTableAssociation"
       ],
       "Properties": {
         "StackId": {
@@ -808,8 +804,7 @@
         "PrivateRoute",
         "PrivateSubnet0RouteTableAssociation",
         "PrivateSubnet1RouteTableAssociation",
-        "PrivateSubnet2RouteTableAssociation",
-        "PrivateSubnet3RouteTableAssociation"
+        "PrivateSubnet2RouteTableAssociation"
       ],
       "Properties": {
         "StackId": {
@@ -918,8 +913,7 @@
         "PrivateRoute",
         "PrivateSubnet0RouteTableAssociation",
         "PrivateSubnet1RouteTableAssociation",
-        "PrivateSubnet2RouteTableAssociation",
-        "PrivateSubnet3RouteTableAssociation"
+        "PrivateSubnet2RouteTableAssociation"
       ],
       "Properties": {
         "StackId": {
@@ -991,8 +985,7 @@
         "PrivateRoute",
         "PrivateSubnet0RouteTableAssociation",
         "PrivateSubnet1RouteTableAssociation",
-        "PrivateSubnet2RouteTableAssociation",
-        "PrivateSubnet3RouteTableAssociation"
+        "PrivateSubnet2RouteTableAssociation"
       ],
       "Properties": {
         "StackId": {
@@ -1428,7 +1421,7 @@
           }
         ],
         "Subnets": [
-          { "Ref": "PrivateSubnet0" }, { "Ref": "PrivateSubnet1" }, { "Ref": "PrivateSubnet2" }, { "Ref": "PrivateSubnet3" }
+          { "Ref": "PrivateSubnet0" }, { "Ref": "PrivateSubnet1" }, { "Ref": "PrivateSubnet2" }
         ],
         "Scheme": "internal",
         "Listeners": [
@@ -1472,7 +1465,7 @@
           }
         ],
         "Subnets": [
-          { "Ref": "PrivateSubnet0" }, { "Ref": "PrivateSubnet1" }, { "Ref": "PrivateSubnet2" }, { "Ref": "PrivateSubnet3" }
+          { "Ref": "PrivateSubnet0" }, { "Ref": "PrivateSubnet1" }, { "Ref": "PrivateSubnet2" }
         ],
         "Scheme": "internal",
         "Listeners": [
@@ -1511,7 +1504,7 @@
           }
         ],
         "Subnets": [
-          { "Ref": "PrivateSubnet0" }, { "Ref": "PrivateSubnet1" }, { "Ref": "PrivateSubnet2" }, { "Ref": "PrivateSubnet3" }
+          { "Ref": "PrivateSubnet0" }, { "Ref": "PrivateSubnet1" }, { "Ref": "PrivateSubnet2" }
         ],
         "Scheme": "internal",
         "Listeners": [
@@ -1596,19 +1589,6 @@
         ]
       }
     },
-    "GrafanaDB" : {
-     "Type" : "AWS::RDS::DBInstance",
-     "Properties" : {
-         "DBSecurityGroups" : [ { "Ref": "OpsWorksSecurityGroup" }],
-         "AllocatedStorage" : "5",
-         "DBInstanceClass" : "db.m1.small",
-         "Engine" : "MySQL",
-         "MasterUsername" : "grafana-root",
-         "MasterUserPassword" : {"Ref": "GrafanaDBPassword" },
-         "MultiAz" : true
-     },
-     "DeletionPolicy" : "Snapshot"
-    },
     "RedisCluster": {
       "Type": "AWS::ElastiCache::CacheCluster",
       "Properties": {
@@ -1623,7 +1603,7 @@
       "Type": "AWS::ElastiCache::SubnetGroup",
       "Properties": {
         "Description": "Subnet Group for redis",
-        "SubnetIds": [ { "Ref": "PrivateSubnet0" }, { "Ref": "PrivateSubnet1" }, { "Ref": "PrivateSubnet2" }, { "Ref": "PrivateSubnet3" } ]
+        "SubnetIds": [ { "Ref": "PrivateSubnet0" }, { "Ref": "PrivateSubnet1" }, { "Ref": "PrivateSubnet2" } ]
       }
     },
     "RedisSecurityGroup": {
@@ -1653,6 +1633,36 @@
         "GroupId": { "Fn::GetAtt": ["RedisSecurityGroup", "GroupId"] },
         "SourceSecurityGroupId": { "Fn::GetAtt": ["OpsWorksSecurityGroup", "GroupId"] }
       }
+    },
+    "GrafanaDBSecurityGroup": {
+      "Type": "AWS::RDS::DBSecurityGroup",
+      "Properties": {
+        "DBSecurityGroupIngress": { "EC2SecurityGroupId": { "Ref": "OpsWorksSecurityGroup"} },
+        "GroupDescription"      : "Database Access",
+        "EC2VpcId": { "Ref": "VPC" }
+      }
+    },
+    "GrafanaDBSubnetGroup" : {
+         "Type" : "AWS::RDS::DBSubnetGroup",
+         "Properties" : {
+            "DBSubnetGroupDescription" : "GrafanaDB Subnet Group",
+            "SubnetIds": [ { "Ref": "PrivateSubnet0" }, { "Ref": "PrivateSubnet1" }, { "Ref": "PrivateSubnet2" } ]
+         }
+    },
+    "GrafanaDB" : {
+     "Type" : "AWS::RDS::DBInstance",
+     "DependsOn": "GrafanaDBSecurityGroup",
+     "Properties" : {
+         "DBSecurityGroups" : [ { "Ref": "GrafanaDBSecurityGroup" }],
+         "AllocatedStorage" : "5",
+         "DBInstanceClass" : "db.m1.small",
+         "DBSubnetGroupName"    : { "Ref" : "GrafanaDBSubnetGroup" },
+         "Engine" : "MySQL",
+         "MasterUsername" : "grafanaroot",
+         "MasterUserPassword" : {"Ref": "GrafanaDBPassword" },
+         "MultiAZ" : true
+     },
+     "DeletionPolicy" : "Snapshot"
     },
     "VPC": {
       "Type": "AWS::EC2::VPC",
@@ -2015,43 +2025,6 @@
         ]
       }
     },
-    "PrivateSubnet3": {
-      "Type": "AWS::EC2::Subnet",
-      "Properties": {
-        "VpcId": {
-          "Ref": "VPC"
-        },
-        "AvailabilityZone": {
-          "Fn::Select": [
-            "3",
-            {
-              "Fn::GetAZs": {
-                "Ref": "AWS::Region"
-              }
-            }
-          ]
-        },
-        "CidrBlock": {
-          "Fn::FindInMap": [
-            "SubnetConfig",
-            "Private3",
-            "CIDR"
-          ]
-        },
-        "Tags": [
-          {
-            "Key": "Application",
-            "Value": {
-              "Ref": "AWS::StackName"
-            }
-          },
-          {
-            "Key": "Name",
-            "Value": "opsviz-Private3"
-          }
-        ]
-      }
-    },
     "PrivateRouteTable": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
@@ -2099,17 +2072,6 @@
       "Properties": {
         "SubnetId": {
           "Ref": "PrivateSubnet2"
-        },
-        "RouteTableId": {
-          "Ref": "PrivateRouteTable"
-        }
-      }
-    },
-    "PrivateSubnet3RouteTableAssociation": {
-      "Type": "AWS::EC2::SubnetRouteTableAssociation",
-      "Properties": {
-        "SubnetId": {
-          "Ref": "PrivateSubnet3"
         },
         "RouteTableId": {
           "Ref": "PrivateRouteTable"
@@ -2209,17 +2171,6 @@
       "Properties": {
         "SubnetId": {
           "Ref": "PrivateSubnet2"
-        },
-        "NetworkAclId": {
-          "Ref": "PrivateNetworkAcl"
-        }
-      }
-    },
-    "PrivateSubnet3NetworkAclAssociation": {
-      "Type": "AWS::EC2::SubnetNetworkAclAssociation",
-      "Properties": {
-        "SubnetId": {
-          "Ref": "PrivateSubnet3"
         },
         "NetworkAclId": {
           "Ref": "PrivateNetworkAcl"
@@ -2347,24 +2298,11 @@
         "Ref": "PrivateSubnet2"
       }
     },
-    "PrivateSubnet3": {
-      "Value": {
-        "Ref": "PrivateSubnet3"
-      }
-    },
     "DashboardUrl": {
       "Value": {
         "Fn::GetAtt": [
           "DashboardELB",
           "DNSName"
-        ]
-      }
-    },
-    "ElasticacheURL": {
-      "Value": {
-        "Fn:GetAtt": [
-          "RedisCluser",
-          "PrimaryEndPoint.Address"
         ]
       }
     }
