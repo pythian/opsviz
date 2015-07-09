@@ -6,7 +6,7 @@ version          '0.1.0'
 end
 
 %w{ rabbitmq }.each do |ckbk|
-      depends ckbk
+      depends ckbk, "= 3.3.0"
 end
 
 depends 'bb_monitor'
