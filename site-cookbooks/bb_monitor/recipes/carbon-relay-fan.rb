@@ -35,7 +35,7 @@ graphite_carbon_relay "fan" do
             max_queue_size: 100000,
             use_flow_control: true
           })
-  notifies :restart, 'graphite_service[carbon:fan]', :delayed
+  notifies :restart, 'graphite_service[relay:fan]', :delayed
 end
 
 graphite_service "relay:fan"

@@ -32,7 +32,7 @@ graphite_carbon_cache "a" do
             enable_logrotation: true,
             whisper_autoflush: false
           })
-  notifies :restart, 'graphite_service[carbon:a]', :delayed
+  notifies :restart, 'graphite_service[cache:a]', :delayed
 end
 
 graphite_carbon_cache "b" do
@@ -57,7 +57,7 @@ graphite_carbon_cache "b" do
             enable_logrotation: true,
             whisper_autoflush: false
           })
-  notifies :restart, 'graphite_service[carbon:b]', :delayed
+  notifies :restart, 'graphite_service[cache:b]', :delayed
 end
 
 
