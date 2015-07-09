@@ -52,6 +52,9 @@ instances = opsworks.describe_instances({
   layer_id: layer_id,
 })
 currentinstancecount = instances.instances.count
+numberofsubnets = options[:source_subnetids].count
+
+arraycount = Array.new
 
 m = options[:source_maxinstancecount].to_i
 if currentinstancecount >= m then
@@ -60,15 +63,31 @@ end
 
 $i = 0 
 n = options[:source_instancecount].to_i
+
 while $i < n do
+
+  $j = 0
+  while $j < numberofsubnets do
+    instances = opsworks.describe_instances({
+      layer_id: layer_id,
+    })
+    instances_in_subnet = instances.instances.select { |attrs| attrs['subnet_id'] == options[:source_subnetids][$j] }
+    arraycount[$j] = instances_in_subnet.count
+    $j +=1
+  end
+  arraymin = arraycount.index(arraycount.min)
+
   newinstance1 = opsworks.create_instance({
     stack_id: stack_id,
     layer_ids: [ layer_id ],
     instance_type: options[:source_instancetype],
-    subnet_id: options[:source_availabilityzone][$i]
+    subnet_id: options[:source_subnetids][arraymin]
   })
-  opsworks.start_instance({
-    instance_id: newinstance1[0]
-  })
+
+  #opsworks.start_instance({
+  #  instance_id: newinstance1[0]
+  #})
+
   $i +=1
+
 end

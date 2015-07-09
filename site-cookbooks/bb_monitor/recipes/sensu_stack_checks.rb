@@ -56,7 +56,22 @@ sensu_check "check-elasticsearch-diskspace" do
 end
 
 sensu_check "elasticsearch_scale_up" do
-  command "scaleOpsworksLayer.rb -s #{node[:opsworks][:stack][:name]} -r #{node[:aws_region]} -l ElasticSearch -i 2 -m 5 -t #{node[:opsworks][:layers]['elasticsearch'][:instances]['elasticsearch1'][:instance_type]} -z #{node[:network][:private_subnet0_id]},#{node[:network][:private_subnet1_id]}"
+  command "scaleOpsworksLayer.rb -s #{node[:opsworks][:stack][:name]} -r #{node[:aws_region]} -l ElasticSearch -i 2 -m 5 -t #{node[:opsworks][:layers]['elasticsearch'][:instances]['elasticsearch1'][:instance_type]} -z #{node[:network][:private_subnet0_id]},#{node[:network][:private_subnet1_id]},#{node[:network][:private_subnet2_id]}"
+  handlers [ ]
+  subscribers [ ]
+  publish false
+end
+
+sensu_check "check-logstash-loadavg" do
+  command "PROCS=`cat /proc/cpuinfo | grep processor | wc -l`;MAXLOAD=`echo "2 * ${PROCS}" | bc -l`;check-data.rb -s #{node[:graphite][:host]}:8081 -t 'averageSeries(stats.#{node[:opsworks][:stack][:name]}.logstash.*.load.load_avg.fifteen)' -a 120 -w $PROCS -c $MAXLOAD"
+  handlers ["remediator","debug"]
+  subscribers ["dashboard"]
+  interval 30
+  additional(:remediation => { :logstash_scale_up => { :occurrences => [10], :severities => [2] }} )
+end
+
+sensu_check "logstash_scale_up" do
+  command "scaleOpsworksLayer.rb -s #{node[:opsworks][:stack][:name]} -r #{node[:aws_region]} -l Logstash -i 1 -m 2 -t #{node[:opsworks][:layers]['logstash'][:instances]['logstash1'][:instance_type]} -z #{node[:network][:private_subnet0_id]},#{node[:network][:private_subnet1_id]},#{node[:network][:private_subnet2_id]}"
   handlers [ ]
   subscribers [ ]
   publish false
