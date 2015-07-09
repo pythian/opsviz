@@ -51,7 +51,7 @@ sensu_check "check-elasticsearch-diskspace" do
   command "check-data.rb -s #{node[:graphite][:host]}:8081 -t 'averageSeries(stats.#{node[:opsworks][:stack][:name]}.elasticsearch.*.diskspace.xvdi.capacity)' -a 120 -w 70 -c 80"
   handlers ["remediator","debug"]
   subscribers ["dashboard"]
-  interval 30
+  interval 1800
   additional(:remediation => { :elasticsearch_scale_up => { :occurrences => [2], :severities => [1] }} )
 end
 
