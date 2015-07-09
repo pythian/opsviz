@@ -16,6 +16,7 @@ OptionParser.new do |opts|
   opts.on('-t', '--instancetype INSTANCETYPE', 'Source instancetype') { |v| options[:source_instancetype] = v }
   opts.on('-x', '--accesskey ACCESSKEY', 'Source accesskey') { |v| options[:source_accesskey] = v }
   opts.on('-y', '--accesskey SECRETKEY', 'Source secretkey') { |v| options[:source_secretkey] = v }
+  opts.on('-z', '--subnetids SUBNETIDS', Array, 'Source subnetids') { |v| options[:source_subnetids] = v }
 
 end.parse!
 
@@ -63,7 +64,8 @@ while $i < n do
   newinstance1 = opsworks.create_instance({
     stack_id: stack_id,
     layer_ids: [ layer_id ],
-    instance_type: options[:source_instancetype]
+    instance_type: options[:source_instancetype],
+    subnet_id: options[:source_availabilityzone][$i]
   })
   opsworks.start_instance({
     instance_id: newinstance1[0]

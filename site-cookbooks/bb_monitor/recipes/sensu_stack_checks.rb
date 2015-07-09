@@ -56,7 +56,7 @@ sensu_check "check-elasticsearch-diskspace" do
 end
 
 sensu_check "elasticsearch_scale_up" do
-  command "scaleOpsworksLayer.rb -s #{node[:opsworks][:stack][:name]} -r #{node[:aws_region]} -l ElasticSearch -i 2 -m 5 -t #{node[:opsworks][:layers]['elasticsearch'][:instances]['elasticsearch1'][:instance_type]}"
+  command "scaleOpsworksLayer.rb -s #{node[:opsworks][:stack][:name]} -r #{node[:aws_region]} -l ElasticSearch -i 2 -m 5 -t #{node[:opsworks][:layers]['elasticsearch'][:instances]['elasticsearch1'][:instance_type]} -z #{node[:network][:private_subnet0_id]},#{node[:network][:private_subnet1_id]}"
   handlers [ ]
   subscribers [ ]
   publish false

@@ -291,6 +291,17 @@
         },
         "CustomJson": {
           "chef_environment": "production",
+          "network": {
+            "private_subnet0_id" : {
+              "Ref": "PrivateSubnet0"
+            },
+            "private_subnet1_id" : {
+              "Ref": "PrivateSubnet1"
+            },
+            "private_subnet2_id" : {
+              "Ref": "PrivateSubnet2"
+            }
+          },
           "route53": {
             "zone_id": {
               "Ref": "Route53ZoneId"
