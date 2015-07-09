@@ -237,9 +237,6 @@
       },
       "Private2": {
         "CIDR": "10.133.3.0/24"
-      },
-      "Private3": {
-        "CIDR": "10.133.4.0/24"
       }
     }
   },
@@ -260,6 +257,7 @@
         },
         "DefaultOs": "Ubuntu 14.04 LTS",
         "UseCustomCookbooks": true,
+        "DefaultRootDeviceType": "ebs",
         "CustomCookbooksSource": {
           "Revision": {
             "Ref": "CookbooksRef"
@@ -297,6 +295,7 @@
         },
         "CustomJson": {
           "chef_environment": "production",
+<<<<<<< HEAD
           "grafana": {
               "webserver": "",
               "ini": {
@@ -308,6 +307,18 @@
                   },
                   "auth.anonymous" : true
               }
+=======
+          "network": {
+            "private_subnet0_id" : {
+              "Ref": "PrivateSubnet0"
+            },
+            "private_subnet1_id" : {
+              "Ref": "PrivateSubnet1"
+            },
+            "private_subnet2_id" : {
+              "Ref": "PrivateSubnet2"
+            }
+>>>>>>> 4d3a561252935db42d7c98942f4d7183d8357d5a
           },
           "route53": {
             "zone_id": {
@@ -324,6 +335,14 @@
             "host": {
               "Fn::GetAtt": [
                 "GraphiteWebELB",
+                "DNSName"
+              ]
+            }
+          },
+          "carbonrelay": {
+            "host": {
+              "Fn::GetAtt": [
+                "CarbonRelayELB",
                 "DNSName"
               ]
             }
@@ -723,6 +742,7 @@
           {
             "MountPoint": "/opt/graphite/storage",
             "NumberOfDisks": 1,
+            "VolumeType": "gp2",
             "Size": {
               "Ref": "GraphiteVolumeSize"
             }
@@ -843,6 +863,7 @@
           {
             "MountPoint": "/usr/local/var",
             "NumberOfDisks": 1,
+            "VolumeType": "gp2",
             "Size": {
               "Ref": "ElasticSearchVolumeSize"
             }
@@ -952,6 +973,7 @@
           {
             "MountPoint": "/var/lib/rabbitmq",
             "NumberOfDisks": 1,
+            "VolumeType": "gp2",
             "Size": {
               "Ref": "RabbitMQVolumeSize"
             }

@@ -15,6 +15,7 @@ end
   check-elb-nodes.rb
   check-http.rb
   check-load.rb
+  check-data.rb
   check_mongodb.py
   check-rabbitmq-messages.rb
   check-rabbitmq-queue.rb
@@ -25,6 +26,7 @@ end
   cpu-metrics.rb
   cpu-pcnt-usage-metrics.rb
   disk-metrics.rb
+  disk-capacity-metrics.rb
   elb-metrics.rb
   es-cluster-metrics.rb
   es-node-metrics.rb
@@ -34,6 +36,7 @@ end
   memory-metrics.rb
   metrics-curl.rb
   metrics-splunk.rb
+  metrics-net.rb
   mongodb-metrics.rb
   nginx-metrics.rb
   rabbitmq-cluster-health.rb
@@ -47,6 +50,7 @@ end
   es-cluster-metrics.rb
   es-node-metrics.rb
   mysql-graphite.rb
+  scaleOpsworksLayer.rb
 ].each do |plugin|
   cookbook_file ::File.join(node.sensu.directory, "plugins", plugin) do
     source "sensu_plugins/#{plugin}"

@@ -13,7 +13,7 @@ normal[:sensu][:rabbitmq][:host] = node[:bb_monitor][:sensu][:rabbitmq][:server]
 normal[:sensu][:rabbitmq][:password] = node[:bb_monitor][:sensu][:rabbitmq][:password]
 normal[:sensu][:redis][:host] = node[:bb_monitor][:sensu][:server_url]
 normal[:sensu][:api][:host] = node[:bb_monitor][:sensu][:server_url]
-normal[:sensu][:log_level] = "warn"
+normal[:sensu][:log_level] = "debug"
 
 default[:bb_monitor][:sensu][:rds_identifiers] = []
 default[:bb_monitor][:sensu][:pagerduty_api] = ""

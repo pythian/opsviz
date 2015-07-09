@@ -38,7 +38,7 @@ sensu_check "metric-load" do
   command "load-metrics.rb -p --scheme stats.:::name:::.load"
   handlers node[:bb_monitor][:sensu][:default_metric_handlers]
   subscribers ["all"]
-  interval 60
+  interval 30
 end
 
 sensu_check "metric-cpu" do
@@ -46,7 +46,7 @@ sensu_check "metric-cpu" do
   command "cpu-metrics.rb --scheme stats.:::name:::.cpu"
   handlers node[:bb_monitor][:sensu][:default_metric_handlers]
   subscribers ["all"]
-  interval 37
+  interval 30
 end
 
 sensu_check "metric-cpu_pcnt" do
@@ -54,7 +54,7 @@ sensu_check "metric-cpu_pcnt" do
   command "cpu-pcnt-usage-metrics.rb --scheme stats.:::name:::.cpu-pcnt"
   handlers node[:bb_monitor][:sensu][:default_metric_handlers]
   subscribers ["all"]
-  interval 37
+  interval 30
 end
 
 sensu_check "metric-disk" do
@@ -62,7 +62,15 @@ sensu_check "metric-disk" do
   command "disk-metrics.rb --scheme stats.:::name:::.disk"
   handlers node[:bb_monitor][:sensu][:default_metric_handlers]
   subscribers ["all"]
-  interval 60
+  interval 30
+end
+
+sensu_check "metric-diskspace" do
+  type "metric"
+  command "disk-capacity-metrics.rb --scheme stats.:::name:::"
+  handlers node[:bb_monitor][:sensu][:default_metric_handlers]
+  subscribers ["all"]
+  interval 30
 end
 
 sensu_check "metric-memory" do
@@ -70,15 +78,15 @@ sensu_check "metric-memory" do
   command "memory-metrics.rb --scheme stats.:::name:::.memory"
   handlers node[:bb_monitor][:sensu][:default_metric_handlers]
   subscribers ["all"]
-  interval 60
+  interval 30
 end
 
 sensu_check "metrics-net" do
   type "metric"
-  command "metrics-net.rb --scheme stats.:::name:::.memory"
+  command "metrics-net.rb --scheme stats.:::name:::.net"
   handlers node[:bb_monitor][:sensu][:default_metric_handlers]
   subscribers ["all"]
-  interval 60
+  interval 30
 end
 
 include_recipe "sensu"
@@ -103,5 +111,5 @@ sensu_check "rabbitmq-overview" do
   command "rabbitmq-overview-metrics.rb --user sensu_monitor --password \"#{node["sensu"]["rabbitmq"]["password"]}\" --scheme stats.:::name:::"
   handlers node[:bb_monitor][:sensu][:default_metric_handlers]
   subscribers ["rabbitmq"]
-  interval 60
+  interval 30
 end
