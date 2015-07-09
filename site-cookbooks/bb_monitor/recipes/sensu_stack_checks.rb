@@ -52,7 +52,7 @@ sensu_check "check-elasticsearch-diskspace" do
   handlers ["remediator","debug"]
   subscribers ["dashboard"]
   interval 1800
-  additional(:remediation => { :elasticsearch_scale_up => { :occurrences => [2], :severities => [1] }} )
+  additional(:remediation => { :elasticsearch_scale_up => { :occurrences => [1], :severities => [2] }} )
 end
 
 sensu_check "elasticsearch_scale_up" do
