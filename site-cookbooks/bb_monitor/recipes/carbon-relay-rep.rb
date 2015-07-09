@@ -56,7 +56,7 @@ graphite_carbon_relay "rep" do
             amqp_exchange: "statsd",
             amqp_metric_name_in_body: true
           })
-  notifies :restart, 'service[carbon-relay-rep]', :delayed
+  notifies :restart, 'graphite_service[relay:rep]', :delayed
 end
 
 graphite_service "relay:rep"
