@@ -56,7 +56,7 @@ sensu_check "check-elasticsearch-diskspace" do
 end
 
 sensu_check "elasticsearch_scale_up" do
-  command "scaleOpsworksLayer.rb -s #{node[:opsworks][:stack][:name]} -r #{node[:aws_region]} -l ElasticSearch -i 2 -m 5 -t #{node[:opsworks][:layers]['elasticsearch'][:instances]['elasticsearch1'][:instance_type]} -z #{node[:network][:private_subnet0_id]},#{node[:network][:private_subnet1_id]},#{node[:network][:private_subnet2_id]}"
+  command "scaleOpsworksLayer.rb -s #{node[:opsworks][:stack][:name]} -r #{node[:aws_region]} -l ElasticSearch -i 2 -m 5 -t #{node[:instance_type][:elasticsearch]} -z #{node[:network][:private_subnet0_id]},#{node[:network][:private_subnet1_id]},#{node[:network][:private_subnet2_id]}"
   handlers [ ]
   subscribers [ ]
   publish false
@@ -71,7 +71,7 @@ sensu_check "check-logstash-loadavg" do
 end
 
 sensu_check "logstash_scale_up" do
-  command "scaleOpsworksLayer.rb -s #{node[:opsworks][:stack][:name]} -r #{node[:aws_region]} -l Logstash -i 1 -m 2 -t #{node[:opsworks][:layers]['logstash'][:instances]['logstash1'][:instance_type]} -z #{node[:network][:private_subnet0_id]},#{node[:network][:private_subnet1_id]},#{node[:network][:private_subnet2_id]}"
+  command "scaleOpsworksLayer.rb -s #{node[:opsworks][:stack][:name]} -r #{node[:aws_region]} -l Logstash -i 1 -m 2 -t #{node[:instance_type][:logstash]} -z #{node[:network][:private_subnet0_id]},#{node[:network][:private_subnet1_id]},#{node[:network][:private_subnet2_id]}"
   handlers [ ]
   subscribers [ ]
   publish false
@@ -86,7 +86,7 @@ sensu_check "check-dashboard-loadavg" do
 end
 
 sensu_check "dashboard_scale_up" do
-  command "scaleOpsworksLayer.rb -s #{node[:opsworks][:stack][:name]} -r #{node[:aws_region]} -l Dashboard -i 1 -m 2 -t #{node[:opsworks][:layers]['dashboard'][:instances]['dashboard1'][:instance_type]} -z #{node[:network][:private_subnet0_id]},#{node[:network][:private_subnet1_id]},#{node[:network][:private_subnet2_id]}"
+  command "scaleOpsworksLayer.rb -s #{node[:opsworks][:stack][:name]} -r #{node[:aws_region]} -l Dashboard -i 1 -m 2 -t #{node[:instance_type][:dashboard]} -z #{node[:network][:private_subnet0_id]},#{node[:network][:private_subnet1_id]},#{node[:network][:private_subnet2_id]}"
   handlers [ ]
   subscribers [ ]
   publish false

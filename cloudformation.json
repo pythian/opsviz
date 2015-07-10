@@ -302,6 +302,29 @@
               "Ref": "PrivateSubnet2"
             }
           },
+          "instance_type": {
+            "bastion" : {
+              "Ref":"BastionInstanceType"
+            },
+            "carboncache" : {
+              "Ref":"CarbonCacheInstanceType"
+            },
+            "carbonrelay" : {
+              "Ref":"CarbonRelayInstanceType"
+            },
+            "dashboard" : {
+              "Ref":"DashboardInstanceType"
+            },
+            "elasticsearch" : {
+              "Ref":"ElasticSearchInstanceType"
+            },
+            "logstash" : {
+              "Ref":"LogstashInstanceType"
+            },
+            "rabbitmq" : {
+              "Ref":"RabbitMQInstanceType"
+            }
+          },
           "route53": {
             "zone_id": {
               "Ref": "Route53ZoneId"
