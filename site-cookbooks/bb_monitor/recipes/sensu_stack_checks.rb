@@ -82,7 +82,7 @@ sensu_check "check-dashboard-loadavg" do
   handlers ["remediator","debug"]
   subscribers ["dashboard1"]
   interval 30
-  additional(:remediation => { :logstash_scale_up => { :occurrences => [10], :severities => [1] }} )
+  additional(:remediation => { :dashboard_scale_up => { :occurrences => [10], :severities => [1] }} )
 end
 
 sensu_check "dashboard_scale_up" do
