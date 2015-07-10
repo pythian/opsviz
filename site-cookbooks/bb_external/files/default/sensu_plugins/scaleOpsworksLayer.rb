@@ -84,9 +84,9 @@ while $i < n do
     subnet_id: options[:source_subnetids][arraymin]
   })
 
-  #opsworks.start_instance({
-  #  instance_id: newinstance1[0]
-  #})
+  opsworks.start_instance({
+    instance_id: newinstance1[0]
+  })
 
   $i +=1
 
