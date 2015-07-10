@@ -1,10 +1,10 @@
 include_recipe "sensu::default"
 
 #remote checks cannot scale on the dashboard layer
-if node[:opsworks][:instance][:hostname] == dashboard1
+if node[:opsworks][:instance][:hostname] == 'dashboard1'
   sensu_client "#{node[:opsworks][:instance][:hostname]}.#{node[:opsworks][:instance][:layers][0]}.#{node[:opsworks][:stack][:name].downcase.gsub(' ','_')}" do
     address node[:opsworks][:instance][:private_ip]
-    subscriptions node[:bb_monitor][:sensu][:subscriptions] dashboard1
+    subscriptions node[:bb_monitor][:sensu][:subscriptions] + [ "dashboard1" ]
     additional ({
       :stack => node[:opsworks][:stack][:name],
       :layer => node[:opsworks][:instance][:layers][0],
