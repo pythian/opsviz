@@ -63,7 +63,7 @@ sensu_check "elasticsearch_scale_up" do
 end
 
 sensu_check "check-logstash-loadavg" do
-  command "PROCS=`cat /proc/cpuinfo | grep processor | wc -l`;MAXLOAD=`echo "2 * ${PROCS}" | bc -l`;check-data.rb -s #{node[:graphite][:host]}:8081 -t 'averageSeries(stats.#{node[:opsworks][:stack][:name]}.logstash.*.load.load_avg.fifteen)' -a 120 -w $PROCS -c $MAXLOAD"
+  command "check-data.rb -s #{node[:graphite][:host]}:8081 -t 'averageSeries(stats.#{node[:opsworks][:stack][:name]}.logstash.*.load.load_avg.fifteen)' -a 120 -w 4 -c 8"
   handlers ["remediator","debug"]
   subscribers ["dashboard"]
   interval 30
