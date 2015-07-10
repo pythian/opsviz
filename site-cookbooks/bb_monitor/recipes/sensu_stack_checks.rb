@@ -86,7 +86,7 @@ sensu_check "check-dashboard-loadavg" do
 end
 
 sensu_check "dashboard_scale_up" do
-  command "scaleOpsworksLayer.rb -s #{node[:opsworks][:stack][:name]} -r #{node[:aws_region]} -l Dashboard -i 1 -m 2 -t #{node[:opsworks][:layers]['dashboard'][:instances]['dahboard1'][:instance_type]} -z #{node[:network][:private_subnet0_id]},#{node[:network][:private_subnet1_id]},#{node[:network][:private_subnet2_id]}"
+  command "scaleOpsworksLayer.rb -s #{node[:opsworks][:stack][:name]} -r #{node[:aws_region]} -l Dashboard -i 1 -m 2 -t #{node[:opsworks][:layers]['dashboard'][:instances]['dashboard1'][:instance_type]} -z #{node[:network][:private_subnet0_id]},#{node[:network][:private_subnet1_id]},#{node[:network][:private_subnet2_id]}"
   handlers [ ]
   subscribers [ ]
   publish false
