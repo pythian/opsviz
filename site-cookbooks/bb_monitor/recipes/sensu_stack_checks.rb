@@ -50,7 +50,7 @@ end
 sensu_check "check-elasticsearch-diskspace" do
   command "check-data.rb -s #{node[:graphite][:host]}:8081 -t 'averageSeries(stats.#{node[:opsworks][:stack][:name]}.elasticsearch.*.diskspace.xvdi.capacity)' -a 120 -w 70 -c 80"
   handlers ["remediator","debug"]
-  subscribers ["dashboard"]
+  subscribers ["dashboard1"]
   interval 30
   additional(:remediation => { :elasticsearch_scale_up => { :occurrences => [1], :severities => [2] }} )
 end
@@ -63,15 +63,30 @@ sensu_check "elasticsearch_scale_up" do
 end
 
 sensu_check "check-logstash-loadavg" do
-  command "check-data.rb -s #{node[:graphite][:host]}:8081 -t 'averageSeries(stats.#{node[:opsworks][:stack][:name]}.logstash.*.load.load_avg.fifteen)' -a 120 -w 4 -c 8"
+  command "check-data.rb -s #{node[:graphite][:host]}:8081 -t 'averageSeries(stats.#{node[:opsworks][:stack][:name]}.logstash.*.load.load_avg.one)' -a 120 -w 4 -c 8"
   handlers ["remediator","debug"]
-  subscribers ["dashboard"]
+  subscribers ["dashboard1"]
   interval 30
-  additional(:remediation => { :logstash_scale_up => { :occurrences => [10], :severities => [1] }} )
+  additional(:remediation => { :logstash_scale_up => { :occurrences => [5], :severities => [1] }} )
 end
 
 sensu_check "logstash_scale_up" do
   command "scaleOpsworksLayer.rb -s #{node[:opsworks][:stack][:name]} -r #{node[:aws_region]} -l Logstash -i 1 -m 2 -t #{node[:opsworks][:layers]['logstash'][:instances]['logstash1'][:instance_type]} -z #{node[:network][:private_subnet0_id]},#{node[:network][:private_subnet1_id]},#{node[:network][:private_subnet2_id]}"
+  handlers [ ]
+  subscribers [ ]
+  publish false
+end
+
+sensu_check "check-dashboard-loadavg" do
+  command "check-data.rb -s #{node[:graphite][:host]}:8081 -t 'averageSeries(stats.#{node[:opsworks][:stack][:name]}.dashboard.*.load.load_avg.one)' -a 120 -w 4 -c 8"
+  handlers ["remediator","debug"]
+  subscribers ["dashboard1"]
+  interval 30
+  additional(:remediation => { :logstash_scale_up => { :occurrences => [5], :severities => [1] }} )
+end
+
+sensu_check "dashboard_scale_up" do
+  command "scaleOpsworksLayer.rb -s #{node[:opsworks][:stack][:name]} -r #{node[:aws_region]} -l Dashboard -i 1 -m 2 -t #{node[:opsworks][:layers]['dashboard'][:instances]['dahboard1'][:instance_type]} -z #{node[:network][:private_subnet0_id]},#{node[:network][:private_subnet1_id]},#{node[:network][:private_subnet2_id]}"
   handlers [ ]
   subscribers [ ]
   publish false
