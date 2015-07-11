@@ -16,7 +16,7 @@ It also builds everything with private-only ip addresses and restricts all exter
 - CloudFormation Script
 - VPC
   - ELBs
-  - 1 Public and 4 Private subnets
+  - 1 Public and 3 Private subnets
 - OpsWorks
   - Bastion
   - Sensu server

@@ -15,6 +15,22 @@ graphite_storage 'default'
 instances = node[:opsworks][:layers][:carbonrelay][:instances]
 carbonrelay_nodes = instances.map{ |name, attrs| "#{name}:2414:fan" }
 
+node.default['graphite']['relay_rules'] = [
+  {
+    'name' => 'default',
+    'default' => true,
+    'destinations' => [ carbonrelay_nodes ]
+  }
+]
+
+template "#{node['graphite']['base_dir']}/conf/relay-rules.conf" do
+  source 'relay-rules.conf.erb'
+  owner node['graphite']['user_account']
+  group node['graphite']['group_account']
+  variables(:relay_rules => node['graphite']['relay_rules'])
+  notifies :restart, 'graphite_service[relay:rep]', :delayed
+end
+
 graphite_carbon_relay "rep" do
   config ({
             max_cache_size: "inf",
@@ -25,7 +41,6 @@ graphite_carbon_relay "rep" do
             udp_receiver_port: 2003,
             pickle_receiver_interface: "0.0.0.0",
             pickle_receiver_port: 2004,
-            relay_method: "consistent-hashing",
             replication_factor: 2,
             destinations: [ carbonrelay_nodes ],
             enable_udp_listener: true,
@@ -41,6 +56,7 @@ graphite_carbon_relay "rep" do
             amqp_exchange: "statsd",
             amqp_metric_name_in_body: true
           })
+  notifies :restart, 'graphite_service[relay:rep]', :delayed
 end
 
 graphite_service "relay:rep"

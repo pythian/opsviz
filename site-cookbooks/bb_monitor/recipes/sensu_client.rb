@@ -1,16 +1,32 @@
 include_recipe "sensu::default"
 
-sensu_client "#{node[:opsworks][:instance][:hostname]}.#{node[:opsworks][:instance][:layers][0]}.#{node[:opsworks][:stack][:name].downcase.gsub(' ','_')}" do
-  address node[:opsworks][:instance][:private_ip]
-  subscriptions node[:bb_monitor][:sensu][:subscriptions]
-  additional ({
-    :stack => node[:opsworks][:stack][:name],
-    :layer => node[:opsworks][:instance][:layers][0],
-    :availability_zone => node[:opsworks][:instance][:availability_zone],
-    :aws_instance_id => node[:opsworks][:instance][:aws_instance_id],
-    :region => node[:opsworks][:instance][:region],
-    :keepalive => {:handlers => node[:bb_monitor][:sensu][:default_check_handlers]}
-  })
+#remote checks cannot scale on the dashboard layer
+if node[:opsworks][:instance][:hostname] == 'dashboard1'
+  sensu_client "#{node[:opsworks][:instance][:hostname]}.#{node[:opsworks][:instance][:layers][0]}.#{node[:opsworks][:stack][:name].downcase.gsub(' ','_')}" do
+    address node[:opsworks][:instance][:private_ip]
+    subscriptions node[:bb_monitor][:sensu][:subscriptions] + [ "dashboard1" ]
+    additional ({
+      :stack => node[:opsworks][:stack][:name],
+      :layer => node[:opsworks][:instance][:layers][0],
+      :availability_zone => node[:opsworks][:instance][:availability_zone],
+      :aws_instance_id => node[:opsworks][:instance][:aws_instance_id],
+      :region => node[:opsworks][:instance][:region],
+      :keepalive => {:handlers => node[:bb_monitor][:sensu][:default_check_handlers]}
+    })
+  end
+else
+  sensu_client "#{node[:opsworks][:instance][:hostname]}.#{node[:opsworks][:instance][:layers][0]}.#{node[:opsworks][:stack][:name].downcase.gsub(' ','_')}" do
+    address node[:opsworks][:instance][:private_ip]
+    subscriptions node[:bb_monitor][:sensu][:subscriptions]
+    additional ({
+      :stack => node[:opsworks][:stack][:name],
+      :layer => node[:opsworks][:instance][:layers][0],
+      :availability_zone => node[:opsworks][:instance][:availability_zone],
+      :aws_instance_id => node[:opsworks][:instance][:aws_instance_id],
+      :region => node[:opsworks][:instance][:region],
+      :keepalive => {:handlers => node[:bb_monitor][:sensu][:default_check_handlers]}
+    })
+  end
 end
 
 include_recipe "bb_external::sensu_plugins"

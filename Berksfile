@@ -9,6 +9,7 @@ cookbook 'grafana', '~> 1.5.4'
 cookbook 'graphite', '~> 1.0.2', git: 'https://github.com/hw-cookbooks/graphite.git'
 cookbook 'kibana', '~> 0.1.8'
 cookbook 'logstash', '~> 0.1.0', git: 'https://github.com/foxycoder/chef-logstash.git'
+cookbook 'route53', '~> 0.4.0', git: 'https://github.com/josacar/route53.git'
 cookbook 'sensu', '~> 2.6.0'
 cookbook 'statsd', '~> 1.1.10', git: 'https://github.com/hectcastro/chef-statsd.git'
 

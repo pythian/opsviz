@@ -10,6 +10,7 @@ end
 %w[
   flowdock.rb
   pagerduty.rb
+  remediator.rb
 ].each do |handler|
   cookbook_file ::File.join(node.sensu.directory, "handlers", handler) do
     source "sensu_handlers/#{handler}"
@@ -20,12 +21,22 @@ end
 sensu_handler "graphite" do
   type "tcp"
   socket({
-    :host => node['graphite']['host'],
+    :host => node['carbonrelay']['host'],
     :port => 2003
   })
   mutator "graphite"
 end
 
+sensu_handler "remediator" do
+  type "pipe"
+  command "/etc/sensu/handlers/remediator.rb"
+  severities([
+    :ok,
+    :warning,
+    :critical,
+    :unknown
+  ])
+end
 
 unless node[:bb_monitor][:sensu][:pagerduty_api].empty?
   sensu_snippet "pagerduty" do

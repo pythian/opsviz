@@ -12,8 +12,10 @@ include_recipe "graphite::web"
 
 base_dir = "#{node['graphite']['base_dir']}"
 
+hostname = node[:opsworks][:instance][:hostname]
 instances = node[:opsworks][:layers][:carboncache][:instances]
-graphiteweb_nodes = instances.map{ |name, attrs| "#{name}:8081" }
+other_instances = instances.select { |name, attrs| name != hostname }
+graphiteweb_nodes = other_instances.map{ |name, attrs| "#{name}:8081" }
 
 #needs to be fixed for uwsgi metrics
 #default['graphite']['uwsgi']['carbon'] = '127.0.0.1:2103:a'

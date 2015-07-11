@@ -233,9 +233,6 @@
       },
       "Private2": {
         "CIDR": "10.133.3.0/24"
-      },
-      "Private3": {
-        "CIDR": "10.133.4.0/24"
       }
     }
   },
@@ -256,6 +253,7 @@
         },
         "DefaultOs": "Ubuntu 14.04 LTS",
         "UseCustomCookbooks": true,
+        "DefaultRootDeviceType": "ebs",
         "CustomCookbooksSource": {
           "Revision": {
             "Ref": "CookbooksRef"
@@ -293,6 +291,40 @@
         },
         "CustomJson": {
           "chef_environment": "production",
+          "network": {
+            "private_subnet0_id" : {
+              "Ref": "PrivateSubnet0"
+            },
+            "private_subnet1_id" : {
+              "Ref": "PrivateSubnet1"
+            },
+            "private_subnet2_id" : {
+              "Ref": "PrivateSubnet2"
+            }
+          },
+          "instance_type": {
+            "bastion" : {
+              "Ref":"BastionInstanceType"
+            },
+            "carboncache" : {
+              "Ref":"CarbonCacheInstanceType"
+            },
+            "carbonrelay" : {
+              "Ref":"CarbonRelayInstanceType"
+            },
+            "dashboard" : {
+              "Ref":"DashboardInstanceType"
+            },
+            "elasticsearch" : {
+              "Ref":"ElasticSearchInstanceType"
+            },
+            "logstash" : {
+              "Ref":"LogstashInstanceType"
+            },
+            "rabbitmq" : {
+              "Ref":"RabbitMQInstanceType"
+            }
+          },
           "route53": {
             "zone_id": {
               "Ref": "Route53ZoneId"
@@ -308,6 +340,14 @@
             "host": {
               "Fn::GetAtt": [
                 "GraphiteWebELB",
+                "DNSName"
+              ]
+            }
+          },
+          "carbonrelay": {
+            "host": {
+              "Fn::GetAtt": [
+                "CarbonRelayELB",
                 "DNSName"
               ]
             }
@@ -483,8 +523,7 @@
         "PrivateRoute",
         "PrivateSubnet0RouteTableAssociation",
         "PrivateSubnet1RouteTableAssociation",
-        "PrivateSubnet2RouteTableAssociation",
-        "PrivateSubnet3RouteTableAssociation"
+        "PrivateSubnet2RouteTableAssociation"
       ],
       "Properties": {
         "StackId": {
@@ -548,7 +587,6 @@
         "PrivateSubnet0RouteTableAssociation",
         "PrivateSubnet1RouteTableAssociation",
         "PrivateSubnet2RouteTableAssociation",
-        "PrivateSubnet3RouteTableAssociation",
         "RedisCluster"
       ],
       "Properties": {
@@ -593,7 +631,8 @@
       "DependsOn": [
         "RabbitMQInstance1",
         "CarbonCacheInstance1",
-        "CarbonCacheInstance2"
+        "CarbonCacheInstance2",
+        "LogstashInstance1"
       ],
       "Properties": {
         "StackId": {
@@ -619,8 +658,7 @@
         "PrivateRoute",
         "PrivateSubnet0RouteTableAssociation",
         "PrivateSubnet1RouteTableAssociation",
-        "PrivateSubnet2RouteTableAssociation",
-        "PrivateSubnet3RouteTableAssociation"
+        "PrivateSubnet2RouteTableAssociation"
       ],
       "Properties": {
         "StackId": {
@@ -647,8 +685,8 @@
           ],
           "Configure": [
             "bb_monitor::sensu_client",
-            "bb_monitor::carbon-relay-rep",
-            "bb_monitor::carbon-relay-fan"
+            "bb_monitor::carbon-relay-fan",
+            "bb_monitor::carbon-relay-rep"
           ],
           "Deploy": [],
           "Undeploy": [],
@@ -670,8 +708,7 @@
         "PrivateRoute",
         "PrivateSubnet0RouteTableAssociation",
         "PrivateSubnet1RouteTableAssociation",
-        "PrivateSubnet2RouteTableAssociation",
-        "PrivateSubnet3RouteTableAssociation"
+        "PrivateSubnet2RouteTableAssociation"
       ],
       "Properties": {
         "StackId": {
@@ -711,6 +748,7 @@
           {
             "MountPoint": "/opt/graphite/storage",
             "NumberOfDisks": 1,
+            "VolumeType": "gp2",
             "Size": {
               "Ref": "GraphiteVolumeSize"
             }
@@ -792,8 +830,7 @@
         "PrivateRoute",
         "PrivateSubnet0RouteTableAssociation",
         "PrivateSubnet1RouteTableAssociation",
-        "PrivateSubnet2RouteTableAssociation",
-        "PrivateSubnet3RouteTableAssociation"
+        "PrivateSubnet2RouteTableAssociation"
       ],
       "Properties": {
         "StackId": {
@@ -832,6 +869,7 @@
           {
             "MountPoint": "/usr/local/var",
             "NumberOfDisks": 1,
+            "VolumeType": "gp2",
             "Size": {
               "Ref": "ElasticSearchVolumeSize"
             }
@@ -902,8 +940,7 @@
         "PrivateRoute",
         "PrivateSubnet0RouteTableAssociation",
         "PrivateSubnet1RouteTableAssociation",
-        "PrivateSubnet2RouteTableAssociation",
-        "PrivateSubnet3RouteTableAssociation"
+        "PrivateSubnet2RouteTableAssociation"
       ],
       "Properties": {
         "StackId": {
@@ -942,6 +979,7 @@
           {
             "MountPoint": "/var/lib/rabbitmq",
             "NumberOfDisks": 1,
+            "VolumeType": "gp2",
             "Size": {
               "Ref": "RabbitMQVolumeSize"
             }
@@ -975,8 +1013,7 @@
         "PrivateRoute",
         "PrivateSubnet0RouteTableAssociation",
         "PrivateSubnet1RouteTableAssociation",
-        "PrivateSubnet2RouteTableAssociation",
-        "PrivateSubnet3RouteTableAssociation"
+        "PrivateSubnet2RouteTableAssociation"
       ],
       "Properties": {
         "StackId": {
@@ -1018,7 +1055,6 @@
         "ElasticSearchInstance1",
         "ElasticSearchInstance2",
         "ElasticSearchInstance3",
-        "DashboardInstance1",
         "RabbitMQInstance1"
       ],
       "Properties": {
@@ -1412,7 +1448,7 @@
           }
         ],
         "Subnets": [
-          { "Ref": "PrivateSubnet0" }, { "Ref": "PrivateSubnet1" }, { "Ref": "PrivateSubnet2" }, { "Ref": "PrivateSubnet3" }
+          { "Ref": "PrivateSubnet0" }, { "Ref": "PrivateSubnet1" }, { "Ref": "PrivateSubnet2" }
         ],
         "Scheme": "internal",
         "Listeners": [
@@ -1456,7 +1492,7 @@
           }
         ],
         "Subnets": [
-          { "Ref": "PrivateSubnet0" }, { "Ref": "PrivateSubnet1" }, { "Ref": "PrivateSubnet2" }, { "Ref": "PrivateSubnet3" }
+          { "Ref": "PrivateSubnet0" }, { "Ref": "PrivateSubnet1" }, { "Ref": "PrivateSubnet2" }
         ],
         "Scheme": "internal",
         "Listeners": [
@@ -1495,7 +1531,7 @@
           }
         ],
         "Subnets": [
-          { "Ref": "PrivateSubnet0" }, { "Ref": "PrivateSubnet1" }, { "Ref": "PrivateSubnet2" }, { "Ref": "PrivateSubnet3" }
+          { "Ref": "PrivateSubnet0" }, { "Ref": "PrivateSubnet1" }, { "Ref": "PrivateSubnet2" }
         ],
         "Scheme": "internal",
         "Listeners": [
@@ -1594,7 +1630,7 @@
       "Type": "AWS::ElastiCache::SubnetGroup",
       "Properties": {
         "Description": "Subnet Group for redis",
-        "SubnetIds": [ { "Ref": "PrivateSubnet0" }, { "Ref": "PrivateSubnet1" }, { "Ref": "PrivateSubnet2" }, { "Ref": "PrivateSubnet3" } ]
+        "SubnetIds": [ { "Ref": "PrivateSubnet0" }, { "Ref": "PrivateSubnet1" }, { "Ref": "PrivateSubnet2" } ]
       }
     },
     "RedisSecurityGroup": {
@@ -1986,43 +2022,6 @@
         ]
       }
     },
-    "PrivateSubnet3": {
-      "Type": "AWS::EC2::Subnet",
-      "Properties": {
-        "VpcId": {
-          "Ref": "VPC"
-        },
-        "AvailabilityZone": {
-          "Fn::Select": [
-            "3",
-            {
-              "Fn::GetAZs": {
-                "Ref": "AWS::Region"
-              }
-            }
-          ]
-        },
-        "CidrBlock": {
-          "Fn::FindInMap": [
-            "SubnetConfig",
-            "Private3",
-            "CIDR"
-          ]
-        },
-        "Tags": [
-          {
-            "Key": "Application",
-            "Value": {
-              "Ref": "AWS::StackName"
-            }
-          },
-          {
-            "Key": "Name",
-            "Value": "opsviz-Private3"
-          }
-        ]
-      }
-    },
     "PrivateRouteTable": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
@@ -2070,17 +2069,6 @@
       "Properties": {
         "SubnetId": {
           "Ref": "PrivateSubnet2"
-        },
-        "RouteTableId": {
-          "Ref": "PrivateRouteTable"
-        }
-      }
-    },
-    "PrivateSubnet3RouteTableAssociation": {
-      "Type": "AWS::EC2::SubnetRouteTableAssociation",
-      "Properties": {
-        "SubnetId": {
-          "Ref": "PrivateSubnet3"
         },
         "RouteTableId": {
           "Ref": "PrivateRouteTable"
@@ -2180,17 +2168,6 @@
       "Properties": {
         "SubnetId": {
           "Ref": "PrivateSubnet2"
-        },
-        "NetworkAclId": {
-          "Ref": "PrivateNetworkAcl"
-        }
-      }
-    },
-    "PrivateSubnet3NetworkAclAssociation": {
-      "Type": "AWS::EC2::SubnetNetworkAclAssociation",
-      "Properties": {
-        "SubnetId": {
-          "Ref": "PrivateSubnet3"
         },
         "NetworkAclId": {
           "Ref": "PrivateNetworkAcl"
@@ -2316,11 +2293,6 @@
     "PrivateSubnet2": {
       "Value": {
         "Ref": "PrivateSubnet2"
-      }
-    },
-    "PrivateSubnet3": {
-      "Value": {
-        "Ref": "PrivateSubnet3"
       }
     },
     "DashboardUrl": {
