@@ -295,6 +295,17 @@
         },
         "CustomJson": {
           "chef_environment": "production",
+          "network": {
+            "private_subnet0_id" : {
+              "Ref": "PrivateSubnet0"
+            },
+            "private_subnet1_id" : {
+              "Ref": "PrivateSubnet1"
+            },
+            "private_subnet2_id" : {
+              "Ref": "PrivateSubnet2"
+            }
+          },
           "grafana": {
               "webserver": "",
               "ini": {
@@ -1394,20 +1405,9 @@
             "LoadBalancerPort": "5671",
             "InstancePort": "5672",
             "Protocol": "SSL",
-            "SSLCertificateId" : {
-            "Fn::Join":[
-               "",
-               [
-                  "arn:aws:iam::",
-                  {
-                     "Ref":"AWS::AccountId"
-                  },
-                  ":server-certificate",
-                  "/",
-                  "opsviz"
-               ]
-            ]
-          }
+            "SSLCertificateId": {
+              "Ref": "RabbitMQCertificateARN"
+            }
           }
         ],
         "HealthCheck": {
@@ -1656,7 +1656,6 @@
         "VpcId": { "Ref": "VPC" }
       }
     },
-
     "RedisSecurityGroupIngressCluster": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
