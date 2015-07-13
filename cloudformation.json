@@ -295,7 +295,6 @@
         },
         "CustomJson": {
           "chef_environment": "production",
-<<<<<<< HEAD
           "grafana": {
               "webserver": "",
               "ini": {
@@ -307,18 +306,6 @@
                   },
                   "auth.anonymous" : true
               }
-=======
-          "network": {
-            "private_subnet0_id" : {
-              "Ref": "PrivateSubnet0"
-            },
-            "private_subnet1_id" : {
-              "Ref": "PrivateSubnet1"
-            },
-            "private_subnet2_id" : {
-              "Ref": "PrivateSubnet2"
-            }
->>>>>>> 4d3a561252935db42d7c98942f4d7183d8357d5a
           },
           "route53": {
             "zone_id": {
@@ -1384,9 +1371,20 @@
             "LoadBalancerPort": "5671",
             "InstancePort": "5672",
             "Protocol": "SSL",
-            "SSLCertificateId": {
-              "Ref": "RabbitMQCertificateARN"
-            }
+            "SSLCertificateId" : {
+            "Fn::Join":[
+               "",
+               [
+                  "arn:aws:iam::",
+                  {
+                     "Ref":"AWS::AccountId"
+                  },
+                  ":server-certificate",
+                  "/",
+                  "opsviz"
+               ]
+            ]
+          }
           }
         ],
         "HealthCheck": {
