@@ -307,6 +307,29 @@
                   "auth.anonymous" : true
               }
           },
+          "instance_type": {
+            "bastion" : {
+              "Ref":"BastionInstanceType"
+            },
+            "carboncache" : {
+              "Ref":"CarbonCacheInstanceType"
+            },
+            "carbonrelay" : {
+              "Ref":"CarbonRelayInstanceType"
+            },
+            "dashboard" : {
+              "Ref":"DashboardInstanceType"
+            },
+            "elasticsearch" : {
+              "Ref":"ElasticSearchInstanceType"
+            },
+            "logstash" : {
+              "Ref":"LogstashInstanceType"
+            },
+            "rabbitmq" : {
+              "Ref":"RabbitMQInstanceType"
+            }
+          },
           "route53": {
             "zone_id": {
               "Ref": "Route53ZoneId"
@@ -613,7 +636,8 @@
       "DependsOn": [
         "RabbitMQInstance1",
         "CarbonCacheInstance1",
-        "CarbonCacheInstance2"
+        "CarbonCacheInstance2",
+        "LogstashInstance1"
       ],
       "Properties": {
         "StackId": {
@@ -666,8 +690,8 @@
           ],
           "Configure": [
             "bb_monitor::sensu_client",
-            "bb_monitor::carbon-relay-rep",
-            "bb_monitor::carbon-relay-fan"
+            "bb_monitor::carbon-relay-fan",
+            "bb_monitor::carbon-relay-rep"
           ],
           "Deploy": [],
           "Undeploy": [],
@@ -1036,7 +1060,6 @@
         "ElasticSearchInstance1",
         "ElasticSearchInstance2",
         "ElasticSearchInstance3",
-        "DashboardInstance1",
         "RabbitMQInstance1"
       ],
       "Properties": {

@@ -50,13 +50,43 @@ end
 sensu_check "check-elasticsearch-diskspace" do
   command "check-data.rb -s #{node[:graphite][:host]}:8081 -t 'averageSeries(stats.#{node[:opsworks][:stack][:name]}.elasticsearch.*.diskspace.xvdi.capacity)' -a 120 -w 70 -c 80"
   handlers ["remediator","debug"]
-  subscribers ["dashboard"]
-  interval 1800
+  subscribers ["dashboard1"]
+  interval 30
   additional(:remediation => { :elasticsearch_scale_up => { :occurrences => [1], :severities => [2] }} )
 end
 
 sensu_check "elasticsearch_scale_up" do
-  command "scaleOpsworksLayer.rb -s #{node[:opsworks][:stack][:name]} -r #{node[:aws_region]} -l ElasticSearch -i 2 -m 5 -t #{node[:opsworks][:layers]['elasticsearch'][:instances]['elasticsearch1'][:instance_type]} -z #{node[:network][:private_subnet0_id]},#{node[:network][:private_subnet1_id]}"
+  command "scaleOpsworksLayer.rb -s #{node[:opsworks][:stack][:name]} -r #{node[:aws_region]} -l ElasticSearch -i 2 -m 5 -t #{node[:instance_type][:elasticsearch]} -z #{node[:network][:private_subnet0_id]},#{node[:network][:private_subnet1_id]},#{node[:network][:private_subnet2_id]}"
+  handlers [ ]
+  subscribers [ ]
+  publish false
+end
+
+sensu_check "check-logstash-loadavg" do
+  command "check-data.rb -s #{node[:graphite][:host]}:8081 -t 'averageSeries(stats.#{node[:opsworks][:stack][:name]}.logstash.*.load.load_avg.one)' -a 120 -w 2 -c 4"
+  handlers ["remediator","debug"]
+  subscribers ["dashboard1"]
+  interval 30
+  additional(:remediation => { :logstash_scale_up => { :occurrences => [10], :severities => [1] }} )
+end
+
+sensu_check "logstash_scale_up" do
+  command "scaleOpsworksLayer.rb -s #{node[:opsworks][:stack][:name]} -r #{node[:aws_region]} -l Logstash -i 1 -m 5 -t #{node[:instance_type][:logstash]} -z #{node[:network][:private_subnet0_id]},#{node[:network][:private_subnet1_id]},#{node[:network][:private_subnet2_id]}"
+  handlers [ ]
+  subscribers [ ]
+  publish false
+end
+
+sensu_check "check-dashboard-loadavg" do
+  command "check-data.rb -s #{node[:graphite][:host]}:8081 -t 'averageSeries(stats.#{node[:opsworks][:stack][:name]}.dashboard.*.load.load_avg.one)' -a 120 -w 2 -c 4"
+  handlers ["remediator","debug"]
+  subscribers ["dashboard1"]
+  interval 30
+  additional(:remediation => { :dashboard_scale_up => { :occurrences => [10], :severities => [1] }} )
+end
+
+sensu_check "dashboard_scale_up" do
+  command "scaleOpsworksLayer.rb -s #{node[:opsworks][:stack][:name]} -r #{node[:aws_region]} -l Dashboard -i 1 -m 3 -t #{node[:instance_type][:dashboard]} -z #{node[:network][:private_subnet0_id]},#{node[:network][:private_subnet1_id]},#{node[:network][:private_subnet2_id]}"
   handlers [ ]
   subscribers [ ]
   publish false

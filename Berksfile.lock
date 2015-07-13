@@ -20,6 +20,9 @@ DEPENDENCIES
     path: nginx
   rabbitmq_cluster
     path: site-cookbooks/rabbitmq_cluster
+  route53
+    git: https://github.com/josacar/route53.git
+    revision: 9a4b8c8a6f078204eb3401c9fa68bfa6f81995ae
   sensu (~> 2.6.0)
   statsd
     git: https://github.com/hectcastro/chef-statsd.git
