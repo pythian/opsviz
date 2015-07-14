@@ -3,7 +3,7 @@ kind: Service
 metadata:
   labels:
     name: rabbitmq
-  name: rabbitmq-service
+  name: rabbitmq
 spec:
   ports:
   - port: 5672

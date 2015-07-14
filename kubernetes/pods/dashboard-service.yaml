@@ -1,14 +1,14 @@
 apiVersion: v1beta3
 kind: Service
 metadata:
+  name: dashboard
   labels:
     name: dashboard
-  name: dashboard-service
 spec:
   ports:
-  - port: 8080
+  - port: 80
     protocol: TCP
-    targetPort: 8080
+    targetPort: 80
   selector:
     app: povs
     component: dashboard

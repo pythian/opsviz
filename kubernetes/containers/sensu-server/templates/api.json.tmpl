@@ -1,0 +1,7 @@
+{{ $API_PORT := default .Env.API_PORT "4567" }}
+{
+    "api": {
+        "host": "{{ default .Env.SENSU_HOST "api" }}",
+        "port": {{  default .Env.SENSU_PORT_4567_TCP_PORT $API_PORT }}
+    }
+}

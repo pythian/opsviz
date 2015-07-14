@@ -52,12 +52,12 @@ server {
 {{end}}
 
   location /elasticsearch {
-    proxy_pass            http://elasticsearch-lb:9200;
+    proxy_pass            http://localhost:9200;
     rewrite /elasticsearch/(.*) /$1 break;
   }
 
   location /rabbitmq {
-    proxy_pass            http://rabbitmq:15672;
+    proxy_pass            http://localhost:15672;
     rewrite /rabbitmq/(.*) /$1 break;
   }
 

@@ -36,4 +36,7 @@ COPY runit.confd.sh /etc/service/confd/run
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+ENV ETCD_HOST etcd
+ENV ETCD_PORT 4001
+
 EXPOSE 8080

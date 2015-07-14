@@ -1,0 +1,10 @@
+{{ $RABBITMQ_PORT := default .Env.RABBITMQ_PORT "5672" }}
+{
+    "rabbitmq": {
+        "port": {{ default .Env.RABBITMQ_PORT_5672_TCP_PORT $RABBITMQ_PORT }},
+        "host": "{{ default .Env.RABBITMQ_HOST "rabbitmq" }}",
+        "user": "{{ default .Env.RABBITMQ_SENSU_USER "sensu" }}",
+        "password": "{{ default .Env.RABBITMQ_SENSU_PASSWORD "guest" }}",
+        "vhost": "{{ default .Env.RABBITMQ_VHOST "/sensu" }}"
+    }
+}

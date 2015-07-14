@@ -1,0 +1,25 @@
+apiVersion: v1beta3
+kind: ReplicationController
+metadata:
+  labels:
+    name: grafana
+  name: grafana-controller
+spec:
+  replicas: 1
+  selector:
+    component: grafana
+  template:
+    metadata:
+      labels:
+        app: povs
+        component: grafana
+    spec:
+      containers:
+      - image: grafana/grafana
+        name: grafana
+        ports:
+        - containerPort: 3000
+          protocol: TCP
+        resources:
+          limits:
+            cpu: 100m

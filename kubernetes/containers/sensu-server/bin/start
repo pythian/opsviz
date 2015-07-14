@@ -1,0 +1,37 @@
+#!/bin/bash
+set -e
+
+/bin/install $RUNTIME_INSTALL
+
+SENSU_SERVICE=${SENSU_SERVICE-$1}
+
+case "$SENSU_SERVICE" in
+   api)
+    DEPENDENCIES="rabbitmq redis"  
+    ;;&
+  client)
+    DEPENDENCIES="rabbitmq client"
+    ;;&
+  server)
+    DEPENDENCIES="rabbitmq redis api"
+    ;;&
+  api|server|client)
+    shopt -s nullglob #fixes null glob when no file exists
+    for file in $CONFIG_DIR/*.tmpl
+    do
+      echo "Processing $file file..."
+      dockerize -template $file:${file%.*} echo
+    done
+
+    for index in $DEPENDENCIES
+    do
+      dockerize -template /etc/sensu/templates/$index.json.tmpl:$CONFIG_DIR/$index.json echo
+    done
+
+    dockerize sensu-$SENSU_SERVICE -d $CONFIG_DIR -e $EXTENSION_DIR -L $LOG_LEVEL $OPTIONS
+    ;;
+  *)
+    echo 'Specify either api/server/client'
+    exit 1
+    ;;
+esac

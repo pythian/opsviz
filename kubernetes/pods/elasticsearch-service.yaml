@@ -12,5 +12,5 @@ spec:
   selector:
     app: povs
     name: elasticsearch
-    role: client
+    role: server
   type: LoadBalancer
