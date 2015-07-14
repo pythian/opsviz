@@ -8,7 +8,9 @@ DEPENDENCIES
   bb_monitor
     path: site-cookbooks/bb_monitor
   elasticsearch (~> 0.3.13)
-  grafana (~> 2.0.0)
+  grafana
+    git: https://github.com/lesaux/chef-grafana.git
+    revision: ec1cb28d4707afea0840dae3d1df4c17c6b02203    
   graphite
     git: https://github.com/hw-cookbooks/graphite.git
     revision: 6080af5c66b5b149b806c67fbe349ecec0768962
