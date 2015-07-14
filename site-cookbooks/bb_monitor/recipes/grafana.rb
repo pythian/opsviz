@@ -4,6 +4,8 @@ Wrapper around upstream grafana recipe to provide a custom default configuration
 #>
 =end
 
+package 'mysql-client'
+
 bash 'create grafana database' do
   code <<-EOS
     mysql -u#{node['grafana']['ini']['database']['user']} -p#{node['grafana']['ini']['database']['password']} -h#{node['grafana']['dbhost']} -e"CREATE DATABASE IF NOT EXISTS #{node['grafana']['ini']['database']['name']}"
