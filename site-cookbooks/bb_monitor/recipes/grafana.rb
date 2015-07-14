@@ -23,7 +23,7 @@ grafana_datasource 'graphite-cluster' do
   )
 end
 
-grafana_dashboard 'system-stats' do
+grafana_dashboard 'system-stats'
 
 #template "#{node['grafana']['install_dir']}/app/dashboards/default.json" do
   #source 'system_stats.json.erb'
