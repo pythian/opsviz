@@ -18,6 +18,7 @@ listen <% if node[:doorman][:enabled]=='true' -%>8080<% else -%>80<% end -%>;
     rewrite /flapjack/(.*) /$1 break;
   }
 
+#for kibana3
   location /kibana {
     alias /opt/kibana/current;
     proxy_set_header Host $host:80;
@@ -39,12 +40,13 @@ listen <% if node[:doorman][:enabled]=='true' -%>8080<% else -%>80<% end -%>;
     rewrite /rabbitmq/(.*) /$1 break;
   }
 
+#for grafana v1
 #  location /grafana {
 #    alias <%= node['grafana']['install_dir'] %>;
 #    proxy_set_header Host $host:80;
 #  }
 
-  location /grafana2 {
+  location /grafana {
     proxy_pass            http://127.0.0.1:3000/;
     proxy_set_header Host $host:80;
     rewrite /grafana2/(.*) /$1 break;
