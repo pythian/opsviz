@@ -48,7 +48,7 @@ sensu_check "check-graphite-cache" do
 end
 
 sensu_check "check-elasticsearch-diskspace" do
-  command "check-data.rb -s #{node[:graphite][:host]}:8081 -t 'averageSeries(stats.#{node[:opsworks][:stack][:name]}.elasticsearch.*.diskspace.xvdi.capacity)' -a 120 -w 70 -c 80"
+  command "check-data.rb -s #{node[:graphite][:host]}:8081 -t 'averageSeries(stats.#{node[:opsworks][:stack][:name].downcase}.elasticsearch.*.diskspace.xvdi.capacity)' -a 120 -w 70 -c 80"
   handlers ["remediator","debug"]
   subscribers ["dashboard1"]
   interval 30
@@ -63,7 +63,7 @@ sensu_check "elasticsearch_scale_up" do
 end
 
 sensu_check "check-logstash-loadavg" do
-  command "check-data.rb -s #{node[:graphite][:host]}:8081 -t 'averageSeries(stats.#{node[:opsworks][:stack][:name]}.logstash.*.load.load_avg.one)' -a 120 -w 2 -c 4"
+  command "check-data.rb -s #{node[:graphite][:host]}:8081 -t 'averageSeries(stats.#{node[:opsworks][:stack][:name].downcase}.logstash.*.load.load_avg.one)' -a 120 -w 2 -c 4"
   handlers ["remediator","debug"]
   subscribers ["dashboard1"]
   interval 30
@@ -78,7 +78,7 @@ sensu_check "logstash_scale_up" do
 end
 
 sensu_check "check-dashboard-loadavg" do
-  command "check-data.rb -s #{node[:graphite][:host]}:8081 -t 'averageSeries(stats.#{node[:opsworks][:stack][:name]}.dashboard.*.load.load_avg.one)' -a 120 -w 2 -c 4"
+  command "check-data.rb -s #{node[:graphite][:host]}:8081 -t 'averageSeries(stats.#{node[:opsworks][:stack][:name].downcase}.dashboard.*.load.load_avg.one)' -a 120 -w 2 -c 4"
   handlers ["remediator","debug"]
   subscribers ["dashboard1"]
   interval 30
@@ -128,7 +128,7 @@ end
 
 sensu_check "metric-node-elasticsearch" do
   type "metric"
-  command "es-node-metrics.rb -h #{node[:kibana][:elasticsearch_server]} -s stats.#{stack_name}.elasticsearch"
+  command "es-node-metrics.rb -h #{node[:kibana][:elasticsearch_server]} -s stats.#{stack_name.downcase}.elasticsearch"
   handlers node[:bb_monitor][:sensu][:default_metric_handlers]
   subscribers ["dashboard"]
   interval 30
