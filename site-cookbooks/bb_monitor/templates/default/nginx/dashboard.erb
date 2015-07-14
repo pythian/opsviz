@@ -39,10 +39,10 @@ listen <% if node[:doorman][:enabled]=='true' -%>8080<% else -%>80<% end -%>;
     rewrite /rabbitmq/(.*) /$1 break;
   }
 
-  location /grafana {
-    alias <%= node['grafana']['install_dir'] %>;
-    proxy_set_header Host $host:80;
-  }
+#  location /grafana {
+#    alias <%= node['grafana']['install_dir'] %>;
+#    proxy_set_header Host $host:80;
+#  }
 
   location /grafana2 {
     proxy_pass            http://127.0.0.1:3000/;
