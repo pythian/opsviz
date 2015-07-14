@@ -306,18 +306,6 @@
               "Ref": "PrivateSubnet2"
             }
           },
-          "grafana": {
-              "webserver": "",
-              "ini": {
-                  "database" : {
-                      "type": "mysql",
-                      "host": { "Fn::GetAtt": ["GrafanaDB", "Endpoint.Address"]},
-                      "user": "grafanaroot",
-                      "password": {"Ref": "GrafanaDBPassword"}
-                  },
-                  "auth.anonymous" : true
-              }
-          },
           "instance_type": {
             "bastion" : {
               "Ref":"BastionInstanceType"

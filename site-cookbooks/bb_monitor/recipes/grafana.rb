@@ -14,10 +14,10 @@ grafana_datasource 'graphite-cluster' do
   )
 end
 
-grafana_dashboard 'POVs-self-monitoring:' do
-  source 'self-monitoring'
-  overwrite false
-end
+#grafana_dashboard 'POVs-self-monitoring:' do
+#  source 'self-monitoring'
+#  overwrite false
+#end
 
 #template "#{node['grafana']['install_dir']}/app/dashboards/default.json" do
   #source 'system_stats.json.erb'
