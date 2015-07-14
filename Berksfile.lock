@@ -14,8 +14,8 @@ DEPENDENCIES
     revision: 6080af5c66b5b149b806c67fbe349ecec0768962
   kibana (~> 0.1.8)
   logstash
-    git: https://github.com/foxycoder/chef-logstash.git
-    revision: 71b3aa2cf4116d04f9fb5272b664e08cf2b1c407
+    git: https://github.com/lesaux/chef-logstash.git
+    revision: 09fc334258fcf1af4223729d52dde6f1ab4cfa29
   nginx
     path: nginx
   rabbitmq_cluster
