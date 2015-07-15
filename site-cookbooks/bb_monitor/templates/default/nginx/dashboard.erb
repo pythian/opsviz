@@ -8,7 +8,7 @@ listen <% if node[:doorman][:enabled]=='true' -%>8080<% else -%>80<% end -%>;
   index index.html index.htm;
 
   location / {
-        try_files $uri @graphite;
+        try_files $uri $uri/index.html @graphite;
   }
 
   location @graphite {
