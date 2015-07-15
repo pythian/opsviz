@@ -19,11 +19,19 @@ grafana_datasource 'graphite-cluster' do
   source(
     type: 'graphite',
     url: 'http://' + node[:graphite][:host] + ':8081',
-    access: 'direct'
+    access: 'proxy'
   )
 end
 
-grafana_dashboard 'system-stats'
+cookbook_file "/tmp/system-stats.json" do
+  source "system-stats.json"
+  action :create_if_missing
+end
+
+grafana_dashboard 'system-stats' do
+  path '/tmp/system-stats.json'
+  overwrite false
+end
 
 #template "#{node['grafana']['install_dir']}/app/dashboards/default.json" do
   #source 'system_stats.json.erb'
