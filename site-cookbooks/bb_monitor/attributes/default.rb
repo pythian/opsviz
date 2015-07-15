@@ -35,3 +35,4 @@ default[:bb_monitor][:sensu][:subscriptions] = ["all"] + node[:opsworks][:instan
 # Disable sensu dashboard user/pass since we have nginx in front
 normal["uchiwa"]["settings"]["user"] = ""
 normal["uchiwa"]["settings"]["pass"] = ""
+normal['uchiwa']['settings']['port'] = 3001

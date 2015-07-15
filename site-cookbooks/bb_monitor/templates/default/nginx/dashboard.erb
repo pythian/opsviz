@@ -7,9 +7,12 @@ listen <% if node[:doorman][:enabled]=='true' -%>8080<% else -%>80<% end -%>;
   root /var/www/dashboard;
   index index.html index.htm;
 
-  location /graphite {
-    proxy_pass            http://<%= node['graphite']['host'] %>:<%= node['graphite']['uwsgi']['port'] %>/;
-    rewrite /graphite/(.*) /$1 break;
+  location / {
+        try_files $uri $uri/index.html @graphite;
+  }
+
+  location @graphite {
+    proxy_pass            http://<%= node['graphite']['host'] %>:<%= node['graphite']['uwsgi']['port'] %>;
   }
 
   location /flapjack {
@@ -18,6 +21,7 @@ listen <% if node[:doorman][:enabled]=='true' -%>8080<% else -%>80<% end -%>;
     rewrite /flapjack/(.*) /$1 break;
   }
 
+#for kibana3
   location /kibana {
     alias /opt/kibana/current;
     proxy_set_header Host $host:80;
@@ -39,15 +43,16 @@ listen <% if node[:doorman][:enabled]=='true' -%>8080<% else -%>80<% end -%>;
     rewrite /rabbitmq/(.*) /$1 break;
   }
 
-  location /grafana {
-    alias <%= node['grafana']['install_dir'] %>;
-    proxy_set_header Host $host:80;
-  }
+#for grafana v1
+#  location /grafana {
+#    alias <%= node['grafana']['install_dir'] %>;
+#    proxy_set_header Host $host:80;
+#  }
 
-  location /grafana2 {
+  location /grafana {
     proxy_pass            http://127.0.0.1:3000/;
     proxy_set_header Host $host:80;
-    rewrite /grafana2/(.*) /$1 break;
+    rewrite /grafana/(.*) /$1 break;
   }
 
   rewrite ^/sensu$ $scheme://$host:80/sensu/ permanent;
