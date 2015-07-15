@@ -317,8 +317,12 @@
                       "name": "grafana"
                   },
                   "auth.anonymous" : {
-                      "enabled": true
+                      "enabled": true,
+                      "org_role": "Admin"
                   }
+              },
+              "server": {
+                  "root_url" = "%(protocol)s://%(domain)s:%(http_port)s/grafana2",
               }
           },
           "instance_type": {
