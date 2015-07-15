@@ -295,16 +295,34 @@
         },
         "CustomJson": {
           "chef_environment": "production",
+          "network": {
+            "private_subnet0_id" : {
+              "Ref": "PrivateSubnet0"
+            },
+            "private_subnet1_id" : {
+              "Ref": "PrivateSubnet1"
+            },
+            "private_subnet2_id" : {
+              "Ref": "PrivateSubnet2"
+            }
+          },
           "grafana": {
-              "webserver": "",
+              "dbhost": "{ "Fn::GetAtt": ["GrafanaDB", "Endpoint.Address"]}",
               "ini": {
                   "database" : {
                       "type": "mysql",
-                      "host": { "Fn::GetAtt": ["GrafanaDB", "Endpoint.Address"]},
+                      "host": { "Fn::Join": [ { "Fn::GetAtt": ["GrafanaDB", "Endpoint.Address"]}, ":3306"] },
                       "user": "grafanaroot",
-                      "password": {"Ref": "GrafanaDBPassword"}
+                      "password": {"Ref": "GrafanaDBPassword"},
+                      "name": "grafana"
                   },
-                  "auth.anonymous" : true
+                  "auth.anonymous" : {
+                      "enabled": true,
+                      "org_role": "Admin"
+                  }
+              },
+              "server": {
+                  "root_url": "%(protocol)s://%(domain)s:%(http_port)s/grafana"
               }
           },
           "instance_type": {
@@ -1394,20 +1412,9 @@
             "LoadBalancerPort": "5671",
             "InstancePort": "5672",
             "Protocol": "SSL",
-            "SSLCertificateId" : {
-            "Fn::Join":[
-               "",
-               [
-                  "arn:aws:iam::",
-                  {
-                     "Ref":"AWS::AccountId"
-                  },
-                  ":server-certificate",
-                  "/",
-                  "opsviz"
-               ]
-            ]
-          }
+            "SSLCertificateId": {
+              "Ref": "RabbitMQCertificateARN"
+            }
           }
         ],
         "HealthCheck": {
@@ -1656,7 +1663,6 @@
         "VpcId": { "Ref": "VPC" }
       }
     },
-
     "RedisSecurityGroupIngressCluster": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {

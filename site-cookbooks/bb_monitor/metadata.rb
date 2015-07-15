@@ -7,6 +7,7 @@ long_description 'Installs/Configures bb-monitor'
 version          '0.1.0'
 
 depends 'bb_external'
+depends 'bb_elasticsearch'
 depends 'grafana'
 depends 'graphite'
 depends 'htpasswd'
