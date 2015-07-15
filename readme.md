@@ -38,6 +38,7 @@ It also builds everything with private-only ip addresses and restricts all exter
 ### Autoscaling
 
 Currently three of the layers autoscale using sensu remediation.
+
 1. elasticsearch layer scales on average disk space of xvdi (data volume). When sensu detects a first occurence of more than 80% disk space utilization it will launch two more instances in the subnets with the least amount of instances. Currently there is a maximum instance count set to 5.
 2. logstash layer scales on average load. When sensu detects 10 occurences of the instance load (per cpu) superior to 2, it will launch an additional instance. Currently there is a maximum instance count set to 5.
 3. The dashboard layer scales in the same fashion as the logstash layer. Note that the sensu remediation checks will only run on the dashboard1 instance.
