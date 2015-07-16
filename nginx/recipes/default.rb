@@ -31,6 +31,7 @@ runit_service "nginx" do
   # ...
   sv_bin 'sleep 5 && /usr/bin/sv'
   action  :enable
+  support = { restart: true, reload: true, status: true }
 end
 
 node['nginx']['default']['modules'].each do |ngx_module|
