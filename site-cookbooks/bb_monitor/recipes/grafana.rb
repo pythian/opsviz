@@ -28,8 +28,8 @@ cookbook_file "/tmp/system-stats.json" do
   action :create_if_missing
 end
 
-cookbook_file "/tmp/POVS-self-monitoring.json" do
-  source "POVS-self-monitoring.json"
+cookbook_file "/tmp/self-monitoring.json" do
+  source "self-monitoring.json"
   action :create_if_missing
 end
 
@@ -38,8 +38,8 @@ grafana_dashboard 'system-stats' do
   overwrite false
 end
 
-grafana_dashboard 'POVS-self-monitoring' do
-  path '/tmp/POVS-self-monitoring.json'
+grafana_dashboard 'self-monitoring' do
+  path '/tmp/self-monitoring.json'
   overwrite false
 end
 
