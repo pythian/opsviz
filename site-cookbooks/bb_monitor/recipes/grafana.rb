@@ -28,7 +28,7 @@ cookbook_file "/tmp/system-stats.json" do
   action :create_if_missing
 end
 
-cookbook_file "/tmp/POVS-self-monitoring" do
+cookbook_file "/tmp/POVS-self-monitoring.json" do
   source "POVS-self-monitoring.json"
   action :create_if_missing
 end
