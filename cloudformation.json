@@ -307,11 +307,11 @@
             }
           },
           "grafana": {
-              "dbhost": "{ "Fn::GetAtt": ["GrafanaDB", "Endpoint.Address"]}",
+              "dbhost": { "Fn::GetAtt": ["GrafanaDB", "Endpoint.Address"] },
               "ini": {
                   "database" : {
                       "type": "mysql",
-                      "host": { "Fn::Join": [ { "Fn::GetAtt": ["GrafanaDB", "Endpoint.Address"]}, ":3306"] },
+                      "host": { "Fn::Join": [ ":", [ { "Fn::GetAtt": ["GrafanaDB", "Endpoint.Address"] }, "3306" ] ] },
                       "user": "grafanaroot",
                       "password": {"Ref": "GrafanaDBPassword"},
                       "name": "grafana"
