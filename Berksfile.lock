@@ -14,9 +14,6 @@ DEPENDENCIES
   graphite
     git: https://github.com/hw-cookbooks/graphite.git
     revision: 6080af5c66b5b149b806c67fbe349ecec0768962
-  kibana_lwrp
-    git: https://github.com/lusis/chef-kibana.git
-    revision: d708e6c6f2ce2be6891f254e981da1e6803fe7af
   logstash
     git: https://github.com/lesaux/chef-logstash.git
     revision: 09fc334258fcf1af4223729d52dde6f1ab4cfa29
@@ -59,7 +56,6 @@ GRAPH
     graphite (>= 0.0.0)
     htpasswd (>= 0.0.0)
     java (>= 0.0.0)
-    kibana (>= 0.0.0)
     nodejs (>= 0.0.0)
     python (>= 0.0.0)
     route53 (>= 0.0.0)
@@ -105,22 +101,6 @@ GRAPH
     python (>= 0.0.0)
   iptables (1.0.0)
   java (1.31.0)
-  kibana (0.1.8)
-    apache2 (>= 2.0)
-    ark (>= 0.0.0)
-    build-essential (>= 0.0.0)
-  kibana_lwrp (2.0.5)
-    apache2 (>= 0.0.0)
-    ark (>= 0.0.0)
-    git (>= 0.0.0)
-    java (>= 0.0.0)
-    libarchive (>= 0.0.0)
-    nginx (>= 0.0.0)
-    poise (>= 0.0.0)
-    runit (>= 0.0.0)
-  libarchive (0.5.0)
-    apt (~> 2.5)
-    build-essential (~> 2.0)
   logrotate (1.9.2)
   logstash (0.1.0)
     apt (>= 0.0.0)
@@ -148,7 +128,6 @@ GRAPH
   ohai (2.0.1)
   packagecloud (0.0.19)
   pacman (1.1.1)
-  poise (2.1.0)
   python (1.4.6)
     build-essential (>= 0.0.0)
     yum-epel (>= 0.0.0)
