@@ -21,22 +21,17 @@
 
 include_recipe "nginx::#{node['nginx']['install_method']}"
 
-#service 'nginx' do
-#  supports :status => true, :restart => true, :reload => true
-#  action   :start
-#end
-
-#see https://github.com/hw-cookbooks/runit/issues/142
-runit_service "nginx" do
-  # ...
-  sv_bin 'sleep 5 && /usr/bin/sv'
-  action  :start
-  supports  :restart => true, :reload => true, :status => true
+service 'nginx' do
+  supports :status => true, :restart => true, :reload => true
+  action   :start
 end
 
-#service 'nginx' do
-#  supports :status => true, :restart => true, :reload => true
-#  action   :start
+#see https://github.com/hw-cookbooks/runit/issues/142
+#runit_service "nginx" do
+  # ...
+#  sv_bin 'sleep 5 && /usr/bin/sv'
+#  action  :start
+#  supports  :restart => true, :reload => true, :status => true
 #end
 
 node['nginx']['default']['modules'].each do |ngx_module|
