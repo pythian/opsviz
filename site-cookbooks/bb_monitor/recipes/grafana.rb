@@ -13,7 +13,15 @@ bash 'create grafana database' do
 end
 
 
+
+
 include_recipe 'grafana'
+
+bash 'wait for grafana tables' do
+  code <<-EOS
+    sleep 10
+  EOS
+end
 
 grafana_datasource 'graphite-cluster' do
   source(
