@@ -54,7 +54,7 @@ template "/etc/nginx/sites-available/dashboard" do
   owner "root"
   group "root"
   mode "0644"
-  notifies :restart, "service[nginx]"
+  notifies :restart, "runit_service[nginx]"
 end
 
 link "/etc/nginx/sites-enabled/dashboard" do
