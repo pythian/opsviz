@@ -14,3 +14,4 @@
 
 # We don't want grana to install nginx for us, we'll do that
 normal['grafana']['webserver'] = ''
+normal['grafana']['version'] = '2.1.0-pre1'

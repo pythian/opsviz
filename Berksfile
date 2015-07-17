@@ -7,9 +7,10 @@ source "https://supermarket.getchef.com"
 cookbook 'elasticsearch', '~> 0.3.13'
 cookbook 'grafana', '~> 2.0.0', git: 'https://github.com/lesaux/chef-grafana.git'
 cookbook 'graphite', '~> 1.0.2', git: 'https://github.com/hw-cookbooks/graphite.git'
-cookbook 'kibana', '~> 0.1.8'
+cookbook 'kibana_lwrp', '~> 2.0.0', git: 'https://github.com/lusis/chef-kibana.git'
 cookbook 'logstash', '~> 0.1.0', git: 'https://github.com/lesaux/chef-logstash.git'
 cookbook 'route53', '~> 0.4.0', git: 'https://github.com/josacar/route53.git'
+cookbook 'runit', '~> 1.7.2', git: 'https://github.com/hw-cookbooks/runit.git'
 cookbook 'sensu', '~> 2.6.0'
 cookbook 'statsd', '~> 1.1.10', git: 'https://github.com/hectcastro/chef-statsd.git'
 

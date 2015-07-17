@@ -10,11 +10,13 @@ DEPENDENCIES
   elasticsearch (~> 0.3.13)
   grafana
     git: https://github.com/lesaux/chef-grafana.git
-    revision: ec1cb28d4707afea0840dae3d1df4c17c6b02203    
+    revision: ec1cb28d4707afea0840dae3d1df4c17c6b02203
   graphite
     git: https://github.com/hw-cookbooks/graphite.git
     revision: 6080af5c66b5b149b806c67fbe349ecec0768962
-  kibana (~> 0.1.8)
+  kibana_lwrp
+    git: https://github.com/lusis/chef-kibana.git
+    revision: d708e6c6f2ce2be6891f254e981da1e6803fe7af
   logstash
     git: https://github.com/lesaux/chef-logstash.git
     revision: 09fc334258fcf1af4223729d52dde6f1ab4cfa29
@@ -25,6 +27,9 @@ DEPENDENCIES
   route53
     git: https://github.com/josacar/route53.git
     revision: 9a4b8c8a6f078204eb3401c9fa68bfa6f81995ae
+  runit
+    git: https://github.com/hw-cookbooks/runit.git
+    revision: ee15ff5d5c4a04fe067ca870d44a4a62599d13c3
   sensu (~> 2.6.0)
   statsd
     git: https://github.com/hectcastro/chef-statsd.git
@@ -48,6 +53,7 @@ GRAPH
     logstash (>= 0.0.0)
     sensu (>= 0.0.0)
   bb_monitor (0.1.0)
+    bb_elasticsearch (>= 0.0.0)
     bb_external (>= 0.0.0)
     grafana (>= 0.0.0)
     graphite (>= 0.0.0)
@@ -103,6 +109,18 @@ GRAPH
     apache2 (>= 2.0)
     ark (>= 0.0.0)
     build-essential (>= 0.0.0)
+  kibana_lwrp (2.0.5)
+    apache2 (>= 0.0.0)
+    ark (>= 0.0.0)
+    git (>= 0.0.0)
+    java (>= 0.0.0)
+    libarchive (>= 0.0.0)
+    nginx (>= 0.0.0)
+    poise (>= 0.0.0)
+    runit (>= 0.0.0)
+  libarchive (0.5.0)
+    apt (~> 2.5)
+    build-essential (~> 2.0)
   logrotate (1.9.2)
   logstash (0.1.0)
     apt (>= 0.0.0)
@@ -130,6 +148,7 @@ GRAPH
   ohai (2.0.1)
   packagecloud (0.0.19)
   pacman (1.1.1)
+  poise (2.1.0)
   python (1.4.6)
     build-essential (>= 0.0.0)
     yum-epel (>= 0.0.0)
@@ -144,7 +163,7 @@ GRAPH
   route53 (0.4.0)
     xml (>= 0.0.0)
   rsyslog (2.0.0)
-  runit (1.7.2)
+  runit (1.7.3)
     packagecloud (>= 0.0.0)
   sensu (2.6.0)
     apt (>= 0.0.0)
@@ -165,7 +184,7 @@ GRAPH
   xml (1.2.13)
     build-essential (>= 0.0.0)
     chef-sugar (>= 0.0.0)
-  yum (3.6.1)
+  yum (3.6.3)
   yum-epel (0.6.2)
     yum (~> 3.2)
   yum-erlang_solutions (0.2.0)
