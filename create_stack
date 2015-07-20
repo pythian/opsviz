@@ -7,8 +7,20 @@ import os
 import boto.cloudformation
 import boto.iam
 import boto.sts
+import boto.s3
+
 import time
 from gen_secrets import gen_password
+import random
+import string
+
+def percent_cb(complete, total):
+    """
+    Utility function for printing out progress bars with s3 boto
+    """
+
+    sys.stdout.write('.')
+    sys.stdout.flush()
 
 def get_privkey():
     '''When the -newkey option is given to req, it writes the key
@@ -50,19 +62,78 @@ class KeyValueArgs(argparse.Action):
         getattr(namespace, self.dest)[key] = value
 
 class OpsVizStackCreator(object):
-    def __init__(self, opts):
-        self.opts = opts
-        self.sts = boto.sts.connect_to_region(opts.region)
-        self.iam  = boto.iam.connect_to_region(opts.region)
-        self.cf   = boto.cloudformation.connect_to_region(opts.region)
-        print self.iam.get_signin_url()
+    def __init__(self, args):
+        self.args = args
+        self.sts  = boto.sts.connect_to_region(args.region)
+        self.iam  = boto.iam.connect_to_region(args.region)
+        self.s3   = boto.s3.connect_to_region(args.region)
+        self.cf   = boto.cloudformation.connect_to_region(args.region)
+        self.s3_bucket = None
+        self.cert_arn = None
+        print "Using boto credentials for IAM account in %s" % self.iam.get_signin_url()
+
+    def get_bucket(self):
+        """
+        We want to store a few things in S3.  One of them is the cloudformation template itself.
+        So, we need to create it outside cloudformation.
+        Once it is ready, we can also us the bucket for:
+        * logstash configuration files
+        * dashboard backups
+        * elasticsearch snapshots
+        * image assets
+        * more?
+        """
+
+        # short circuit if we need to
+        if self.s3_bucket is not None:
+            print "Using bucket:%s in %s" % (self.s3_bucket.name, self.args.region)
+            return self.s3_bucket
+
+        # Set the default bucket name
+        # create a bit of randomness
+        postfix = ''.join(random.choice(string.ascii_lowercase) for _ in range(6))
+        # concatenate the parts
+        bucket_name = "%s-%s-%s" % ("pythian-ovs", self.args.stack_name, postfix)
+        # normalize
+        bucket_name = bucket_name.replace(" ", "-").lower()
+
+        # Override the bucket_name if we want to
+        if self.args.bucket_name:
+            bucket_name = self.args.bucket_name.replace(' ', '-').lower()
+            if bucket_name != self.args.bucket_name:
+                print "Normalizing the bucket name from %s to %s" % (
+                    self.args.bucket_name,
+                    bucket_name
+                )
+
+        # Create the bucket if we need to
+        for bucket in self.s3.get_all_buckets():
+            if bucket.name == self.args.bucket_name:
+                self.s3_bucket = bucket
+        if self.s3_bucket is None:
+            self.s3_bucket = self.s3.create_bucket(bucket_name)
+        print "Using bucket:%s in %s" % (self.s3_bucket.name, self.args.region)
+        return self.s3_bucket
+
+    def upload_cloudformation(self):
+        cloudformation_json_key = 'cloudformation/pov_stack.json'
+        s3_key = boto.s3.key.Key(self.get_bucket(), cloudformation_json_key)
+
+        print "Uploading Cloudformation Json to %s" % cloudformation_json_key,
+        s3_key.set_contents_from_filename("cloudformation.json",
+                                          cb=percent_cb, num_cb=10)
+        #with open('cloudformation.json') as f:
+            #s3_key.send_file(f)
+        print "Done"
+        self.args.template_url = s3_key.generate_url(600)
+        #print self.args.template_url
 
     def upload_cert(self):
         '''Uploads a cert and key to IAM and return the ARN of the
         uploaded cert'''
 
         resp = self.iam.upload_server_cert(
-            cert_name="{}_cert".format(self.opts.stack_name),
+            cert_name="{}_cert".format(self.args.stack_name),
             cert_body=self.ssl_cert,
             private_key=self.ssl_key)
 
@@ -75,7 +146,7 @@ class OpsVizStackCreator(object):
         certs_response = self.iam.list_server_certs()
         cert_list = certs_response[u'list_server_certificates_response'][u'list_server_certificates_result'][u'server_certificate_metadata_list']
         print cert_list
-        valid_certs = [x for x in cert_list if x[u'server_certificate_name'] == "{}_cert".format(self.opts.stack_name)]
+        valid_certs = [x for x in cert_list if x[u'server_certificate_name'] == "{}_cert".format(self.args.stack_name)]
         if len(valid_certs) == 1:
             self.cert_arn = valid_certs[0][u'arn']
         else:
@@ -98,7 +169,7 @@ class OpsVizStackCreator(object):
 
         #user provided params override whatever we generate or set
         #as a default
-        params.update(self.opts.params)
+        params.update(self.args.params)
 
         return params
 
@@ -109,17 +180,19 @@ class OpsVizStackCreator(object):
     def spin_up(self, params):
         print "Creating stack with params: "
         print params
+        if self.args.use_bucket:
+            self.upload_cloudformation()
 
         create_stack_kwargs = {
-            'stack_name': self.opts.stack_name,
+            'stack_name': self.args.stack_name,
             'capabilities': ['CAPABILITY_IAM'],
             'parameters': params.items(),
             'disable_rollback': True
         }
-        if not self.opts.template_url:
+        if not self.args.template_url:
             create_stack_kwargs['template_body'] = self.read_template()
         else:
-            create_stack_kwargs['template_url'] = self.opts.template_url
+            create_stack_kwargs['template_url'] = self.args.template_url
 
         stack_id = self.cf.create_stack(**create_stack_kwargs)
 
@@ -161,6 +234,11 @@ def get_args():
     parser.add_argument('--param', dest='params', action=KeyValueArgs,
                         default={},
                         help="Override additional params in the form of key=value. Can be specified multiple times")
+    parser.add_argument('--bucket-name', '-b',
+                        help="Override the default name of the s3 bucket for your stack (for storing the cloudformation template and configs)")
+    parser.add_argument('--use-bucket', dest='use_bucket', action='store_true')
+    parser.add_argument('--no-use-bucket', dest='use_bucket', action='store_false')
+    parser.set_defaults(use_bucket=True)
 
     args = parser.parse_args()
 
