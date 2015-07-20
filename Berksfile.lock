@@ -62,6 +62,7 @@ GRAPH
     route53 (>= 0.0.0)
     runit (>= 0.0.0)
     sensu (>= 0.0.0)
+    simple-kibana (>= 0.0.0)
     uchiwa (>= 0.0.0)
   bluepill (2.3.1)
     rsyslog (>= 0.0.0)
