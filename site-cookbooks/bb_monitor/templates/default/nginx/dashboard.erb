@@ -21,16 +21,11 @@ listen <% if node[:doorman][:enabled]=='true' -%>8080<% else -%>80<% end -%>;
     rewrite /flapjack/(.*) /$1 break;
   }
 
-#for kibana3
-  location /kibana {
-    alias /opt/kibana/current;
-    proxy_set_header Host $host:80;
-  }
-
-  location /kibana4 {
-    proxy_pass            http://127.0.0.1:5061/;
-    proxy_set_header Host $host:80;
-    rewrite /kibana4/(.*) /$1 break;
+  location ~ ^/kibana/.* {
+    proxy_pass http://localhost:5601;
+    rewrite ^/kibana/(.*) /$1 break;
+    proxy_set_header Host $host;
+    proxy_set_header  X-Forwarded-For $proxy_add_x_forwarded_for;
   }
 
   location /elasticsearch {
@@ -43,12 +38,6 @@ listen <% if node[:doorman][:enabled]=='true' -%>8080<% else -%>80<% end -%>;
     rewrite /rabbitmq/(.*) /$1 break;
   }
 
-#for grafana v1
-#  location /grafana {
-#    alias <%= node['grafana']['install_dir'] %>;
-#    proxy_set_header Host $host:80;
-#  }
-
   location /grafana {
     proxy_pass            http://127.0.0.1:3000/;
     proxy_set_header Host $host:80;
@@ -58,12 +47,10 @@ listen <% if node[:doorman][:enabled]=='true' -%>8080<% else -%>80<% end -%>;
   rewrite ^/sensu$ $scheme://$host:80/sensu/ permanent;
   location ~ (/sensu/|/socket.io/) {
     proxy_pass            http://127.0.0.1:<%= node['uchiwa']['settings']['port']%>;
-
     proxy_http_version 1.1;
     proxy_set_header Upgrade $http_upgrade;
     proxy_set_header Connection "upgrade";
     proxy_set_header Host $host:80;
-
     rewrite sensu(.*) $1 break;
   }
 
