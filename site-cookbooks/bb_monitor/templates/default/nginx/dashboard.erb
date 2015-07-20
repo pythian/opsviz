@@ -34,7 +34,7 @@ listen <% if node[:doorman][:enabled]=='true' -%>8080<% else -%>80<% end -%>;
   }
 
   location /elasticsearch {
-    proxy_pass            http://<%= node['kibana']['elasticsearch_server'] %>:9200;
+    proxy_pass            http://localhost:9200;
     rewrite /elasticsearch/(.*) /$1 break;
   }
 
