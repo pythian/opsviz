@@ -319,10 +319,10 @@
                   "auth.anonymous" : {
                       "enabled": true,
                       "org_role": "Admin"
+                  },
+                  "server": {
+                      "root_url": "http://localhost:3000/grafana"
                   }
-              },
-              "server": {
-                  "root_url": "http://localhost:3000/grafana"
               }
           },
           "instance_type": {
