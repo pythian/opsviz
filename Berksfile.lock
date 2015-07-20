@@ -30,7 +30,7 @@ DEPENDENCIES
   sensu (~> 2.6.0)
   simple-kibana
     git: https://github.com/lesaux/simple-kibana-cookbook.git
-    revision: 4e5eaa4b7aad6a98efdb902cc6beff526dd5c236
+    revision: 7784d1b9943966c039a9c858d2e8aeac4a095d15
   statsd
     git: https://github.com/hectcastro/chef-statsd.git
     revision: 385dd15e38fdd29517a8277a91b5f782c55b51d8
