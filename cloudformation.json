@@ -484,16 +484,6 @@
               }
             ]
           },
-          "kibana": {
-            "version": "3",
-            "kibana3_version": "3.1.1",
-            "elasticsearch_server": {
-              "Fn::GetAtt": [
-                "ElasticSearchELB",
-                "DNSName"
-              ]
-            }
-          },
           "doorman": {
             "password": {
               "Ref": "DoormanEnable"
