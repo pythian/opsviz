@@ -17,6 +17,7 @@ end
 
 include_recipe 'grafana'
 
+#temp fix
 bash 'wait for grafana tables' do
   code <<-EOS
     sleep 10
