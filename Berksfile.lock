@@ -28,7 +28,9 @@ DEPENDENCIES
     git: https://github.com/hw-cookbooks/runit.git
     revision: ee15ff5d5c4a04fe067ca870d44a4a62599d13c3
   sensu (~> 2.6.0)
-  simple-kibana (~> 0.4.1)
+  simple-kibana
+    git: https://github.com/lesaux/simple-kibana-cookbook.git
+    revision: dc4465f1093392a6db09097f6090405c5c9b873b
   statsd
     git: https://github.com/hectcastro/chef-statsd.git
     revision: 385dd15e38fdd29517a8277a91b5f782c55b51d8
