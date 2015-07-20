@@ -322,7 +322,7 @@
                   }
               },
               "server": {
-                  "root_url": "%(protocol)s://%(domain)s:%(http_port)s/grafana"
+                  "root_url": "http://localhost:3000/grafana"
               }
           },
           "instance_type": {
