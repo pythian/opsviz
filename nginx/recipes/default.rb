@@ -26,14 +26,6 @@ service 'nginx' do
   action   :start
 end
 
-#see https://github.com/hw-cookbooks/runit/issues/142
-#runit_service "nginx" do
-  # ...
-#  sv_bin 'sleep 5 && /usr/bin/sv'
-#  action  :start
-#  supports  :restart => true, :reload => true, :status => true
-#end
-
 node['nginx']['default']['modules'].each do |ngx_module|
   include_recipe "nginx::#{ngx_module}"
 end

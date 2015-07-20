@@ -59,5 +59,5 @@ end
 
 link "/etc/nginx/sites-enabled/dashboard" do
   to "/etc/nginx/sites-available/dashboard"
-  notifies :restart, "runit_service[nginx]"
+  notifies :restart, "service[nginx]"
 end
