@@ -13,7 +13,16 @@ bash 'create grafana database' do
 end
 
 
+
+
 include_recipe 'grafana'
+
+#temp fix
+bash 'wait for grafana tables' do
+  code <<-EOS
+    sleep 10
+  EOS
+end
 
 grafana_datasource 'graphite-cluster' do
   source(
@@ -28,14 +37,17 @@ cookbook_file "/tmp/system-stats.json" do
   action :create_if_missing
 end
 
+cookbook_file "/tmp/self-monitoring.json" do
+  source "self-monitoring.json"
+  action :create_if_missing
+end
+
 grafana_dashboard 'system-stats' do
   path '/tmp/system-stats.json'
   overwrite false
 end
 
-#template "#{node['grafana']['install_dir']}/app/dashboards/default.json" do
-  #source 'system_stats.json.erb'
-  #owner 'root'
-  #group 'root'
-  #mode '0664'
-#end
+grafana_dashboard 'self-monitoring' do
+  path '/tmp/self-monitoring.json'
+  overwrite false
+end

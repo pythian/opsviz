@@ -10,11 +10,10 @@ DEPENDENCIES
   elasticsearch (~> 0.3.13)
   grafana
     git: https://github.com/lesaux/chef-grafana.git
-    revision: ec1cb28d4707afea0840dae3d1df4c17c6b02203    
+    revision: ec1cb28d4707afea0840dae3d1df4c17c6b02203
   graphite
     git: https://github.com/hw-cookbooks/graphite.git
     revision: 6080af5c66b5b149b806c67fbe349ecec0768962
-  kibana (~> 0.1.8)
   logstash
     git: https://github.com/lesaux/chef-logstash.git
     revision: 09fc334258fcf1af4223729d52dde6f1ab4cfa29
@@ -25,7 +24,13 @@ DEPENDENCIES
   route53
     git: https://github.com/josacar/route53.git
     revision: 9a4b8c8a6f078204eb3401c9fa68bfa6f81995ae
+  runit
+    git: https://github.com/hw-cookbooks/runit.git
+    revision: ee15ff5d5c4a04fe067ca870d44a4a62599d13c3
   sensu (~> 2.6.0)
+  simple-kibana
+    git: https://github.com/lesaux/simple-kibana-cookbook.git
+    revision: 7784d1b9943966c039a9c858d2e8aeac4a095d15
   statsd
     git: https://github.com/hectcastro/chef-statsd.git
     revision: 385dd15e38fdd29517a8277a91b5f782c55b51d8
@@ -48,17 +53,18 @@ GRAPH
     logstash (>= 0.0.0)
     sensu (>= 0.0.0)
   bb_monitor (0.1.0)
+    bb_elasticsearch (>= 0.0.0)
     bb_external (>= 0.0.0)
     grafana (>= 0.0.0)
     graphite (>= 0.0.0)
     htpasswd (>= 0.0.0)
     java (>= 0.0.0)
-    kibana (>= 0.0.0)
     nodejs (>= 0.0.0)
     python (>= 0.0.0)
     route53 (>= 0.0.0)
     runit (>= 0.0.0)
     sensu (>= 0.0.0)
+    simple-kibana (>= 0.0.0)
     uchiwa (>= 0.0.0)
   bluepill (2.3.1)
     rsyslog (>= 0.0.0)
@@ -99,10 +105,6 @@ GRAPH
     python (>= 0.0.0)
   iptables (1.0.0)
   java (1.31.0)
-  kibana (0.1.8)
-    apache2 (>= 2.0)
-    ark (>= 0.0.0)
-    build-essential (>= 0.0.0)
   logrotate (1.9.2)
   logstash (0.1.0)
     apt (>= 0.0.0)
@@ -144,7 +146,7 @@ GRAPH
   route53 (0.4.0)
     xml (>= 0.0.0)
   rsyslog (2.0.0)
-  runit (1.7.2)
+  runit (1.7.3)
     packagecloud (>= 0.0.0)
   sensu (2.6.0)
     apt (>= 0.0.0)
@@ -152,6 +154,9 @@ GRAPH
     redisio (>= 1.7.0)
     windows (>= 1.8.8)
     yum (>= 0.0.0)
+  simple-kibana (0.4.1)
+    ark (>= 0.0.0)
+    runit (>= 0.0.0)
   statsd (1.1.12)
     git (>= 0.0.0)
     nodejs (>= 0.0.0)
@@ -165,7 +170,7 @@ GRAPH
   xml (1.2.13)
     build-essential (>= 0.0.0)
     chef-sugar (>= 0.0.0)
-  yum (3.6.1)
+  yum (3.6.3)
   yum-epel (0.6.2)
     yum (~> 3.2)
   yum-erlang_solutions (0.2.0)

@@ -108,9 +108,9 @@
     },
     "DashboardInstanceType":{
         "Type" : "String",
-        "Default" : "c3.large",
+        "Default" : "m3.large",
         "AllowedValues" : ["m3.medium", "m3.large", "c3.large", "r3.large", "m3.2xlarge"],
-        "Description" : "Enter m3.medium, m3.large, c3.large, or r3.large. Default is c3.large."
+        "Description" : "Enter m3.medium, m3.large, c3.large, or r3.large. Default is m3.large."
     },
     "RabbitMQUser": {
       "Description": "RabbitMQ User",
@@ -307,11 +307,11 @@
             }
           },
           "grafana": {
-              "dbhost": "{ "Fn::GetAtt": ["GrafanaDB", "Endpoint.Address"]}",
+              "dbhost": { "Fn::GetAtt": ["GrafanaDB", "Endpoint.Address"] },
               "ini": {
                   "database" : {
                       "type": "mysql",
-                      "host": { "Fn::Join": [ { "Fn::GetAtt": ["GrafanaDB", "Endpoint.Address"]}, ":3306"] },
+                      "host": { "Fn::Join": [ ":", [ { "Fn::GetAtt": ["GrafanaDB", "Endpoint.Address"] }, "3306" ] ] },
                       "user": "grafanaroot",
                       "password": {"Ref": "GrafanaDBPassword"},
                       "name": "grafana"
@@ -319,10 +319,10 @@
                   "auth.anonymous" : {
                       "enabled": true,
                       "org_role": "Admin"
+                  },
+                  "server": {
+                      "root_url": "http://localhost:3000/grafana"
                   }
-              },
-              "server": {
-                  "root_url": "%(protocol)s://%(domain)s:%(http_port)s/grafana"
               }
           },
           "instance_type": {
@@ -483,16 +483,6 @@
                 }
               }
             ]
-          },
-          "kibana": {
-            "version": "3",
-            "kibana3_version": "3.1.1",
-            "elasticsearch_server": {
-              "Fn::GetAtt": [
-                "ElasticSearchELB",
-                "DNSName"
-              ]
-            }
           },
           "doorman": {
             "password": {
