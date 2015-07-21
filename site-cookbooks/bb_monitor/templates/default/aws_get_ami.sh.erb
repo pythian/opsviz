@@ -1,0 +1,2 @@
+#!/bin/bash
+/usr/bin/aws ec2 describe-instances --instance-ids <%= @instanceId %> | grep ami |  awk '{print $7;}' > /etc/aws/ami.txt
