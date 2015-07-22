@@ -9,7 +9,9 @@ DEPENDENCIES
     path: site-cookbooks/bb_monitor
   elasticsearch (~> 0.3.13)
   grafana (~> 1.5.4)
-  graphite (~> 1.0.2)
+  graphite
+    git: https://github.com/hw-cookbooks/graphite.git
+    revision: 6080af5c66b5b149b806c67fbe349ecec0768962
   kibana (~> 0.1.8)
   logstash
     git: https://github.com/foxycoder/chef-logstash.git
