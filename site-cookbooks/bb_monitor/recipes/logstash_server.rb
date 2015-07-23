@@ -24,12 +24,11 @@ cookbook_file "/tmp/download_from_s3.rb" do
     mode 0755
 end
 
-if node.normal[:logstash][:remote_config_files]
-  node.normal[:logstash][:remote_config_files].each do |region, bucket, dest, source|
-    local_file_name = "/etc/logstash/conf.d/" + dest
+if node.normal[:remote_config_files][:logstash]
+  node.normal[:remote_config_files][:logstash].each do |region, bucket, dest, source|
     bash "download config from s3" do
       code <<-EOF
-        env -i /usr/local/bin/ruby /tmp/download_from_s3.rb -b #{bucket} -r #{region} -s #{source} -d #{local_file_name}
+        env -i /usr/local/bin/ruby /tmp/download_from_s3.rb -b #{bucket} -r #{region} -s #{source} -d #{dest}
       EOF
       notifies :restart, "service[logstash]"
     end
