@@ -168,7 +168,7 @@ We use the public facing RabbitMQ as the transport layer for external sensu clie
 ### Updating Sensu and Logstash configurations
 
 - Option 1: SSH into the sensu or logstash box and add your own configuration files
-- Option 2: Store additional configuration files in an S3 bucket.
+- Option 2: Store additional configuration files in an S3 bucket. They will be downloaded from S3 and services will be restarted.
 
 You will need to assign the proper S3 policy to your opsworks instance role.
 
