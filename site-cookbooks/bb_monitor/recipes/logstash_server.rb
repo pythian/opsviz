@@ -19,19 +19,22 @@ include_recipe 'java'
 # Just include the regular logstash agent recipe since attributes will drive the server config
 include_recipe "bb_monitor::logstash_agent"
 
+cookbook_file "/tmp/download_from_s3.rb" do
+    source "download_from_s3.rb"
+    mode 0755
+end
+
 if node.normal[:logstash][:remote_config_files]
-  node.normal[:logstash][:remote_config_files].each do |file_name, file_url|
-    local_file_name = "/etc/logstash/conf.d/" + file_name
-    remote_file local_file_name do
-      source file_url
-      owner 'logstash'
-      group 'logstash'
-      mode '0644'
-      use_conditional_get true
-      use_last_modified true
+  node.normal[:logstash][:remote_config_files].each do |region, bucket, dest, source|
+    local_file_name = "/etc/logstash/conf.d/" + dest
+    bash "download config from s3" do
+      code <<-EOF
+        env -i /usr/local/bin/ruby /tmp/download_from_s3.rb -b #{bucket} -r #{region} -s #{source} -d #{local_file_name}
+      EOF
+      notifies :restart, "service[logstash]"
     end
   end
-end rescue NoMethodError
+end
 
 node.force_override[:elasticsearch][:custom_config]["http.enabled"] = true
 node.force_override[:elasticsearch][:custom_config]["node.data"] = false
