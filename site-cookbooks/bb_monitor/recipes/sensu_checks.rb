@@ -31,6 +31,13 @@ sensu_check "check-load" do
   additional(:flapping => true)
 end
 
+## AWS AMI Check
+sensu_check "check-aws-ami-id" do
+  command "check-aws-ami-id.rb"
+  handlers node[:bb_monitor][:sensu][:default_check_handlers]
+  subscribers ["all"]
+  interval 300
+end
 
 ## Metrics
 sensu_check "metric-load" do

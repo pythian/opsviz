@@ -9,6 +9,7 @@ end
 
 %w[
   apache-graphite.rb
+  check-aws-ami-id.rb
   check-cpu.rb
   check-disk.rb
   check-elb-health.rb
