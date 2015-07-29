@@ -33,8 +33,9 @@ end
 
 ## AWS AMI Check
 sensu_check "check-aws-ami-id" do
+  type "metric"
   command "check-aws-ami-id.rb"
-  handlers node[:bb_monitor][:sensu][:default_check_handlers]
+  handlers node[:bb_monitor][:sensu][:default_metric_handlers]
   subscribers ["all"]
   interval 300
 end
