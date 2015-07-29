@@ -16,10 +16,3 @@ ruby_block "Patch for SimpleKibana Issue" do
 		File.open('/opt/kibana/config/kibana.yml', "w") {|file| file.puts new_contents }
 	end
 end
-# quick kibana restart
-bash 'Kibana 4 Restart' do
-  cwd '/opt'
-  code <<-EOH
-    service kibana restart
-    EOH
-end
