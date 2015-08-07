@@ -165,12 +165,35 @@ We use the public facing RabbitMQ as the transport layer for external sensu clie
           }
         }
 
-### Updating Sensu Checks and Metrics
-*Todo: At this time we don't have a way to drive sensu checks or metrics directly from CloudFormation parameters or any other external definitions.
-This would make it easier to update sensu without needing to worry about making changes directly to the sensu config without configuration management or making standalone checks on each client*
+### Updating Sensu and Logstash configurations
 
-- Option 1: SSH into the sensu box and make changes according to sensu [documentation](http://sensuapp.org/docs/0.11/checks)
-- Option 2: Setup standalone checks on each external client according to [documentation](http://sensuapp.org/docs/0.11/adding_a_standalone_check)
+- Option 1: SSH into the sensu or logstash box and add your own configuration files
+- Option 2: Store additional configuration files in an S3 bucket. They will be downloaded from S3 and services will be restarted.
+
+You will need to assign the proper S3 policy to your opsworks instance role.
+
+This works with the following attributes:
+```
+normal[:remote_config_files][:logstash] = [
+  [ "region_name", "bucket_name", "full_path_to_the_destination_file", "full_path_to_the_source_configuration_file" ],
+  [ "region_name1", "bucket_name1", "full_path_to_the_destination_file2", "full_path_to_the_source_configuration_file2" ]
+]
+```
+
+```
+normal[:remote_config_files][:logstash] = [
+  [ "us-east-1", "opsviz-remote_config_files", "/etc/logstash/conf.d/nginx_filters.conf", "logstash/nginx_filters.conf" ],
+  [ "us-east-1", "opsviz-remote_config_files", "/etc/logstash/conf.d/dmesg_filters.conf", "logstash/dmesg_filters.conf" ]
+]
+normal[:remote_config_files][:sensu] = [
+  [ "us-east-1", "opsviz-remote_config_files", "/etc/sensu/conf.d/checks/custom_checks.json", "sensu/custom_checks.json" ],
+  [ "us-east-1", "opsviz-remote_config_files", "/etc/sensu/conf.d/plugins/my-check-script.sh", "sensu/my-check-script.sh" ]
+]
+```
+
+
+
+
 
 - Handlers
 

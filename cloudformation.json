@@ -196,6 +196,31 @@
       "Type" : "String",
       "AllowedValues" : [ "cache.m1.small", "cache.m1.large", "cache.m1.xlarge", "cache.m2.xlarge", "cache.m2.2xlarge", "cache.m2.4xlarge", "cache.c1.xlarge" ],
       "ConstraintDescription" : "must select a valid Cache Node type."
+    },
+    "VpcCidrBlock": {
+      "Description": "The VPC cidr block",
+      "Default": "10.133.0.0/16",
+      "Type": "String"
+    },
+    "PublicSubnetCidrBlock": {
+      "Description": "The public subnet cidr block",
+      "Default": "10.133.0.0/24",
+      "Type": "String"
+    },
+    "PrivateSubnet0CidrBlock": {
+      "Description": "The private subnet cidr block in AZ0",
+      "Default": "10.133.1.0/24",
+      "Type": "String"
+    },
+    "PrivateSubnet1CidrBlock": {
+      "Description": "The private subnet cidr block in AZ1",
+      "Default": "10.133.2.0/24",
+      "Type": "String"
+    },
+    "PrivateSubnet2CidrBlock": {
+      "Description": "The private subnet cidr block in AZ2",
+      "Default": "10.133.3.0/24",
+      "Type": "String"
     }
   },
   "Mappings": {
@@ -220,23 +245,6 @@
       },
       "sa-east-1": {
         "AMI": "ami-0439e619"
-      }
-    },
-    "SubnetConfig": {
-      "VPC": {
-        "CIDR": "10.133.0.0/16"
-      },
-      "Public": {
-        "CIDR": "10.133.0.0/24"
-      },
-      "Private0": {
-        "CIDR": "10.133.1.0/24"
-      },
-      "Private1": {
-        "CIDR": "10.133.2.0/24"
-      },
-      "Private2": {
-        "CIDR": "10.133.3.0/24"
       }
     }
   },
@@ -1588,11 +1596,7 @@
             "FromPort": "0",
             "ToPort": "65535",
             "CidrIp": {
-              "Fn::FindInMap": [
-                "SubnetConfig",
-                "VPC",
-                "CIDR"
-              ]
+              "Ref": "VpcCidrBlock"
             }
           },
           {
@@ -1709,11 +1713,7 @@
       "DependsOn": "OpsWorksServiceRole",
       "Properties": {
         "CidrBlock": {
-          "Fn::FindInMap": [
-            "SubnetConfig",
-            "VPC",
-            "CIDR"
-          ]
+          "Ref": "VpcCidrBlock"
         },
         "Tags": [
           {
@@ -1746,11 +1746,7 @@
           ]
         },
         "CidrBlock": {
-          "Fn::FindInMap": [
-            "SubnetConfig",
-            "Public",
-            "CIDR"
-          ]
+          "Ref": "PublicSubnetCidrBlock"
         },
         "Tags": [
           {
@@ -1971,11 +1967,7 @@
           ]
         },
         "CidrBlock": {
-          "Fn::FindInMap": [
-            "SubnetConfig",
-            "Private0",
-            "CIDR"
-          ]
+          "Ref": "PrivateSubnet0CidrBlock"
         },
         "Tags": [
           {
@@ -2008,11 +2000,7 @@
           ]
         },
         "CidrBlock": {
-          "Fn::FindInMap": [
-            "SubnetConfig",
-            "Private1",
-            "CIDR"
-          ]
+          "Ref": "PrivateSubnet1CidrBlock"
         },
         "Tags": [
           {
@@ -2045,11 +2033,7 @@
           ]
         },
         "CidrBlock": {
-          "Fn::FindInMap": [
-            "SubnetConfig",
-            "Private2",
-            "CIDR"
-          ]
+          "Ref": "PrivateSubnet2CidrBlock"
         },
         "Tags": [
           {
@@ -2287,11 +2271,7 @@
             "FromPort": "0",
             "ToPort": "65535",
             "CidrIp": {
-              "Fn::FindInMap": [
-                "SubnetConfig",
-                "VPC",
-                "CIDR"
-              ]
+              "Ref": "VpcCidrBlock"
             }
           }
         ],
