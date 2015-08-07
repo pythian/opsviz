@@ -1053,6 +1053,7 @@
           ],
           "Configure": [
             "bb_monitor::sensu_client"
+            "bb_monitor::logstash_server_configure"
           ],
           "Deploy": [],
           "Undeploy": [],
